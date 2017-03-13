@@ -1,3 +1,4 @@
+
 package domain;
 
 import java.util.Date;
@@ -5,17 +6,20 @@ import java.util.Date;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.validation.Valid;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Message extends DomainEntity{
+public class Message extends DomainEntity {
 
 	//Attributes
-	private String title;
-	private String text;
-	private Date moment;
-	private String attachments;
-	
+	private String	title;
+	private String	text;
+	private Date	moment;
+	private String	attachments;
+
+
 	//Constructor
 	public Message() {
 		super();
@@ -23,38 +27,62 @@ public class Message extends DomainEntity{
 
 	//Getters and setters
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
 	public String getText() {
-		return text;
+		return this.text;
 	}
 
-	public void setText(String text) {
+	public void setText(final String text) {
 		this.text = text;
 	}
 
 	public Date getMoment() {
-		return moment;
+		return this.moment;
 	}
 
-	public void setMoment(Date moment) {
+	public void setMoment(final Date moment) {
 		this.moment = moment;
 	}
 
 	public String getAttachments() {
-		return attachments;
+		return this.attachments;
 	}
 
-	public void setAttachments(String attachments) {
+	public void setAttachments(final String attachments) {
 		this.attachments = attachments;
 	}
-	
-	
-	
-	
+
+
+	//RellationShips
+
+	private Actor	sender;
+	private Actor	addressee;
+
+
+	@Valid
+	@ManyToOne(optional = false)
+	public Actor getSender() {
+		return this.sender;
+	}
+
+	public void setSender(final Actor sender) {
+		this.sender = sender;
+	}
+
+	@Valid
+	@ManyToOne(optional = false)
+	public Actor getAddressee() {
+		return this.addressee;
+	}
+
+	public void setAddressee(final Actor addressee) {
+		this.addressee = addressee;
+	}
+
 }
