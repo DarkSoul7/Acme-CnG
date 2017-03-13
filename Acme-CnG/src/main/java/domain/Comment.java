@@ -7,7 +7,16 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -29,6 +38,8 @@ public class Comment extends DomainEntity {
 	}
 
 	//Getters and setters
+	
+	@NotBlank
 	public String getTitle() {
 		return this.title;
 	}
@@ -37,6 +48,10 @@ public class Comment extends DomainEntity {
 		this.title = title;
 	}
 
+	@NotNull
+	@Past
+	@Temporal(value=TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern="dd/MM/yyyy HH:mm")
 	public Date getMoment() {
 		return this.moment;
 	}
@@ -45,6 +60,7 @@ public class Comment extends DomainEntity {
 		this.moment = moment;
 	}
 
+	@NotBlank
 	public String getText() {
 		return this.text;
 	}
@@ -53,6 +69,8 @@ public class Comment extends DomainEntity {
 		this.text = text;
 	}
 
+	@Min(0)
+	@Max(5)
 	public int getStars() {
 		return this.stars;
 	}
@@ -69,6 +87,7 @@ public class Comment extends DomainEntity {
 		this.commentableId = commentableId;
 	}
 
+	@NotBlank
 	public String getCommentableType() {
 		return this.commentableType;
 	}

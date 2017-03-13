@@ -6,6 +6,10 @@ import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -22,6 +26,7 @@ public class Application extends DomainEntity {
 		super();
 	}
 
+	@NotNull
 	public Status getStatus() {
 		return this.status;
 	}
@@ -30,6 +35,7 @@ public class Application extends DomainEntity {
 		this.status = status;
 	}
 
+	@Min(1)
 	public int getAnnouncementId() {
 		return this.AnnouncementId;
 	}
@@ -38,6 +44,7 @@ public class Application extends DomainEntity {
 		this.AnnouncementId = announcementId;
 	}
 
+	@NotBlank
 	public String getAnnouncementType() {
 		return this.announcementType;
 	}

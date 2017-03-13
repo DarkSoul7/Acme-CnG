@@ -8,7 +8,6 @@ import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 import javax.validation.Valid;
 
 @Entity
@@ -17,10 +16,6 @@ public class Customer extends Actor {
 
 	//Attributes
 
-	private CreditCard	creditCard;
-	private double		totalfee;
-
-
 	//Constructor
 
 	public Customer() {
@@ -28,24 +23,6 @@ public class Customer extends Actor {
 	}
 
 	//Getter & setter
-
-	public CreditCard getCreditCard() {
-		return this.creditCard;
-	}
-
-	public void setCreditCard(final CreditCard creditCard) {
-		this.creditCard = creditCard;
-	}
-
-	@Transient
-	public double getTotalfee() {
-		return this.totalfee;
-	}
-
-	public void setTotalfee(final double totalfee) {
-		this.totalfee = totalfee;
-	}
-
 
 	//RellationShips
 

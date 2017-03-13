@@ -4,6 +4,9 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.URL;
+
 @Entity
 @Access(AccessType.PROPERTY)
 public class Banner extends DomainEntity{
@@ -18,6 +21,9 @@ public class Banner extends DomainEntity{
 	}
 
 	//Getters and setters
+	
+	@NotBlank
+	@URL
 	public String getPicture() {
 		return picture;
 	}
@@ -33,6 +39,5 @@ public class Banner extends DomainEntity{
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-	
 	
 }

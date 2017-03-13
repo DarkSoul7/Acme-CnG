@@ -109,7 +109,7 @@ public class Actor extends DomainEntity {
 	}
 
 	@Valid
-	@OneToMany(mappedBy = "addressee")
+	@OneToMany(mappedBy = "receiver")
 	public Collection<Message> getReceivedMessages() {
 		return this.receivedMessages;
 	}

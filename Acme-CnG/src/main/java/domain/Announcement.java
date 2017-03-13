@@ -5,6 +5,13 @@ import java.util.Date;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -15,11 +22,14 @@ public class Announcement extends DomainEntity {
 	private String description;
 	private Date moment;
 	private Boolean banned;
+	private Place originPlace;
+	private Place destinationPlace;
 
 	public Announcement() {
-
+		super();
 	}
 
+	@NotBlank
 	public String getTitle() {
 		return title;
 	}
@@ -28,6 +38,7 @@ public class Announcement extends DomainEntity {
 		this.title = title;
 	}
 
+	@NotBlank
 	public String getDescription() {
 		return description;
 	}
@@ -36,6 +47,9 @@ public class Announcement extends DomainEntity {
 		this.description = description;
 	}
 
+	@NotNull
+	@Temporal(value=TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern="dd/MM/yyyy HH:mm")
 	public Date getMoment() {
 		return moment;
 	}
@@ -44,6 +58,7 @@ public class Announcement extends DomainEntity {
 		this.moment = moment;
 	}
 
+	@NotNull
 	public Boolean getBanned() {
 		return banned;
 	}
@@ -51,11 +66,8 @@ public class Announcement extends DomainEntity {
 	public void setBanned(Boolean banned) {
 		this.banned = banned;
 	}
-
-	//Relationship
-	private Place originPlace;
-	private Place destinationPlace;
 	
+	@Valid
 	public Place getOriginPlace() {
 		return originPlace;
 	}
@@ -64,6 +76,7 @@ public class Announcement extends DomainEntity {
 		this.originPlace = originPlace;
 	}
 
+	@Valid
 	public Place getDestinationPlace() {
 		return destinationPlace;
 	}
@@ -71,7 +84,7 @@ public class Announcement extends DomainEntity {
 	public void setDestinationPlace(Place destinationPlace) {
 		this.destinationPlace = destinationPlace;
 	}
-	
-	
+
+	//Relationship
 
 }

@@ -7,7 +7,14 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -26,6 +33,8 @@ public class Message extends DomainEntity {
 	}
 
 	//Getters and setters
+	
+	@NotBlank
 	public String getTitle() {
 		return this.title;
 	}
@@ -34,6 +43,7 @@ public class Message extends DomainEntity {
 		this.title = title;
 	}
 
+	@NotBlank
 	public String getText() {
 		return this.text;
 	}
@@ -42,6 +52,10 @@ public class Message extends DomainEntity {
 		this.text = text;
 	}
 
+	@Past
+	@NotNull
+	@Temporal(value=TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern="dd/MM/yyyy HH:mm")
 	public Date getMoment() {
 		return this.moment;
 	}
@@ -62,7 +76,7 @@ public class Message extends DomainEntity {
 	//RellationShips
 
 	private Actor	sender;
-	private Actor	addressee;
+	private Actor	receiver;
 
 
 	@Valid
@@ -77,12 +91,12 @@ public class Message extends DomainEntity {
 
 	@Valid
 	@ManyToOne(optional = false)
-	public Actor getAddressee() {
-		return this.addressee;
+	public Actor getReceiver() {
+		return this.receiver;
 	}
 
-	public void setAddressee(final Actor addressee) {
-		this.addressee = addressee;
+	public void setReceiver(final Actor receiver) {
+		this.receiver = receiver;
 	}
 
 }

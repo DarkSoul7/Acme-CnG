@@ -18,10 +18,25 @@
 	">
 
 	<util:list id="converters">
-		<!-- 
-			Add your own converters using entries of the following form: 
-			<bean class="converters.Class1ToClass2" /> 
-		-->
+		<bean class="converters.ActorToStringConverter" />
+		<bean class="converters.AdministratorToStringConverter" />
+		<bean class="converters.ApplicationToStringConverter" />
+		<bean class="converters.BannerToStringConverter" />
+		<bean class="converters.CommentToStringConverter" />
+		<bean class="converters.CustomerToStringConverter" />
+		<bean class="converters.MessageToStringConverter" />
+		<bean class="converters.OfferToStringConverter" />
+		<bean class="converters.RequestToStringConverter" />
+		
+		<bean class="converters.StringToActorConverter" />
+		<bean class="converters.StringToAdministratorConverter" />
+		<bean class="converters.StringToApplicationConverter" />
+		<bean class="converters.StringToBannerConverter" />
+		<bean class="converters.StringToCommentConverter" />
+		<bean class="converters.StringToCustomerConverter" />
+		<bean class="converters.StringToMessageConverter" />
+		<bean class="converters.StringToOfferConverter" />
+		<bean class="converters.StringToRequestConverter" />
 	</util:list>
 	
 </beans>

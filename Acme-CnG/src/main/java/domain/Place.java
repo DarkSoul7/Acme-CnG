@@ -4,6 +4,8 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Embeddable;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 @Embeddable
 @Access(AccessType.PROPERTY)
 public class Place {
@@ -18,6 +20,8 @@ public class Place {
 	}
 
 	//Getters and setters
+	
+	@NotBlank
 	public String getAddress() {
 		return address;
 	}
@@ -33,8 +37,5 @@ public class Place {
 	public void setGpsCoordinates(GpsCoordinates gpsCoordinates) {
 		this.gpsCoordinates = gpsCoordinates;
 	}
-	
-	
-	
 	
 }
