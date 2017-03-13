@@ -1,16 +1,26 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
 
+import domain.Application;
+import domain.Comment;
+import domain.Customer;
+import domain.Message;
+import domain.Offer;
+import domain.Request;
+import form.CustomerForm;
 import repositories.CustomerRepository;
+import security.Authority;
 import security.LoginService;
 import security.UserAccount;
-import domain.Customer;
 
 @Service
 @Transactional
@@ -28,7 +38,35 @@ public class CustomerService {
 	}
 
 	public Customer create() {
-		return null;
+		Customer result = new Customer();
+
+		Authority authority = new Authority();
+		UserAccount userAccount = new UserAccount();
+
+		//Configuring authority & userAccount
+		authority.setAuthority("CUSTOMER");
+		userAccount.addAuthority(authority);
+		result.setUserAccount(userAccount);
+
+		Collection<Offer> offers = new ArrayList<>();
+		result.setOffers(offers);
+
+		Collection<Request> requests = new ArrayList<>();
+		result.setRequests(requests);
+		
+		Collection<Application> applications = new ArrayList<>();
+		result.setApplications(applications);
+		
+		Collection<Message> sentMessages = new ArrayList<>();
+		result.setSentMessages(sentMessages);
+		
+		Collection<Message> receivedMessages = new ArrayList<>();
+		result.setReceivedMessages(receivedMessages);
+		
+		Collection<Comment> comments = new ArrayList<>();
+		result.setComments(comments);
+		
+		return result;
 	}
 
 	public Collection<Customer> findAll() {
@@ -80,5 +118,57 @@ public class CustomerService {
 
 		return result;
 	}
+	
+	public Customer reconstruct(CustomerForm customerForm, BindingResult binding) {
+		Customer result;
+
+		Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+		String hash = encoder.encodePassword(customerForm.getPassword(), null);
+
+		result = new Customer();
+
+		Authority authority = new Authority();
+		UserAccount userAccount = new UserAccount();
+
+		//Configuring authority & userAccount
+		authority.setAuthority("CUSTOMER");
+		userAccount.addAuthority(authority);
+		result.setUserAccount(userAccount);
+
+		Collection<Offer> offers = new ArrayList<>();
+		result.setOffers(offers);
+
+		Collection<Request> requests = new ArrayList<>();
+		result.setRequests(requests);
+		
+		Collection<Application> applications = new ArrayList<>();
+		result.setApplications(applications);
+		
+		Collection<Message> sentMessages = new ArrayList<>();
+		result.setSentMessages(sentMessages);
+		
+		Collection<Message> receivedMessages = new ArrayList<>();
+		result.setReceivedMessages(receivedMessages);
+		
+		Collection<Comment> comments = new ArrayList<>();
+		result.setComments(comments);
+
+		result.getUserAccount().setUsername(customerForm.getUsername());
+		result.getUserAccount().setPassword(hash);
+
+		result.setName(customerForm.getName());
+		result.setSurnames(customerForm.getSurname());
+		result.setEmail(customerForm.getEmail());
+		result.setPhone(customerForm.getPhone());
+
+		//Checking passwords and conditions
+		if (!customerForm.getPassword().equals(customerForm.getRepeatPassword())) {
+			result.getUserAccount().setPassword(null);
+		}
+
+
+		return result;
+	}
+
 
 }
