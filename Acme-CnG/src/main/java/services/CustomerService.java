@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +9,19 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.CustomerRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
+import domain.Application;
+import domain.Comment;
 import domain.Customer;
+import domain.Message;
+import domain.Offer;
+import domain.Request;
 import form.CustomerForm;
 
 @Service
@@ -37,7 +45,6 @@ public class CustomerService {
 
 		return result;
 	}
-
 	public Collection<Customer> findAll() {
 		return this.customerRepository.findAll();
 	}
@@ -89,63 +96,60 @@ public class CustomerService {
 		return result;
 	}
 
-	public CustomerForm convertToObjectForm(final Customer customer) {
-		final CustomerForm result = new CustomerForm();
 
-		if (customer.getId() != 0) {
-			result.setName(customer.getName());
-			result.setSurnames(customer.getSurnames());
-			result.setEmail(customer.getEmail());
-			result.setPhone(customer.getPhone());
-		}
-		return result;
-	}
+	@Autowired
+	private Validator	validator;
 
-	/***
-	 * Para evitar hacking se utiliza el método findByPrincipal. De ésta forma se evita que se edite el parámetro
-	 * 'id' de customerForm
-	 * 
-	 * @param customerForm
-	 * @return customer reconstruído
-	 */
-	public Customer reconstruct(final CustomerForm customerForm) {
+
+	public Customer reconstruct(final CustomerForm customerForm, final BindingResult binding) {
 		Customer result;
 
-		//Try-catch para comprobar a través del metodo findByPrincipal si se trata de un registro o
-		//de una edición de perfil
-		try {
-			//Se trata de una edición
-			result = this.findByPrincipal();
-			Assert.notNull(result);
-			Assert.isTrue(customerForm.getId() == result.getId());
+		final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+		final String hash = encoder.encodePassword(customerForm.getPassword(), null);
 
-			result.setName(customerForm.getName());
-			result.setEmail(customerForm.getEmail());
-			result.setSurnames(customerForm.getSurnames());
-			result.setPhone(customerForm.getPhone());
+		result = new Customer();
 
-		} catch (final Throwable e) {
-			//Se trata de un registro
-			Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-			String hash = encoder.encodePassword(customerForm.getPassword(), null);
-			
-			final Authority authority = new Authority();
-			final UserAccount userAccount = new UserAccount();
-			result = new Customer();
+		final Authority authority = new Authority();
+		final UserAccount userAccount = new UserAccount();
 
-			//Configuring authority & userAccount
-			authority.setAuthority("CUSTOMER");
-			userAccount.addAuthority(authority);
-			result.setUserAccount(userAccount);
-			
-			result.getUserAccount().setUsername(customerForm.getUsername());
-			result.getUserAccount().setPassword(hash);
-			
-			//Checking passwords and conditions
-			if (!customerForm.getPassword().equals(customerForm.getRepeatPassword())) {
-				result.getUserAccount().setPassword(null);
-			}
-		}
+		//Configuring authority & userAccount
+		authority.setAuthority("CUSTOMER");
+		userAccount.addAuthority(authority);
+		result.setUserAccount(userAccount);
+
+		final Collection<Offer> offers = new ArrayList<>();
+		result.setOffers(offers);
+
+		final Collection<Request> requests = new ArrayList<>();
+		result.setRequests(requests);
+
+		final Collection<Application> applications = new ArrayList<>();
+		result.setApplications(applications);
+
+		final Collection<Message> sentMessages = new ArrayList<>();
+		result.setSentMessages(sentMessages);
+
+		final Collection<Message> receivedMessages = new ArrayList<>();
+		result.setReceivedMessages(receivedMessages);
+
+		final Collection<Comment> comments = new ArrayList<>();
+		result.setComments(comments);
+
+		result.getUserAccount().setUsername(customerForm.getUsername());
+		result.getUserAccount().setPassword(hash);
+
+		result.setName(customerForm.getName());
+		result.setSurnames(customerForm.getSurnames());
+		result.setEmail(customerForm.getEmail());
+		result.setPhone(customerForm.getPhone());
+
+		//Checking passwords and conditions
+		if (!customerForm.getPassword().equals(customerForm.getRepeatPassword()))
+			result.getUserAccount().setPassword(null);
+
+		this.validator.validate(result, binding);
+
 		return result;
 	}
+
 }

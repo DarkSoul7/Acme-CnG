@@ -13,85 +13,74 @@ import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 public class CustomerForm {
 
-	// Attributes
-	private int			id;
-	private String		username;
-	private String		name;
-	private String		surnames;
-	private String		phone;
-	private String		email;
-	private String		password;
-	private String		repeatPassword;
-	private boolean		acceptCondition;
-
-
-	// Constructor
+	//Constructor
 	public CustomerForm() {
 		super();
 	}
 
+
+	//Attributes
+	private String	username;
+	private String	password;
+	private String	repeatPassword;
+	private boolean	acceptCondition;
+	private String	name;
+	private String	surnames;
+	private String	phone;
+	private String	email;
+
+
 	//Getter & setter
-
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(final int id) {
-		this.id = id;
-	}
-
 	@Size(min = 5, max = 32)
 	@Column(unique = true)
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getUsername() {
-		return username;
+		return this.username;
 	}
-	public void setUsername(String username) {
+	public void setUsername(final String username) {
 		this.username = username;
 	}
-	
+
 	@Size(min = 5, max = 32)
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
-	public void setPassword(String password) {
+	public void setPassword(final String password) {
 		this.password = password;
 	}
-	
+
 	@Size(min = 5, max = 32)
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getRepeatPassword() {
-		return repeatPassword;
+		return this.repeatPassword;
 	}
-	public void setRepeatPassword(String repeatPassword) {
+	public void setRepeatPassword(final String repeatPassword) {
 		this.repeatPassword = repeatPassword;
 	}
-	
+
 	@AssertTrue
 	public boolean isAcceptCondition() {
-		return acceptCondition;
+		return this.acceptCondition;
 	}
-	public void setAcceptCondition(boolean acceptCondition) {
+	public void setAcceptCondition(final boolean acceptCondition) {
 		this.acceptCondition = acceptCondition;
 	}
-	
+
 	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getName() {
 		return this.name;
 	}
-
 	public void setName(final String name) {
 		this.name = name;
 	}
-
-	@NotBlank
-	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getSurnames() {
 		return this.surnames;
 	}
 
+	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public void setSurnames(final String surnames) {
 		this.surnames = surnames;
 	}
@@ -102,7 +91,6 @@ public class CustomerForm {
 	public String getPhone() {
 		return this.phone;
 	}
-
 	public void setPhone(final String phone) {
 		this.phone = phone;
 	}
@@ -113,7 +101,6 @@ public class CustomerForm {
 	public String getEmail() {
 		return this.email;
 	}
-
 	public void setEmail(final String email) {
 		this.email = email;
 	}
