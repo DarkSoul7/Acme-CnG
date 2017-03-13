@@ -4,6 +4,7 @@ package services;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -125,6 +126,9 @@ public class CustomerService {
 
 		} catch (final Throwable e) {
 			//Se trata de un registro
+			Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+			String hash = encoder.encodePassword(customerForm.getPassword(), null);
+			
 			final Authority authority = new Authority();
 			final UserAccount userAccount = new UserAccount();
 			result = new Customer();
@@ -133,6 +137,14 @@ public class CustomerService {
 			authority.setAuthority("CUSTOMER");
 			userAccount.addAuthority(authority);
 			result.setUserAccount(userAccount);
+			
+			result.getUserAccount().setUsername(customerForm.getUsername());
+			result.getUserAccount().setPassword(hash);
+			
+			//Checking passwords and conditions
+			if (!customerForm.getPassword().equals(customerForm.getRepeatPassword())) {
+				result.getUserAccount().setPassword(null);
+			}
 		}
 		return result;
 	}
