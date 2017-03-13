@@ -4,6 +4,10 @@ import java.util.Date;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -68,6 +72,10 @@ public class Announcement extends DomainEntity {
 	}
 	
 	@Valid
+	@Embedded
+	@AttributeOverrides({@AttributeOverride(name="address", column=@Column(name="originAddress")),
+						@AttributeOverride(name="gpsCoordinates.latitude", column=@Column(name="originLatitude")),
+						@AttributeOverride(name="gpsCoordinates.longitude", column=@Column(name="originLongitude"))})
 	public Place getOriginPlace() {
 		return originPlace;
 	}
@@ -77,6 +85,10 @@ public class Announcement extends DomainEntity {
 	}
 
 	@Valid
+	@Embedded
+	@AttributeOverrides({@AttributeOverride(name="address", column=@Column(name="destinationAddress")),
+						@AttributeOverride(name="gpsCoordinates.latitude", column=@Column(name="destinationLatitude")),
+						@AttributeOverride(name="gpsCoordinates.longitude", column=@Column(name="destinationLongitude"))})
 	public Place getDestinationPlace() {
 		return destinationPlace;
 	}

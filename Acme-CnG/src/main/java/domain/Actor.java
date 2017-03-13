@@ -25,7 +25,7 @@ public class Actor extends DomainEntity {
 
 	// Attributes
 	private String	name;
-	private String	surname;
+	private String	surnames;
 	private String	phone;
 	private String	email;
 
@@ -49,16 +49,16 @@ public class Actor extends DomainEntity {
 
 	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)
-	public String getSurname() {
-		return this.surname;
+	public String getSurnames() {
+		return this.surnames;
 	}
 
-	public void setSurname(final String surname) {
-		this.surname = surname;
+	public void setSurnames(final String surnames) {
+		this.surnames = surnames;
 	}
 
 	@NotBlank
-	@Pattern(regexp = "(\\+|00)\\d{2,4}(\\s)?\\d {9,13}")
+	@Pattern(regexp = "((\\+|00)\\d{2,4}(\\s)?)?\\d{9,13}")
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getPhone() {
 		return this.phone;
