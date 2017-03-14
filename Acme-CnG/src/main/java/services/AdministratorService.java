@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -11,6 +12,7 @@ import repositories.AdministratorRepository;
 import security.LoginService;
 import security.UserAccount;
 import domain.Administrator;
+import domain.Announcement;
 
 @Service
 @Transactional
@@ -22,7 +24,11 @@ public class AdministratorService {
 	private AdministratorRepository	administratorRepository;
 
 	//Supported services
+	@Autowired
+	private AnnouncementService		announcementService;
 
+
+	//Constructor
 	public AdministratorService() {
 		super();
 	}
@@ -32,24 +38,24 @@ public class AdministratorService {
 	}
 
 	public Collection<Administrator> findAll() {
-		return administratorRepository.findAll();
+		return this.administratorRepository.findAll();
 	}
 
-	public Administrator findOne(int administratorId) {
-		return administratorRepository.findOne(administratorId);
+	public Administrator findOne(final int administratorId) {
+		return this.administratorRepository.findOne(administratorId);
 
 	}
 
-	public void save(Administrator administrator) {
-		administratorRepository.save(administrator);
+	public void save(final Administrator administrator) {
+		this.administratorRepository.save(administrator);
 	}
 
-	public void delete(Administrator administrator) {
-		administratorRepository.delete(administrator);
+	public void delete(final Administrator administrator) {
+		this.administratorRepository.delete(administrator);
 	}
 
 	//Other business methods
-	
+
 	public Administrator findByPrincipal() {
 		Administrator result;
 		UserAccount userAccount;
@@ -62,23 +68,32 @@ public class AdministratorService {
 		return result;
 	}
 
-	public Administrator findByUserAccount(UserAccount userAccount) {
+	public Administrator findByUserAccount(final UserAccount userAccount) {
 		Administrator result;
 		int userAccountId;
 
 		userAccountId = userAccount.getId();
-		result = administratorRepository.findByUserAccountId(userAccountId);
+		result = this.administratorRepository.findByUserAccountId(userAccountId);
 
 		return result;
 	}
 
-	public Administrator findByUserName(String username) {
+	public Administrator findByUserName(final String username) {
 		Assert.notNull(username);
 		Administrator result;
 
-		result = administratorRepository.findByUserName(username);
+		result = this.administratorRepository.findByUserName(username);
 
 		return result;
 	}
 
+	public void banAnnouncement(final Announcement announcement) {
+		final Administrator administrator = this.findByPrincipal();
+		Assert.notNull(announcement);
+		Assert.notNull(administrator);
+		Assert.isTrue(announcement.getBanned() == false);
+
+		announcement.setBanned(true);
+		this.announcementService.save(announcement);
+	}
 }

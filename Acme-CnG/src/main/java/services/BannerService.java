@@ -61,4 +61,20 @@ public class BannerService {
 
 	//Other business methods
 
+	public Banner getActiveBanner() {
+		return this.bannerRepository.getActiveBanner();
+	}
+
+	public void activeBanner(final Banner banner) {
+		final Administrator administrator = this.administratorService.findByPrincipal();
+		Assert.notNull(banner);
+		Assert.notNull(administrator);
+
+		final Banner active = this.getActiveBanner();
+		active.setActive(false);
+		banner.setActive(true);
+
+		this.save(active);
+		this.save(banner);
+	}
 }
