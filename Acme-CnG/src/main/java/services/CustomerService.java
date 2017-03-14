@@ -30,6 +30,9 @@ public class CustomerService {
 
 	@Autowired
 	private CustomerRepository	customerRepository;
+	
+	@Autowired
+	private AdministratorService administratorService;
 
 	//Supported services
 
@@ -156,8 +159,7 @@ public class CustomerService {
 		result.getUserAccount().setUsername(customerForm.getUsername());
 		result.getUserAccount().setPassword(hash);
 
-		result.setName(customerForm.getName());
-		result.setSurnames(customerForm.getSurname());
+		result.setFullName(customerForm.getFullName());
 		result.setEmail(customerForm.getEmail());
 		result.setPhone(customerForm.getPhone());
 
@@ -170,5 +172,15 @@ public class CustomerService {
 		return result;
 	}
 
+	//DASHBOARD
+	public Collection<Customer> getCustomerWithMoreAcceptedRequest(){
+		Assert.notNull(administratorService.findByPrincipal());
+		return customerRepository.getCustomerWithMoreAcceptedRequest();
+	}
+	
+	public Collection<Customer> getCustomerWithMoreDeniedRequest(){
+		Assert.notNull(administratorService.findByPrincipal());
+		return customerRepository.getCustomerWithMoreDeniedRequest();
+	}
 
 }

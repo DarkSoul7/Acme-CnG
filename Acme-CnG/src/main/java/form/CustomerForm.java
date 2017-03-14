@@ -20,8 +20,7 @@ public class CustomerForm {
 	private String		password;
 	private String		repeatPassword;
 	private boolean		acceptCondition;
-	private String		name;
-	private String		surname;
+	private String		fullName;
 	private String		phone;
 	private String		email;
 	
@@ -61,24 +60,15 @@ public class CustomerForm {
 		this.acceptCondition = acceptCondition;
 	}
 	
-	@NotBlank
-	@SafeHtml(whitelistType = WhiteListType.NONE)
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getSurname() {
-		return surname;
-	}
 	
 	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)
-	public void setSurname(String surname) {
-		this.surname = surname;
+	public String getFullName() {
+		return fullName;
 	}
-	
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
 	@NotBlank
 	@Pattern(regexp = "((\\+|00)\\d{2,4}(\\s)?)?\\d{9,13}")
 	@SafeHtml(whitelistType = WhiteListType.NONE)

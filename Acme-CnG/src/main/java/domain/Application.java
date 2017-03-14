@@ -17,7 +17,7 @@ public class Application extends DomainEntity {
 
 	//Attributes
 	private Status	status;
-	private int		AnnouncementId;
+	private int		announcementId;
 	private String	announcementType;
 
 
@@ -37,11 +37,11 @@ public class Application extends DomainEntity {
 
 	@Min(1)
 	public int getAnnouncementId() {
-		return this.AnnouncementId;
+		return this.announcementId;
 	}
 
 	public void setAnnouncementId(final int announcementId) {
-		this.AnnouncementId = announcementId;
+		this.announcementId = announcementId;
 	}
 
 	@NotBlank

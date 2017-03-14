@@ -5,9 +5,10 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
-import repositories.RequestRepository;
 import domain.Request;
+import repositories.RequestRepository;
 
 @Service
 @Transactional
@@ -17,6 +18,12 @@ public class RequestService {
 
 	@Autowired
 	private RequestRepository	requestRepository;
+	
+	@Autowired
+	private CustomerService customerService;
+	
+	@Autowired
+	private AdministratorService administratorService;
 
 	//Supported services
 
@@ -25,7 +32,11 @@ public class RequestService {
 	}
 
 	public Request create() {
-		return null;
+		Request result= new Request();
+		
+		result.setCustomer(customerService.findByPrincipal());
+		
+		return result;
 	}
 
 	public Collection<Request> findAll() {
@@ -46,5 +57,13 @@ public class RequestService {
 	}
 
 	//Other business methods
-
+	public Collection<Request> findRequestKeyWord(String keyWord){
+		return requestRepository.findRequestKeyWord(keyWord);
+	}
+	
+	//Dashboard
+	public double avgRequestPerCustomer(){
+		Assert.notNull(administratorService.findByPrincipal());
+		return requestRepository.avgRequestPerCustomer();
+	}
 }

@@ -71,8 +71,7 @@
 	<!-- ADMINISTRATORS -->
 	
 	<bean id="administrator" class="domain.Administrator">
-		<property name="name" value="Alejandro" />
-		<property name="surnames" value="Tortolero Martín" />
+		<property name="fullName" value="Alejandro Tortolero Martín" />
 		<property name="phone" value="+34 632145987" />
 		<property name="email" value="aletormar@acme.com" />
 		<property name="userAccount" ref="userAccount1" />
@@ -98,8 +97,7 @@
 	<!-- CUSTOMERS -->
 	
 	<bean id="customer1" class="domain.Customer">
-		<property name="name" value="Rafael" />
-		<property name="surnames" value="García Domínguez" />
+		<property name="fullName" value="Rafael García Domínguez" />
 		<property name="phone" value="694123598" />
 		<property name="email" value="rafgardom@acme.com" />
 		<property name="userAccount" ref="userAccount2" />
@@ -126,11 +124,15 @@
 				<ref bean="offer2" />
 			</list>
 		</property>
+		<property name="requests">
+			<list>
+				<ref bean="request2" />
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="customer2" class="domain.Customer">
-		<property name="name" value="Ismael" />
-		<property name="surnames" value="Gata Dorado" />
+		<property name="fullName" value="Ismael Gata Dorado" />
 		<property name="phone" value="687153695" />
 		<property name="email" value="ismgatdor@acme.com" />
 		<property name="userAccount" ref="userAccount3" />
@@ -158,11 +160,15 @@
 				<ref bean="offer3" />
 			</list>
 		</property>
+		<property name="requests">
+			<list>
+				<ref bean="request1" />
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="customer3" class="domain.Customer">
-		<property name="name" value="Salvador" />
-		<property name="surnames" value="Pando Rodríguez" />
+		<property name="fullName" value="Salvador Pando Rodríguez" />
 		<property name="phone" value="612547832" />
 		<property name="email" value="salpanrod@acme.com" />
 		<property name="userAccount" ref="userAccount4" />
@@ -186,6 +192,10 @@
 		<property name="offers">
 			<list>
 				<ref bean="offer4" />
+			</list>
+		</property>
+		<property name="requests">
+			<list>
 			</list>
 		</property>
 	</bean>
@@ -453,6 +463,34 @@
 	</bean>
 	
 	<!-- REQUESTS -->
+	
+	<bean id="request1" class="domain.Request">
+		<property name="title" value="Viaje a Málaga" />
+		<property name="description" value="Voy al centro de Málaga" />
+		<property name="moment" value="07/15/2017 15:00" />
+		<property name="banned" value="false" />
+		<property name="originPlace" ref="place1" />
+		<property name="destinationPlace" ref="place2" />
+		<property name="customer" ref="customer2" />
+	</bean>
+	
+	<bean id="request2" class="domain.Request">
+		<property name="title" value="Viaje desde Malaga" />
+		<property name="description" value="Me voy a mi pueblo" />
+		<property name="moment" value="07/15/2017 15:00" />
+		<property name="banned" value="false" />
+		<property name="originPlace" ref="place2" />
+		<property name="destinationPlace" ref="place1" />
+		<property name="customer" ref="customer1" />
+	</bean>
+	
+	<!-- APPLICATION -->
+	<bean id="application1" class="domain.Application">
+		<property name="status" value="ACCEPTED" />
+		<property name="announcementId" value="44" />
+		<property name="announcementType" value="Offer" />
+		<property name="customer" ref="customer1" />
+	</bean>
 	
 	<!-- BANNERS -->
 	

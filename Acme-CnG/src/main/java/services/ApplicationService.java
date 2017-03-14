@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import repositories.ApplicationRepository;
 import domain.Application;
+import domain.Status;
 
 @Service
 @Transactional
@@ -17,15 +18,25 @@ public class ApplicationService {
 
 	@Autowired
 	private ApplicationRepository	applicationRepository;
+	
 
+	@Autowired
+	private CustomerService customerService;
 	//Supported services
 
 	public ApplicationService() {
 		super();
 	}
 
-	public Application create() {
-		return null;
+	public Application create(int announcementId,String announcementType) {
+		Application result = new Application();
+		
+		result.setStatus(Status.PENDING);
+		result.setAnnouncementId(announcementId);
+		result.setAnnouncementType(announcementType);
+		result.setCustomer(customerService.findByPrincipal());
+		
+		return result;
 	}
 
 	public Collection<Application> findAll() {

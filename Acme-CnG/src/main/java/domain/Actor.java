@@ -24,8 +24,7 @@ import security.UserAccount;
 public class Actor extends DomainEntity {
 
 	// Attributes
-	private String	name;
-	private String	surnames;
+	private String	fullName;
 	private String	phone;
 	private String	email;
 
@@ -39,22 +38,12 @@ public class Actor extends DomainEntity {
 
 	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)
-	public String getName() {
-		return this.name;
+	public String getFullName() {
+		return fullName;
 	}
 
-	public void setName(final String name) {
-		this.name = name;
-	}
-
-	@NotBlank
-	@SafeHtml(whitelistType = WhiteListType.NONE)
-	public String getSurnames() {
-		return this.surnames;
-	}
-
-	public void setSurnames(final String surnames) {
-		this.surnames = surnames;
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 	@NotBlank
@@ -63,6 +52,7 @@ public class Actor extends DomainEntity {
 	public String getPhone() {
 		return this.phone;
 	}
+
 
 	public void setPhone(final String phone) {
 		this.phone = phone;
