@@ -551,7 +551,7 @@
 	<!-- APPLICATION -->
 	<bean id="application1" class="domain.Application">
 		<property name="status" value="ACCEPTED" />
-		<property name="announcementId" value="44" />
+		<property name="announcementId" value="46" />
 		<property name="announcementType" value="Offer" />
 		<property name="customer" ref="customer1" />
 		
