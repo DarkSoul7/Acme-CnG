@@ -124,11 +124,6 @@
 				<ref bean="offer2" />
 			</list>
 		</property>
-		<property name="requests">
-			<list>
-				<ref bean="request2" />
-			</list>
-		</property>
 	</bean>
 	
 	<bean id="customer2" class="domain.Customer">
@@ -160,11 +155,6 @@
 				<ref bean="offer3" />
 			</list>
 		</property>
-		<property name="requests">
-			<list>
-				<ref bean="request1" />
-			</list>
-		</property>
 	</bean>
 	
 	<bean id="customer3" class="domain.Customer">
@@ -192,10 +182,6 @@
 		<property name="offers">
 			<list>
 				<ref bean="offer4" />
-			</list>
-		</property>
-		<property name="requests">
-			<list>
 			</list>
 		</property>
 	</bean>
@@ -254,7 +240,7 @@
 		<property name="text" value="En primer lugar quiero reseñar..." />
 		<property name="moment" value="02/14/2017 14:00" />
 		<property name="stars" value="5" />
-		<property name="commentableId" value="1" />
+		<property name="commentableId" value="44" />
 		<property name="commentableType" value="Customer" />
 		<property name="banned" value="false" />
 		<property name="author" ref="customer3" />
@@ -265,7 +251,7 @@
 		<property name="text" value="Lo peor ha sido..." />
 		<property name="moment" value="01/01/2017 00:00" />
 		<property name="stars" value="1" />
-		<property name="commentableId" value="1" />
+		<property name="commentableId" value="44" />
 		<property name="commentableType" value="Customer" />
 		<property name="banned" value="true" />
 		<property name="author" ref="customer2" />
@@ -276,7 +262,7 @@
 		<property name="text" value="Realmente no ha estado mal porque..." />
 		<property name="moment" value="01/31/2017 00:00" />
 		<property name="stars" value="3" />
-		<property name="commentableId" value="2" />
+		<property name="commentableId" value="47" />
 		<property name="commentableType" value="Customer" />
 		<property name="banned" value="false" />
 		<property name="author" ref="customer1" />
@@ -287,7 +273,7 @@
 		<property name="text" value="No repetiría porque..." />
 		<property name="moment" value="03/13/2017 00:00" />
 		<property name="stars" value="0" />
-		<property name="commentableId" value="3" />
+		<property name="commentableId" value="49" />
 		<property name="commentableType" value="Customer" />
 		<property name="banned" value="true" />
 		<property name="author" ref="customer2" />
@@ -298,7 +284,7 @@
 		<property name="text" value="En primer lugar quiero reseñar..." />
 		<property name="moment" value="02/14/2017 14:00" />
 		<property name="stars" value="5" />
-		<property name="commentableId" value="1" />
+		<property name="commentableId" value="45" />
 		<property name="commentableType" value="Offer" />
 		<property name="banned" value="false" />
 		<property name="author" ref="administrator" />
@@ -309,9 +295,9 @@
 		<property name="text" value="Lo peor ha sido..." />
 		<property name="moment" value="01/01/2017 00:00" />
 		<property name="stars" value="1" />
-		<property name="commentableId" value="1" />
+		<property name="commentableId" value="45" />
 		<property name="commentableType" value="Offer" />
-		<property name="banned" value="true" />
+		<property name="banned" value="false" />
 		<property name="author" ref="customer1" />
 	</bean>
 	
@@ -320,9 +306,9 @@
 		<property name="text" value="Realmente no ha estado mal porque..." />
 		<property name="moment" value="01/31/2017 00:00" />
 		<property name="stars" value="3" />
-		<property name="commentableId" value="2" />
+		<property name="commentableId" value="46" />
 		<property name="commentableType" value="Offer" />
-		<property name="banned" value="false" />
+		<property name="banned" value="true" />
 		<property name="author" ref="customer2" />
 	</bean>
 	
@@ -331,9 +317,9 @@
 		<property name="text" value="No repetiría porque..." />
 		<property name="moment" value="03/13/2017 00:00" />
 		<property name="stars" value="0" />
-		<property name="commentableId" value="3" />
+		<property name="commentableId" value="48" />
 		<property name="commentableType" value="Offer" />
-		<property name="banned" value="true" />
+		<property name="banned" value="false" />
 		<property name="author" ref="customer3" />
 	</bean>
 	
@@ -342,7 +328,7 @@
 		<property name="text" value="En primer lugar quiero reseñar..." />
 		<property name="moment" value="02/14/2017 14:00" />
 		<property name="stars" value="5" />
-		<property name="commentableId" value="1" />
+		<property name="commentableId" value="68" />
 		<property name="commentableType" value="Request" />
 		<property name="banned" value="false" />
 		<property name="author" ref="customer3" />
@@ -353,9 +339,9 @@
 		<property name="text" value="Lo peor ha sido..." />
 		<property name="moment" value="01/01/2017 00:00" />
 		<property name="stars" value="1" />
-		<property name="commentableId" value="1" />
+		<property name="commentableId" value="68" />
 		<property name="commentableType" value="Request" />
-		<property name="banned" value="true" />
+		<property name="banned" value="false" />
 		<property name="author" ref="customer2" />
 	</bean>
 	
@@ -364,7 +350,7 @@
 		<property name="text" value="Realmente no ha estado mal porque..." />
 		<property name="moment" value="01/31/2017 00:00" />
 		<property name="stars" value="3" />
-		<property name="commentableId" value="2" />
+		<property name="commentableId" value="69" />
 		<property name="commentableType" value="Request" />
 		<property name="banned" value="false" />
 		<property name="author" ref="customer1" />
@@ -375,9 +361,9 @@
 		<property name="text" value="No repetiría porque..." />
 		<property name="moment" value="03/13/2017 00:00" />
 		<property name="stars" value="0" />
-		<property name="commentableId" value="3" />
+		<property name="commentableId" value="70" />
 		<property name="commentableType" value="Request" />
-		<property name="banned" value="true" />
+		<property name="banned" value="false" />
 		<property name="author" ref="administrator" />
 	</bean>
 	
@@ -391,6 +377,11 @@
 	<bean id="gpsCoordinates2" class="domain.GpsCoordinates">
 		<property name="latitude" value="36.71293" />
 		<property name="longitude" value="-4.43405" />
+	</bean>
+	
+	<bean id="gpsCoordinates3" class="domain.GpsCoordinates">
+		<property name="latitude" value="42.504778966631605" />
+		<property name="longitude" value="1.5216864191461354" />
 	</bean>
 	
 	<!-- PLACES -->
@@ -418,6 +409,31 @@
 	<bean id="place5" class="domain.Place">
 		<property name="address" value="Madrid" />
 		<!-- <property name="gpsCoordinates" ref="" /> -->
+	</bean>
+	
+	<bean id="place6" class="domain.Place">
+		<property name="address" value="Gibraltar (Peñón de Gibraltar)" />
+		<!-- <property name="gpsCoordinates" ref="" /> -->
+	</bean>
+	
+	<bean id="place7" class="domain.Place">
+		<property name="address" value="Ciudad Real (Centro ciudad)" />
+		<!-- <property name="gpsCoordinates" ref="" /> -->
+	</bean>
+	
+	<bean id="place8" class="domain.Place">
+		<property name="address" value="Córdoba (estación de autobuses)" />
+		<!-- <property name="gpsCoordinates" ref="" /> -->
+	</bean>
+	
+	<bean id="place9" class="domain.Place">
+		<property name="address" value="Alicante" />
+		<!-- <property name="gpsCoordinates" ref="" /> -->
+	</bean>
+	
+	<bean id="place10" class="domain.Place">
+		<property name="address" value="Andorra" />
+		<property name="gpsCoordinates" ref="gpsCoordinates3" />
 	</bean>
 	
 	<!-- OFFERS -->
@@ -465,31 +481,43 @@
 	<!-- REQUESTS -->
 	
 	<bean id="request1" class="domain.Request">
-		<property name="title" value="Viaje a Málaga" />
-		<property name="description" value="Voy al centro de Málaga" />
-		<property name="moment" value="07/15/2017 15:00" />
+		<property name="title" value="Gibraltar" />
+		<property name="description" value="Necesito ir al peñón" />
+		<property name="moment" value="09/15/2017 15:00" />
 		<property name="banned" value="false" />
-		<property name="originPlace" ref="place1" />
-		<property name="destinationPlace" ref="place2" />
-		<property name="customer" ref="customer2" />
+		<property name="originPlace" ref="place5" />
+		<property name="destinationPlace" ref="place6" />
+		<property name="customer" ref="customer1" />
 	</bean>
 	
 	<bean id="request2" class="domain.Request">
-		<property name="title" value="Viaje desde Malaga" />
-		<property name="description" value="Me voy a mi pueblo" />
-		<property name="moment" value="07/15/2017 15:00" />
+		<property name="title" value="Viaje a Córdoba" />
+		<property name="description" value="Necesidad de coche adaptado para personas discapacitadas" />
+		<property name="moment" value="07/21/2017 17:30" />
 		<property name="banned" value="false" />
-		<property name="originPlace" ref="place2" />
-		<property name="destinationPlace" ref="place1" />
-		<property name="customer" ref="customer1" />
+		<property name="originPlace" ref="place7" />
+		<property name="destinationPlace" ref="place8" />
+		<property name="customer" ref="customer2" />
 	</bean>
 	
-	<!-- APPLICATION -->
-	<bean id="application1" class="domain.Application">
-		<property name="status" value="ACCEPTED" />
-		<property name="announcementId" value="44" />
-		<property name="announcementType" value="Offer" />
-		<property name="customer" ref="customer1" />
+	<bean id="request3" class="domain.Request">
+		<property name="title" value="Viaje a Asturias" />
+		<property name="description" value="Pararemos en..." />
+		<property name="moment" value="08/01/2017 07:00" />
+		<property name="banned" value="false" />
+		<property name="originPlace" ref="place2" />
+		<property name="destinationPlace" ref="place4" />
+		<property name="customer" ref="customer2" />
+	</bean>
+	
+	<bean id="request4" class="domain.Request">
+		<property name="title" value="Andorra" />
+		<property name="description" value="Viaje por trabajo. Únicamente gente seria" />
+		<property name="moment" value="08/06/2017 07:00" />
+		<property name="banned" value="false" />
+		<property name="originPlace" ref="place9" />
+		<property name="destinationPlace" ref="place10" />
+		<property name="customer" ref="customer3" />
 	</bean>
 	
 	<!-- BANNERS -->
@@ -517,6 +545,16 @@
 	<bean id="banner5" class="domain.Banner">
 		<property name="picture" value="http://www.acme.com/banners/banner5.jpg" />
 		<property name="active" value="false" />
+	</bean>
+
+	
+	<!-- APPLICATION -->
+	<bean id="application1" class="domain.Application">
+		<property name="status" value="ACCEPTED" />
+		<property name="announcementId" value="44" />
+		<property name="announcementType" value="Offer" />
+		<property name="customer" ref="customer1" />
+		
 	</bean>
 	
 </beans>

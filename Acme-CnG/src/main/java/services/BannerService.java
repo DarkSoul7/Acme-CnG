@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -5,8 +6,10 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import repositories.BannerRepository;
+import domain.Administrator;
 import domain.Banner;
 
 @Service
@@ -16,33 +19,44 @@ public class BannerService {
 	//Managed repository
 
 	@Autowired
-	private BannerRepository	bannerRepository;
+	private BannerRepository		bannerRepository;
 
 	//Supported services
+
+	@Autowired
+	private AdministratorService	administratorService;
+
 
 	public BannerService() {
 		super();
 	}
 
 	public Banner create() {
-		return null;
+		final Administrator administrator = this.administratorService.findByPrincipal();
+		Assert.notNull(administrator);
+		final Banner result = new Banner();
+
+		return result;
 	}
 
 	public Collection<Banner> findAll() {
-		return bannerRepository.findAll();
+		return this.bannerRepository.findAll();
 	}
 
-	public Banner findOne(int bannerId) {
-		return bannerRepository.findOne(bannerId);
+	public Banner findOne(final int bannerId) {
+		return this.bannerRepository.findOne(bannerId);
 
 	}
 
-	public void save(Banner banner) {
-		bannerRepository.save(banner);
+	public void save(final Banner banner) {
+		final Administrator administrator = this.administratorService.findByPrincipal();
+		Assert.notNull(administrator);
+
+		this.bannerRepository.save(banner);
 	}
 
-	public void delete(Banner banner) {
-		bannerRepository.delete(banner);
+	public void delete(final Banner banner) {
+		this.bannerRepository.delete(banner);
 	}
 
 	//Other business methods

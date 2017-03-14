@@ -1,3 +1,4 @@
+
 package form;
 
 import javax.persistence.Column;
@@ -12,10 +13,11 @@ import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 public class CustomerForm {
 
+	//Constructor
 	public CustomerForm() {
 		super();
 	}
-	
+
 	private String		username;
 	private String		password;
 	private String		repeatPassword;
@@ -24,70 +26,74 @@ public class CustomerForm {
 	private String		phone;
 	private String		email;
 	
+
+
+
+	//Getter & setter
 	@Size(min = 5, max = 32)
 	@Column(unique = true)
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getUsername() {
-		return username;
+		return this.username;
 	}
-	public void setUsername(String username) {
+	public void setUsername(final String username) {
 		this.username = username;
 	}
-	
+
 	@Size(min = 5, max = 32)
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
-	public void setPassword(String password) {
+	public void setPassword(final String password) {
 		this.password = password;
 	}
-	
+
 	@Size(min = 5, max = 32)
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getRepeatPassword() {
-		return repeatPassword;
+		return this.repeatPassword;
 	}
-	public void setRepeatPassword(String repeatPassword) {
+	public void setRepeatPassword(final String repeatPassword) {
 		this.repeatPassword = repeatPassword;
 	}
-	
+
 	@AssertTrue
 	public boolean isAcceptCondition() {
-		return acceptCondition;
+		return this.acceptCondition;
 	}
-	public void setAcceptCondition(boolean acceptCondition) {
+	public void setAcceptCondition(final boolean acceptCondition) {
 		this.acceptCondition = acceptCondition;
 	}
-	
-	
+
 	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getFullName() {
-		return fullName;
+		return fullName;	
 	}
-	public void setFullName(String fullName) {
+	
+	public void setFullName(final String fullName) {
 		this.fullName = fullName;
 	}
+	
 	@NotBlank
 	@Pattern(regexp = "((\\+|00)\\d{2,4}(\\s)?)?\\d{9,13}")
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getPhone() {
-		return phone;
+		return this.phone;
 	}
-	public void setPhone(String phone) {
+	public void setPhone(final String phone) {
 		this.phone = phone;
 	}
-	
+
 	@NotBlank
 	@Email
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
-	public void setEmail(String email) {
+	public void setEmail(final String email) {
 		this.email = email;
 	}
-	
-	
+
 }

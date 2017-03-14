@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import domain.Application;
 import domain.Comment;
@@ -122,6 +123,9 @@ public class CustomerService {
 		return result;
 	}
 	
+	@Autowired
+	private Validator	validator;
+	
 	public Customer reconstruct(CustomerForm customerForm, BindingResult binding) {
 		Customer result;
 
@@ -168,7 +172,8 @@ public class CustomerService {
 			result.getUserAccount().setPassword(null);
 		}
 
-
+		this.validator.validate(result, binding);
+		
 		return result;
 	}
 
