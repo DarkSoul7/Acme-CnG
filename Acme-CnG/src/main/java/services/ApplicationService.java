@@ -54,12 +54,15 @@ public class ApplicationService {
 
 	}
 
-	public void save(final Application application) {
+	public Application save(final Application application) {
 		Assert.notNull(application);
 		final Customer customer = this.customerService.findByPrincipal();
 		Assert.notNull(customer);
+		Assert.isTrue(application.getCustomer().equals(customer));
+		Application result;
 
-		this.applicationRepository.save(application);
+		result = this.applicationRepository.save(application);
+		return result;
 	}
 
 	public void delete(final Application application) {

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
 
 import repositories.RequestRepository;
 import domain.Customer;
@@ -65,11 +64,6 @@ public class RequestService {
 		return this.requestRepository.findRequestKeyWord(keyWord);
 	}
 
-
-	@Autowired
-	private Validator	validator;
-
-
 	/***
 	 * De ésta forma se evita el hacking modificando el id de la request desde la vista
 	 * 
@@ -97,11 +91,8 @@ public class RequestService {
 				result.setOriginPlace(requestForm.getOriginPlace());
 				result.setMoment(requestForm.getMoment());
 
-				this.validator.validate(result, binding);
-
 			} catch (final Throwable e) {
 				result = null;
-				this.validator.validate(result, binding);
 			}
 		else {
 			result = new Request();
@@ -112,7 +103,6 @@ public class RequestService {
 			result.setOriginPlace(requestForm.getOriginPlace());
 			result.setMoment(requestForm.getMoment());
 
-			this.validator.validate(result, binding);
 		}
 
 		return result;

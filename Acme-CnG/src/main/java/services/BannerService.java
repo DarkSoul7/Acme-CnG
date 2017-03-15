@@ -48,11 +48,14 @@ public class BannerService {
 
 	}
 
-	public void save(final Banner banner) {
+	public Banner save(final Banner banner) {
 		final Administrator administrator = this.administratorService.findByPrincipal();
 		Assert.notNull(administrator);
+		Banner result;
 
-		this.bannerRepository.save(banner);
+		result = this.bannerRepository.save(banner);
+
+		return result;
 	}
 
 	public void delete(final Banner banner) {
@@ -71,6 +74,8 @@ public class BannerService {
 		Assert.notNull(administrator);
 
 		final Banner active = this.getActiveBanner();
+		Assert.isTrue(!banner.equals(active));
+
 		active.setActive(false);
 		banner.setActive(true);
 

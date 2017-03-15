@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.ArrayList;
@@ -9,8 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
 
+import repositories.CustomerRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
 import domain.Application;
 import domain.Comment;
 import domain.Customer;
@@ -18,10 +22,6 @@ import domain.Message;
 import domain.Offer;
 import domain.Request;
 import form.CustomerForm;
-import repositories.CustomerRepository;
-import security.Authority;
-import security.LoginService;
-import security.UserAccount;
 
 @Service
 @Transactional
@@ -30,10 +30,11 @@ public class CustomerService {
 	//Managed repository
 
 	@Autowired
-	private CustomerRepository	customerRepository;
-	
+	private CustomerRepository		customerRepository;
+
 	@Autowired
-	private AdministratorService administratorService;
+	private AdministratorService	administratorService;
+
 
 	//Supported services
 
@@ -41,57 +42,36 @@ public class CustomerService {
 		super();
 	}
 
-	public Customer create() {
-		Customer result = new Customer();
+	public CustomerForm create() {
+		final CustomerForm result = new CustomerForm();
 
-		Authority authority = new Authority();
-		UserAccount userAccount = new UserAccount();
-
-		//Configuring authority & userAccount
-		authority.setAuthority("CUSTOMER");
-		userAccount.addAuthority(authority);
-		result.setUserAccount(userAccount);
-
-		Collection<Offer> offers = new ArrayList<>();
-		result.setOffers(offers);
-
-		Collection<Request> requests = new ArrayList<>();
-		result.setRequests(requests);
-		
-		Collection<Application> applications = new ArrayList<>();
-		result.setApplications(applications);
-		
-		Collection<Message> sentMessages = new ArrayList<>();
-		result.setSentMessages(sentMessages);
-		
-		Collection<Message> receivedMessages = new ArrayList<>();
-		result.setReceivedMessages(receivedMessages);
-		
-		Collection<Comment> comments = new ArrayList<>();
-		result.setComments(comments);
-		
 		return result;
 	}
 
 	public Collection<Customer> findAll() {
-		return customerRepository.findAll();
+		return this.customerRepository.findAll();
 	}
 
-	public Customer findOne(int customerId) {
-		return customerRepository.findOne(customerId);
+	public Customer findOne(final int customerId) {
+		return this.customerRepository.findOne(customerId);
 
 	}
 
-	public void save(Customer customer) {
-		customerRepository.save(customer);
+	public Customer save(final Customer customer) {
+		Assert.notNull(customer);
+		Customer result;
+
+		result = this.customerRepository.save(customer);
+
+		return result;
 	}
 
-	public void delete(Customer customer) {
-		customerRepository.delete(customer);
+	public void delete(final Customer customer) {
+		this.customerRepository.delete(customer);
 	}
 
 	//Other business methods
-	
+
 	public Customer findByPrincipal() {
 		Customer result;
 		UserAccount userAccount;
@@ -104,60 +84,57 @@ public class CustomerService {
 		return result;
 	}
 
-	public Customer findByUserAccount(UserAccount userAccount) {
+	public Customer findByUserAccount(final UserAccount userAccount) {
 		Customer result;
 		int userAccountId;
 
 		userAccountId = userAccount.getId();
-		result = customerRepository.findByUserAccountId(userAccountId);
+		result = this.customerRepository.findByUserAccountId(userAccountId);
 
 		return result;
 	}
 
-	public Customer findByUserName(String username) {
+	public Customer findByUserName(final String username) {
 		Assert.notNull(username);
 		Customer result;
 
-		result = customerRepository.findByUserName(username);
+		result = this.customerRepository.findByUserName(username);
 
 		return result;
 	}
-	
-	@Autowired
-	private Validator	validator;
-	
-	public Customer reconstruct(CustomerForm customerForm, BindingResult binding) {
+
+	public Customer reconstruct(final CustomerForm customerForm, final BindingResult binding) {
 		Customer result;
 
-		Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-		String hash = encoder.encodePassword(customerForm.getPassword(), null);
+		final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+		final String hash = encoder.encodePassword(customerForm.getPassword(), null);
 
 		result = new Customer();
 
-		Authority authority = new Authority();
-		UserAccount userAccount = new UserAccount();
+		final Authority authority = new Authority();
+		final UserAccount userAccount = new UserAccount();
 
 		//Configuring authority & userAccount
 		authority.setAuthority("CUSTOMER");
 		userAccount.addAuthority(authority);
 		result.setUserAccount(userAccount);
 
-		Collection<Offer> offers = new ArrayList<>();
+		final Collection<Offer> offers = new ArrayList<>();
 		result.setOffers(offers);
 
-		Collection<Request> requests = new ArrayList<>();
+		final Collection<Request> requests = new ArrayList<>();
 		result.setRequests(requests);
-		
-		Collection<Application> applications = new ArrayList<>();
+
+		final Collection<Application> applications = new ArrayList<>();
 		result.setApplications(applications);
-		
-		Collection<Message> sentMessages = new ArrayList<>();
+
+		final Collection<Message> sentMessages = new ArrayList<>();
 		result.setSentMessages(sentMessages);
-		
-		Collection<Message> receivedMessages = new ArrayList<>();
+
+		final Collection<Message> receivedMessages = new ArrayList<>();
 		result.setReceivedMessages(receivedMessages);
-		
-		Collection<Comment> comments = new ArrayList<>();
+
+		final Collection<Comment> comments = new ArrayList<>();
 		result.setComments(comments);
 
 		result.getUserAccount().setUsername(customerForm.getUsername());
@@ -168,24 +145,21 @@ public class CustomerService {
 		result.setPhone(customerForm.getPhone());
 
 		//Checking passwords and conditions
-		if (!customerForm.getPassword().equals(customerForm.getRepeatPassword())) {
+		if (!customerForm.getPassword().equals(customerForm.getRepeatPassword()))
 			result.getUserAccount().setPassword(null);
-		}
 
-		this.validator.validate(result, binding);
-		
 		return result;
 	}
 
 	//DASHBOARD
-	public Collection<Customer> getCustomerWithMoreAcceptedRequest(){
-		Assert.notNull(administratorService.findByPrincipal());
-		return customerRepository.getCustomerWithMoreAcceptedRequest();
+	public Collection<Customer> getCustomerWithMoreAcceptedRequest() {
+		Assert.notNull(this.administratorService.findByPrincipal());
+		return this.customerRepository.getCustomerWithMoreAcceptedRequest();
 	}
-	
-	public Collection<Customer> getCustomerWithMoreDeniedRequest(){
-		Assert.notNull(administratorService.findByPrincipal());
-		return customerRepository.getCustomerWithMoreDeniedRequest();
+
+	public Collection<Customer> getCustomerWithMoreDeniedRequest() {
+		Assert.notNull(this.administratorService.findByPrincipal());
+		return this.customerRepository.getCustomerWithMoreDeniedRequest();
 	}
 
 }

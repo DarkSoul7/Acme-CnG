@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
 
 import repositories.OfferRepository;
 import domain.Customer;
@@ -66,11 +65,6 @@ public class OfferService {
 		return this.offerRepository.findOfferKeyWord(keyWord);
 	}
 
-
-	@Autowired
-	private Validator	validator;
-
-
 	/***
 	 * De ésta forma se evita la posibilidad de hackeo al cambiar el Id de la offer desde la vista
 	 * 
@@ -98,11 +92,8 @@ public class OfferService {
 				result.setOriginPlace(offerForm.getOriginPlace());
 				result.setMoment(offerForm.getMoment());
 
-				this.validator.validate(result, binding);
-
 			} catch (final Throwable e) {
 				result = null;
-				this.validator.validate(result, binding);
 			}
 		else {
 			result = new Offer();
@@ -113,7 +104,6 @@ public class OfferService {
 			result.setOriginPlace(offerForm.getOriginPlace());
 			result.setMoment(offerForm.getMoment());
 
-			this.validator.validate(result, binding);
 		}
 
 		return result;

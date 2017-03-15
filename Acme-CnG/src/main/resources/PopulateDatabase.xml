@@ -19,7 +19,7 @@
 	<!-- User accounts -->
 
 	<bean id="userAccount1" class="security.UserAccount">
-		<property name="username" value="administrator" />
+		<property name="username" value="admin" />
 		<property name="password" value="21232f297a57a5a743894a0e4a801fc3" />
 		<property name="authorities">
 			<list>
@@ -240,7 +240,7 @@
 		<property name="text" value="En primer lugar quiero reseñar..." />
 		<property name="moment" value="02/14/2017 14:00" />
 		<property name="stars" value="5" />
-		<property name="commentableId" value="44" />
+		<property name="commentableId" value="45" />
 		<property name="commentableType" value="Customer" />
 		<property name="banned" value="false" />
 		<property name="author" ref="customer3" />
@@ -251,7 +251,7 @@
 		<property name="text" value="Lo peor ha sido..." />
 		<property name="moment" value="01/01/2017 00:00" />
 		<property name="stars" value="1" />
-		<property name="commentableId" value="44" />
+		<property name="commentableId" value="45" />
 		<property name="commentableType" value="Customer" />
 		<property name="banned" value="true" />
 		<property name="author" ref="customer2" />
@@ -262,7 +262,7 @@
 		<property name="text" value="Realmente no ha estado mal porque..." />
 		<property name="moment" value="01/31/2017 00:00" />
 		<property name="stars" value="3" />
-		<property name="commentableId" value="47" />
+		<property name="commentableId" value="48" />
 		<property name="commentableType" value="Customer" />
 		<property name="banned" value="false" />
 		<property name="author" ref="customer1" />
@@ -273,7 +273,7 @@
 		<property name="text" value="No repetiría porque..." />
 		<property name="moment" value="03/13/2017 00:00" />
 		<property name="stars" value="0" />
-		<property name="commentableId" value="49" />
+		<property name="commentableId" value="50" />
 		<property name="commentableType" value="Customer" />
 		<property name="banned" value="true" />
 		<property name="author" ref="customer2" />
@@ -284,7 +284,7 @@
 		<property name="text" value="En primer lugar quiero reseñar..." />
 		<property name="moment" value="02/14/2017 14:00" />
 		<property name="stars" value="5" />
-		<property name="commentableId" value="45" />
+		<property name="commentableId" value="46" />
 		<property name="commentableType" value="Offer" />
 		<property name="banned" value="false" />
 		<property name="author" ref="administrator" />
@@ -295,7 +295,7 @@
 		<property name="text" value="Lo peor ha sido..." />
 		<property name="moment" value="01/01/2017 00:00" />
 		<property name="stars" value="1" />
-		<property name="commentableId" value="45" />
+		<property name="commentableId" value="46" />
 		<property name="commentableType" value="Offer" />
 		<property name="banned" value="false" />
 		<property name="author" ref="customer1" />
@@ -306,7 +306,7 @@
 		<property name="text" value="Realmente no ha estado mal porque..." />
 		<property name="moment" value="01/31/2017 00:00" />
 		<property name="stars" value="3" />
-		<property name="commentableId" value="46" />
+		<property name="commentableId" value="47" />
 		<property name="commentableType" value="Offer" />
 		<property name="banned" value="true" />
 		<property name="author" ref="customer2" />
@@ -317,7 +317,7 @@
 		<property name="text" value="No repetiría porque..." />
 		<property name="moment" value="03/13/2017 00:00" />
 		<property name="stars" value="0" />
-		<property name="commentableId" value="48" />
+		<property name="commentableId" value="49" />
 		<property name="commentableType" value="Offer" />
 		<property name="banned" value="false" />
 		<property name="author" ref="customer3" />
@@ -328,7 +328,7 @@
 		<property name="text" value="En primer lugar quiero reseñar..." />
 		<property name="moment" value="02/14/2017 14:00" />
 		<property name="stars" value="5" />
-		<property name="commentableId" value="68" />
+		<property name="commentableId" value="69" />
 		<property name="commentableType" value="Request" />
 		<property name="banned" value="false" />
 		<property name="author" ref="customer3" />
@@ -339,7 +339,7 @@
 		<property name="text" value="Lo peor ha sido..." />
 		<property name="moment" value="01/01/2017 00:00" />
 		<property name="stars" value="1" />
-		<property name="commentableId" value="68" />
+		<property name="commentableId" value="69" />
 		<property name="commentableType" value="Request" />
 		<property name="banned" value="false" />
 		<property name="author" ref="customer2" />
@@ -350,7 +350,7 @@
 		<property name="text" value="Realmente no ha estado mal porque..." />
 		<property name="moment" value="01/31/2017 00:00" />
 		<property name="stars" value="3" />
-		<property name="commentableId" value="69" />
+		<property name="commentableId" value="70" />
 		<property name="commentableType" value="Request" />
 		<property name="banned" value="false" />
 		<property name="author" ref="customer1" />
@@ -361,7 +361,7 @@
 		<property name="text" value="No repetiría porque..." />
 		<property name="moment" value="03/13/2017 00:00" />
 		<property name="stars" value="0" />
-		<property name="commentableId" value="70" />
+		<property name="commentableId" value="71" />
 		<property name="commentableType" value="Request" />
 		<property name="banned" value="false" />
 		<property name="author" ref="administrator" />
@@ -504,7 +504,7 @@
 		<property name="title" value="Viaje a Asturias" />
 		<property name="description" value="Pararemos en..." />
 		<property name="moment" value="08/01/2017 07:00" />
-		<property name="banned" value="false" />
+		<property name="banned" value="true" />
 		<property name="originPlace" ref="place2" />
 		<property name="destinationPlace" ref="place4" />
 		<property name="customer" ref="customer2" />

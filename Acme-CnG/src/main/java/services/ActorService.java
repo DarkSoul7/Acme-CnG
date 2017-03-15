@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -21,6 +22,7 @@ public class ActorService {
 	@Autowired
 	private ActorRepository	actorRepository;
 
+
 	//Supported services
 
 	public ActorService() {
@@ -28,28 +30,28 @@ public class ActorService {
 	}
 
 	public Actor create() {
-		return null;
+		return new Actor();
 	}
 
 	public Collection<Actor> findAll() {
-		return actorRepository.findAll();
+		return this.actorRepository.findAll();
 	}
 
-	public Actor findOne(int actorId) {
-		return actorRepository.findOne(actorId);
+	public Actor findOne(final int actorId) {
+		return this.actorRepository.findOne(actorId);
 
 	}
 
-	public void save(Actor actor) {
-		actorRepository.save(actor);
+	public void save(final Actor actor) {
+		this.actorRepository.save(actor);
 	}
 
-	public void delete(Actor actor) {
-		actorRepository.delete(actor);
+	public void delete(final Actor actor) {
+		this.actorRepository.delete(actor);
 	}
 
 	//Other business methods
-	
+
 	public Actor findByPrincipal() {
 		Actor result;
 		UserAccount userAccount;
@@ -62,21 +64,21 @@ public class ActorService {
 		return result;
 	}
 
-	public Actor findByUserAccount(UserAccount userAccount) {
+	public Actor findByUserAccount(final UserAccount userAccount) {
 		Actor result;
 		int userAccountId;
 
 		userAccountId = userAccount.getId();
-		result = actorRepository.findByUserAccountId(userAccountId);
+		result = this.actorRepository.findByUserAccountId(userAccountId);
 
 		return result;
 	}
 
-	public Actor findByUserName(String username) {
+	public Actor findByUserName(final String username) {
 		Assert.notNull(username);
 		Actor result;
 
-		result = actorRepository.findByUserName(username);
+		result = this.actorRepository.findByUserName(username);
 
 		return result;
 	}
