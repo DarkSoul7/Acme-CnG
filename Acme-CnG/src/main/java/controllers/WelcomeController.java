@@ -45,4 +45,35 @@ public class WelcomeController extends AbstractController {
 
 		return result;
 	}
+	
+	@RequestMapping(value = "/cookies")
+	public ModelAndView cookies() {
+
+		ModelAndView result;
+
+		result = new ModelAndView("welcome/cookies");
+		result.addObject("backURI", "/welcome/index.do");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/conditions")
+	public ModelAndView conditions() {
+		ModelAndView result;
+
+		result = new ModelAndView("welcome/conditions");
+		result.addObject("backURI", "/welcome/index.do");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/eraseMe")
+	public ModelAndView eraseMe() {
+		ModelAndView result;
+
+		result = new ModelAndView("welcome/eraseMe");
+		result.addObject("backURI", "/welcome/index.do");
+
+		return result;
+	}
 }

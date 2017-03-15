@@ -113,7 +113,7 @@ public class CommentService {
 		return this.commentRepository.avgCommentsPerActor();
 	}
 
-	public Collection<Actor> actorsWhoHavePostThe10PercentMessages() {
-		return this.commentRepository.actorsWhoHavePostThe10PercentMessages();
-	}
+//	public Collection<Actor> actorsWhoHavePostThe10PercentMessages() {
+//		return this.commentRepository.actorsWhoHavePostThe10PercentMessages();
+//	}
 }

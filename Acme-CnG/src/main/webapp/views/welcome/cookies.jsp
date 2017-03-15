@@ -1,5 +1,5 @@
 <%--
- * action-2.jsp
+ * cookies.jsp
  *
  * Copyright (C) 2017 Universidad de Sevilla
  * 
@@ -16,4 +16,13 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<p><spring:message code="customer.action.2" /></p>
+<body style="text-align: justify;">
+	<p><spring:message code="welcome.cookies.p1" /></p>
+	<p><spring:message code="welcome.cookies.p2" /></p>
+</body>
+<br>
+<br>
+<br>
+<button onclick="javascript:window.close();"><spring:message code="welcome.close" /></button>
+
+</html>

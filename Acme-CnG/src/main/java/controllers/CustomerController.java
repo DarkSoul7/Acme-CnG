@@ -10,38 +10,75 @@
 
 package controllers;
 
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import domain.Customer;
+import form.CustomerForm;
+import services.CustomerService;
 
 @Controller
 @RequestMapping("/customer")
 public class CustomerController extends AbstractController {
 
+	@Autowired
+	private CustomerService	customerService;
+	
 	// Constructors -----------------------------------------------------------
 
 	public CustomerController() {
 		super();
 	}
 
-	// Action-1 ---------------------------------------------------------------		
-
-	@RequestMapping("/action-1")
-	public ModelAndView action1() {
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	public ModelAndView register() {
 		ModelAndView result;
-
-		result = new ModelAndView("customer/action-1");
+		CustomerForm customerForm = new CustomerForm();
+		result = createEditModelAndView(customerForm);
 
 		return result;
 	}
 
-	// Action-2 ---------------------------------------------------------------		
+	@RequestMapping(value = "/register", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(@Valid CustomerForm customerForm, BindingResult binding) {
+		ModelAndView result = new ModelAndView();
+		Customer customer;
 
-	@RequestMapping("/action-2")
-	public ModelAndView action2() {
+		customer = customerService.reconstruct(customerForm, binding);
+		if (binding.hasErrors()) {
+			result = createEditModelAndView(customerForm);
+
+		} else {
+			try {
+				customerService.save(customer);
+				result = new ModelAndView("redirect:/security/login.do");
+			} catch (Throwable oops) {
+				result = createEditModelAndView(customerForm, "customer.commit.error");
+			}
+		}
+
+		return result;
+	}
+
+	// Ancillary methods
+
+	protected ModelAndView createEditModelAndView(CustomerForm customerForm) {
+		ModelAndView result = createEditModelAndView(customerForm, null);
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(CustomerForm customerForm, String message) {
 		ModelAndView result;
 
-		result = new ModelAndView("customer/action-2");
+		result = new ModelAndView("customer/register");
+		result.addObject("customerForm", customerForm);
+		result.addObject("message", message);
 
 		return result;
 	}

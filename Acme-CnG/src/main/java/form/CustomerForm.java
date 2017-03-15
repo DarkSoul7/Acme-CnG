@@ -13,29 +13,27 @@ import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 public class CustomerForm {
 
-	//Constructor
+	private String username;
+	private String password;
+	private String repeatPassword;
+	private boolean acceptCondition;
+	private String fullName;
+	private String phone;
+	private String email;
+
+	// Constructor
 	public CustomerForm() {
 		super();
 	}
 
-	private String		username;
-	private String		password;
-	private String		repeatPassword;
-	private boolean		acceptCondition;
-	private String		fullName;
-	private String		phone;
-	private String		email;
-	
-
-
-
-	//Getter & setter
+	// Getter & setter
 	@Size(min = 5, max = 32)
 	@Column(unique = true)
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getUsername() {
 		return this.username;
 	}
+
 	public void setUsername(final String username) {
 		this.username = username;
 	}
@@ -45,6 +43,7 @@ public class CustomerForm {
 	public String getPassword() {
 		return this.password;
 	}
+
 	public void setPassword(final String password) {
 		this.password = password;
 	}
@@ -54,6 +53,7 @@ public class CustomerForm {
 	public String getRepeatPassword() {
 		return this.repeatPassword;
 	}
+
 	public void setRepeatPassword(final String repeatPassword) {
 		this.repeatPassword = repeatPassword;
 	}
@@ -62,6 +62,7 @@ public class CustomerForm {
 	public boolean isAcceptCondition() {
 		return this.acceptCondition;
 	}
+
 	public void setAcceptCondition(final boolean acceptCondition) {
 		this.acceptCondition = acceptCondition;
 	}
@@ -69,19 +70,20 @@ public class CustomerForm {
 	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getFullName() {
-		return fullName;	
+		return fullName;
 	}
-	
+
 	public void setFullName(final String fullName) {
 		this.fullName = fullName;
 	}
-	
+
 	@NotBlank
 	@Pattern(regexp = "((\\+|00)\\d{2,4}(\\s)?)?\\d{9,13}")
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getPhone() {
 		return this.phone;
 	}
+
 	public void setPhone(final String phone) {
 		this.phone = phone;
 	}
@@ -92,6 +94,7 @@ public class CustomerForm {
 	public String getEmail() {
 		return this.email;
 	}
+
 	public void setEmail(final String email) {
 		this.email = email;
 	}

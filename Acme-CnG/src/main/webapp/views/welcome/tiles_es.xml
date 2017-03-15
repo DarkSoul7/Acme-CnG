@@ -21,4 +21,20 @@
 		<put-attribute name="body" value="/views/welcome/index.jsp" />
 	</definition>
 	
+	<definition extends="master.page" name="welcome/cookies">
+		<put-attribute name="title"
+			value="Información sobre el uso de cookies" />
+		<put-attribute name="body" value="/views/welcome/cookies.jsp" />
+	</definition>
+
+	<definition extends="master.page" name="welcome/conditions">
+		<put-attribute name="title" value="Términos del Servicio" />
+		<put-attribute name="body" value="/views/welcome/conditions.jsp" />
+	</definition>
+
+	<definition extends="master.page" name="welcome/eraseMe">
+		<put-attribute name="title" value="Información sobre datos personales" />
+		<put-attribute name="body" value="/views/welcome/eraseMe.jsp" />
+	</definition>
+	
 </tiles-definitions>

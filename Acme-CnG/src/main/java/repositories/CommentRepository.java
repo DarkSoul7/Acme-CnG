@@ -37,6 +37,6 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
 	//B3
 	// The actors who have posted ±10% the average number of comments per actor
-	@Query("select a from Actor a where a.comments.size >= (select avg(a.comments.size)-0.1 from Actor a) and a.comments.size <= (select avg(a2.comments.size)+0.1 from Actor a2")
-	public Collection<Actor> actorsWhoHavePostThe10PercentMessages();
+	//@Query("select a from Actor a where a.comments.size >= (select avg(a.comments.size)-0.1 from Actor a) and a.comments.size <= (select avg(a2.comments.size)+0.1 from Actor a2)")
+	//public Collection<Actor> actorsWhoHavePostThe10PercentMessages();
 }
