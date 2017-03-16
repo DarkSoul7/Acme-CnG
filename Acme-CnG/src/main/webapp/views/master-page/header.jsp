@@ -71,15 +71,15 @@
 		</security:authorize>
 
 		<security:authorize access="isAuthenticated()">
-			<li><a class="fNiv"> <spring:message code="master.page.profile" /> (<security:authentication property="principal.username" />)
+			<li><a class="fNiv"> <spring:message code="master.page.messagingSystem" /> (<security:authentication property="principal.username" />)
 			</a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="profile/action-1.do"><spring:message code="master.page.profile.action.1" /></a></li>
-					<li><a href="profile/action-2.do"><spring:message code="master.page.profile.action.2" /></a></li>
-					<li><a href="profile/action-3.do"><spring:message code="master.page.profile.action.3" /></a></li>
-					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>
+					<li><a href="message/send.do"><spring:message code="master.page.messagingSystem.send" /></a></li>
+					<li><a href="message/sentMessages.do"><spring:message code="master.page.messagingSystem.sentMessages" /></a></li>
+					<li><a href="message/receivedMessages.do"><spring:message code="master.page.messagingSystem.receivedMessages" /></a></li>
 				</ul></li>
+			<li><a class="fNiv" href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>
 		</security:authorize>
 	</ul>
 </div>

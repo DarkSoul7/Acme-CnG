@@ -44,13 +44,19 @@
 		<security:intercept-url access="permitAll" pattern="/welcome/conditions.do"/>
 		<security:intercept-url access="permitAll" pattern="/welcome/eraseMe.do"/> 
 
-		<!-- CUSTOMER -->
-		<security:intercept-url pattern="/customer/register.do" access="isAnonymous()" /> 
-		
 		<!-- ADMINISTRATOR -->
 		<security:intercept-url pattern="/administrator/dashboardC.do" access="hasRole('ADMINISTRATOR')" /> 
 		<security:intercept-url pattern="/administrator/dashboardB.do" access="hasRole('ADMINISTRATOR')" />
 		<security:intercept-url pattern="/administrator/dashboardA.do" access="hasRole('ADMINISTRATOR')" />
+	
+		<!-- CUSTOMER -->
+		<security:intercept-url pattern="/customer/register.do" access="isAnonymous()" /> 
+		
+		<!-- MESSAGES -->
+		
+		<security:intercept-url pattern="/message/send.do" access="isAuthenticated()" />
+		<security:intercept-url pattern="/message/sentMessages.do" access="isAuthenticated()" />
+		<security:intercept-url pattern="/message/receivedMessages.do" access="isAuthenticated()" />
 	
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />
 
