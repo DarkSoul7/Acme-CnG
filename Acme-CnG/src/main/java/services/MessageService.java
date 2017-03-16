@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import repositories.MessageRepository;
 import domain.Actor;
@@ -20,7 +21,12 @@ public class MessageService {
 	private MessageRepository	messageRepository;
 
 	//Supported services
+	
+	@Autowired
+	ActorService actorService;
 
+	//Constructor
+	
 	public MessageService() {
 		super();
 	}
@@ -39,14 +45,44 @@ public class MessageService {
 	}
 
 	public void save(Message message) {
+		Actor principal = actorService.findByPrincipal();
+		Assert.isTrue(principal.getId() == message.getSender().getId());
+		
 		messageRepository.save(message);
 	}
 
 	public void delete(Message message) {
+		Actor principal = actorService.findByPrincipal();
+		Assert.isTrue(principal.getId() == message.getReceiver().getId() || principal.getId() == message.getSender().getId());
+		
 		messageRepository.delete(message);
+	}
+	
+	public void delete(int messageId) {
+		Message message = messageRepository.findOne(messageId);
+		
+		this.delete(message);
 	}
 
 	//Other business methods
+	
+	public Collection<Message> findAllSentByPrincipal() {
+		Actor principal = actorService.findByPrincipal();
+		Collection<Message> result = null;
+		
+		result = messageRepository.findAllSentByActor(principal.getId());
+		
+		return result;
+	}
+	
+	public Collection<Message> findAllReceivedByPrincipal() {
+		Actor principal = actorService.findByPrincipal();
+		Collection<Message> result = null;
+		
+		result = messageRepository.findAllReceivedByActor(principal.getId());
+		
+		return result;
+	}
 	
 	// Dashboard
 	

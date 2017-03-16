@@ -12,6 +12,12 @@ import domain.Message;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Integer>{
 	
+	@Query("select m from Message m where m.sender.id = ?1")
+	public Collection<Message> findAllSentByActor(int actorId);
+	
+	@Query("select m from Message m where m.receiver.id = ?1")
+	public Collection<Message> findAllReceivedByActor(int actorId);
+	
 	// Dashboard
 	
 	/**
