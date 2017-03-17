@@ -23,15 +23,6 @@ public class AnnouncementService {
 	//Supported services
 
 	@Autowired
-	private OfferService			offerService;
-
-	@Autowired
-	private RequestService			requestService;
-
-	@Autowired
-	private CustomerService			customerService;
-
-	@Autowired
 	private AdministratorService	administratorService;
 
 
