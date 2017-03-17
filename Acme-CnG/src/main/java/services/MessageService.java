@@ -55,7 +55,6 @@ public class MessageService {
 	public void save(final Message message) {
 		final Actor principal = this.actorService.findByPrincipal();
 		Assert.isTrue(principal.getId() == message.getSender().getId());
-		Assert.isTrue(!message.getSender().equals(message.getReceiver()));
 
 		this.messageRepository.save(message);
 	}
@@ -161,6 +160,23 @@ public class MessageService {
 
 	// MessageForm
 
+	public MessageForm toFormObject(final Message message, final Boolean isReply) {
+		MessageForm result = this.create();
+		String start;
+		String delimiter = System.getProperty("line.separator");
+
+		if (isReply) {
+			start = "RE: ";
+			result.setReceiver(message.getSender());
+		} else {
+			start = "FWD: ";
+		}
+		result.setTitle(start + message.getTitle());
+		result.setText(message.getText());
+		result.setAttachments(StringUtils.replace(message.getAttachments(), ",", delimiter));
+
+		return result;
+	}
 	public Message reconstruct(final MessageForm messageForm) {
 		Message result;
 		Actor principal;

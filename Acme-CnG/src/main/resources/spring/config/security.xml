@@ -55,6 +55,8 @@
 		<!-- MESSAGES -->
 		
 		<security:intercept-url pattern="/message/send.do" access="isAuthenticated()" />
+		<security:intercept-url pattern="/message/forward.do" access="isAuthenticated()" />
+		<security:intercept-url pattern="/message/reply.do" access="isAuthenticated()" />
 		<security:intercept-url pattern="/message/delete.do" access="isAuthenticated()" />
 		<security:intercept-url pattern="/message/sentMessages.do" access="isAuthenticated()" />
 		<security:intercept-url pattern="/message/receivedMessages.do" access="isAuthenticated()" />

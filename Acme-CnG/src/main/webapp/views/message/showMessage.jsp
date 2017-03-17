@@ -46,6 +46,11 @@
 <br/>
 <textarea disabled="disabled" style="width:50vw; height:20vh; color:black; background-color:white;"><jstl:out value="${mes.text}"></jstl:out></textarea>
 <br/>
-<%--
-<acme:textarea code="message.attachments" path="attachments" readonly="true" />
- --%>
+
+<input type="button" name="message.replyButton"
+		value="<spring:message code="message.reply" />"
+		onclick="javascript: window.location.replace('message/reply.do?messageId=${mes.id}')" />
+
+<input type="button" name="message.forwardButton"
+		value="<spring:message code="message.forward" />"
+		onclick="javascript: window.location.replace('message/forward.do?messageId=${mes.id}')" />

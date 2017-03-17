@@ -51,7 +51,7 @@ public class MessageController extends AbstractController {
 	@RequestMapping(value = "/showMessage", method = RequestMethod.GET)
 	public ModelAndView showMessage(@RequestParam(required = true) final int messageId) {
 		ModelAndView result;
-		final Message message = this.messageService.findOne(messageId);
+		Message message = this.messageService.findOne(messageId);
 
 		result = new ModelAndView("message/showMessage");
 		result.addObject("mes", message);
@@ -64,7 +64,7 @@ public class MessageController extends AbstractController {
 	@RequestMapping(value = "/sentMessages", method = RequestMethod.GET)
 	public ModelAndView sentMessages() {
 		ModelAndView result;
-		final Collection<Message> messages = this.messageService.findAllSentByPrincipal();
+		Collection<Message> messages = this.messageService.findAllSentByPrincipal();
 
 		result = new ModelAndView("message/sentMessages");
 		result.addObject("messages", messages);
@@ -77,7 +77,7 @@ public class MessageController extends AbstractController {
 	@RequestMapping(value = "/receivedMessages", method = RequestMethod.GET)
 	public ModelAndView receivedMessages() {
 		ModelAndView result;
-		final Collection<Message> messages = this.messageService.findAllReceivedByPrincipal();
+		Collection<Message> messages = this.messageService.findAllReceivedByPrincipal();
 
 		result = new ModelAndView("message/receivedMessages");
 		result.addObject("messages", messages);
@@ -91,6 +91,30 @@ public class MessageController extends AbstractController {
 	public ModelAndView send() {
 		ModelAndView result;
 		final MessageForm messageForm = this.messageService.create();
+
+		result = this.createEditModelAndView(messageForm);
+
+		return result;
+	}
+
+	// Reply
+	@RequestMapping(value = "/reply", method = RequestMethod.GET)
+	public ModelAndView reply(@RequestParam(required = true) final int messageId) {
+		ModelAndView result;
+		Message message = this.messageService.findOne(messageId);
+		MessageForm messageForm = this.messageService.toFormObject(message, true);
+
+		result = this.createEditModelAndView(messageForm);
+
+		return result;
+	}
+
+	// Forward
+	@RequestMapping(value = "/forward", method = RequestMethod.GET)
+	public ModelAndView forward(@RequestParam(required = true) final int messageId) {
+		ModelAndView result;
+		Message message = this.messageService.findOne(messageId);
+		MessageForm messageForm = this.messageService.toFormObject(message, false);
 
 		result = this.createEditModelAndView(messageForm);
 
@@ -146,7 +170,7 @@ public class MessageController extends AbstractController {
 
 	protected ModelAndView createEditModelAndView(final MessageForm messageForm, final String message) {
 		ModelAndView result;
-		Collection<Actor> actors = actorService.findAllExceptPrincipal();
+		Collection<Actor> actors = actorService.findAll();
 
 		result = new ModelAndView("message/send");
 		result.addObject("messageForm", messageForm);

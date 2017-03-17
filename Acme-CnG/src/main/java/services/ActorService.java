@@ -83,15 +83,4 @@ public class ActorService {
 		return result;
 	}
 
-	public Collection<Actor> findAllExceptPrincipal() {
-		Collection<Actor> result;
-		Actor principal;
-
-		principal = this.findByPrincipal();
-		result = this.findAll();
-		result.remove(principal);
-
-		return result;
-	}
-
 }

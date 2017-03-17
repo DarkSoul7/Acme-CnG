@@ -1,7 +1,6 @@
 
 package form;
 
-import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -58,7 +57,6 @@ public class MessageForm {
 
 	@Valid
 	@NotNull
-	@ManyToOne(optional = false)
 	public Actor getReceiver() {
 		return this.receiver;
 	}
