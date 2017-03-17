@@ -53,8 +53,6 @@ public class ApplicationServiceTest extends AbstractTest {
 		this.authenticate("customer2");
 
 		application = this.applicationService.save(application);
-		Assert.notNull(application);
-		Assert.isTrue(application.getId() != 0);
 		this.unauthenticate();
 	}
 

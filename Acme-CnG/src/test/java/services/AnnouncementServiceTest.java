@@ -84,7 +84,6 @@ public class AnnouncementServiceTest extends AbstractTest {
 		this.unauthenticate();
 		final Announcement announcement = this.announcementService.findOne(72);
 		this.announcementService.banAnnouncement(announcement);
-		Assert.isTrue(announcement.getBanned() == true);
 	}
 
 	// Check an unauthenticated actor cannot ban a request
@@ -93,7 +92,6 @@ public class AnnouncementServiceTest extends AbstractTest {
 		this.unauthenticate();
 		final Request request = this.requestService.findOne(72);
 		this.announcementService.banAnnouncement(request);
-		Assert.isTrue(request.getBanned() == true);
 	}
 
 	// Check an unauthenticated actor cannot ban an offer
@@ -102,7 +100,6 @@ public class AnnouncementServiceTest extends AbstractTest {
 		this.unauthenticate();
 		final Offer offer = this.offerService.findOne(49);
 		this.announcementService.banAnnouncement(offer);
-		Assert.isTrue(offer.getBanned() == true);
 	}
 
 	// A banned announcement cannot be re-banned
@@ -111,7 +108,6 @@ public class AnnouncementServiceTest extends AbstractTest {
 		this.authenticate("admin");
 		final Announcement announcement = this.announcementService.findOne(47);
 		this.announcementService.banAnnouncement(announcement);
-		Assert.isTrue(announcement.getBanned() == true);
 		this.unauthenticate();
 	}
 }

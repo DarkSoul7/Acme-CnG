@@ -12,7 +12,6 @@ import repositories.AdministratorRepository;
 import security.LoginService;
 import security.UserAccount;
 import domain.Administrator;
-import domain.Announcement;
 
 @Service
 @Transactional
@@ -22,10 +21,6 @@ public class AdministratorService {
 
 	@Autowired
 	private AdministratorRepository	administratorRepository;
-
-	//Supported services
-	@Autowired
-	private AnnouncementService		announcementService;
 
 
 	//Constructor
@@ -87,13 +82,4 @@ public class AdministratorService {
 		return result;
 	}
 
-	public void banAnnouncement(final Announcement announcement) {
-		final Administrator administrator = this.findByPrincipal();
-		Assert.notNull(announcement);
-		Assert.notNull(administrator);
-		Assert.isTrue(announcement.getBanned() == false);
-
-		announcement.setBanned(true);
-		this.announcementService.save(announcement);
-	}
 }
