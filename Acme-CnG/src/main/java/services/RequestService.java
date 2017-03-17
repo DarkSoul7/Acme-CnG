@@ -38,6 +38,7 @@ public class RequestService {
 
 	public RequestForm create() {
 		final RequestForm result = new RequestForm();
+		result.setBanned(false);
 
 		return result;
 	}
