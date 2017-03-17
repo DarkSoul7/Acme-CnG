@@ -41,6 +41,7 @@ public class CommentService {
 	public Comment create(final int commentableId, final String commentableType) {
 		final Actor actor = this.actorService.findByPrincipal();
 		Assert.notNull(actor);
+		Assert.isTrue(commentableId != actor.getId());
 
 		final Comment result = new Comment();
 		result.setAuthor(actor);
@@ -65,19 +66,18 @@ public class CommentService {
 		Assert.notNull(comment);
 		Comment result;
 
-		if (actor.getUserAccount().getAuthorities().iterator().next().equals("ADMINISTRATOR"))
-			result = this.save(comment);
+		if (comment.getId() != 0 && actor.getUserAccount().getAuthorities().iterator().next().getAuthority().equals("ADMINISTRATOR"))
+			result = comment;
 		else {
 			Assert.isTrue(comment.getAuthor().equals(actor));
 			Assert.isTrue(comment.getCommentableId() != actor.getId());
 			comment.setMoment(new Date(System.currentTimeMillis() - 1000));
 			comment.setBanned(false);
-			result = this.commentRepository.save(comment);
 		}
 
+		result = this.commentRepository.save(comment);
 		return result;
 	}
-
 	public void delete(final Comment comment) {
 
 		this.commentRepository.delete(comment);
@@ -113,7 +113,7 @@ public class CommentService {
 		return this.commentRepository.avgCommentsPerActor();
 	}
 
-//	public Collection<Actor> actorsWhoHavePostThe10PercentMessages() {
-//		return this.commentRepository.actorsWhoHavePostThe10PercentMessages();
-//	}
+	public Collection<Actor> actorsWhoHavePostThe10PercentMessages() {
+		return this.commentRepository.actorsWhoHavePostThe10PercentMessages();
+	}
 }
