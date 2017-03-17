@@ -38,6 +38,8 @@ public class MessageService {
 	}
 
 	public MessageForm create() {
+		final Actor actor = this.actorService.findByPrincipal();
+		Assert.notNull(actor);
 		final MessageForm messageForm = new MessageForm();
 
 		return messageForm;
@@ -52,11 +54,14 @@ public class MessageService {
 
 	}
 
-	public void save(final Message message) {
+	public Message save(final Message message) {
 		final Actor principal = this.actorService.findByPrincipal();
 		Assert.isTrue(principal.getId() == message.getSender().getId());
+		Assert.notNull(message);
+		Message result;
 
-		this.messageRepository.save(message);
+		result = this.messageRepository.save(message);
+		return result;
 	}
 
 	public void delete(final Message message) {
@@ -161,16 +166,15 @@ public class MessageService {
 	// MessageForm
 
 	public MessageForm toFormObject(final Message message, final Boolean isReply) {
-		MessageForm result = this.create();
+		final MessageForm result = this.create();
 		String start;
-		String delimiter = System.getProperty("line.separator");
+		final String delimiter = System.getProperty("line.separator");
 
 		if (isReply) {
 			start = "RE: ";
 			result.setReceiver(message.getSender());
-		} else {
+		} else
 			start = "FWD: ";
-		}
 		result.setTitle(start + message.getTitle());
 		result.setText(message.getText());
 		result.setAttachments(StringUtils.replace(message.getAttachments(), ",", delimiter));
@@ -184,11 +188,10 @@ public class MessageService {
 
 		principal = this.actorService.findByPrincipal();
 		result = new Message();
-		if (StringUtils.isNotBlank(messageForm.getAttachments())) {
+		if (StringUtils.isNotBlank(messageForm.getAttachments()))
 			attachments = this.compruebaEnlaces(messageForm.getAttachments());
-		} else {
+		else
 			attachments = "";
-		}
 
 		result.setTitle(messageForm.getTitle());
 		result.setText(messageForm.getText());
@@ -204,18 +207,16 @@ public class MessageService {
 	}
 	private String compruebaEnlaces(final String attachments) {
 		String result;
-		String delimiter = System.getProperty("line.separator");
-		String[] aattachments = StringUtils.split(attachments, delimiter);
-		String[] schemes = {
+		final String delimiter = System.getProperty("line.separator");
+		final String[] aattachments = StringUtils.split(attachments, delimiter);
+		final String[] schemes = {
 			"http", "https"
 		};
-		UrlValidator urlValidator = new UrlValidator(schemes);
+		final UrlValidator urlValidator = new UrlValidator(schemes);
 
-		for (String attachment : aattachments) {
-			if (!urlValidator.isValid(attachment)) {
+		for (final String attachment : aattachments)
+			if (!urlValidator.isValid(attachment))
 				throw new IllegalArgumentException();
-			}
-		}
 
 		result = StringUtils.join(aattachments, ",");
 
