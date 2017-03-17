@@ -31,6 +31,9 @@ public class AnnouncementService {
 	@Autowired
 	private CustomerService			customerService;
 
+	@Autowired
+	private AdministratorService	administratorService;
+
 
 	//Constructor
 	public AnnouncementService() {
@@ -65,4 +68,12 @@ public class AnnouncementService {
 
 	//Other business methods
 
+	public void banAnnouncement(final Announcement announcement) {
+		this.administratorService.findByPrincipal();
+		Assert.notNull(announcement);
+		Assert.isTrue(announcement.getBanned() == false);
+
+		announcement.setBanned(true);
+		this.save(announcement);
+	}
 }

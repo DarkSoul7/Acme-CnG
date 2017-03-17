@@ -21,13 +21,10 @@ public class OfferService {
 	//Managed repository
 
 	@Autowired
-	private OfferRepository			offerRepository;
+	private OfferRepository	offerRepository;
 
 	@Autowired
-	private CustomerService			customerService;
-
-	@Autowired
-	private AdministratorService	administratorService;
+	private CustomerService	customerService;
 
 
 	//Supported services
@@ -38,6 +35,7 @@ public class OfferService {
 
 	public OfferForm create() {
 		final OfferForm result = new OfferForm();
+		result.setBanned(false);
 
 		return result;
 	}
@@ -51,11 +49,17 @@ public class OfferService {
 
 	}
 
-	public void save(final Offer offer) {
-		this.offerRepository.save(offer);
+	public Offer save(final Offer offer) {
+		Offer result;
+		Assert.notNull(offer);
+
+		result = this.offerRepository.save(offer);
+
+		return result;
 	}
 
 	public void delete(final Offer offer) {
+		Assert.notNull(offer);
 		this.offerRepository.delete(offer);
 	}
 

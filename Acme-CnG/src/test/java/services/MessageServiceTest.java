@@ -32,6 +32,10 @@ public class MessageServiceTest extends AbstractTest {
 	private ActorService	actorService;
 
 
+	/***
+	 * The 10 test cases requested will be under this test class (Message)
+	 */
+
 	// Tests ------------------------------------------------------------------
 
 	//Exchange messages with other actors.

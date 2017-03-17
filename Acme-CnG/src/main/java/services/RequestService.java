@@ -51,8 +51,13 @@ public class RequestService {
 
 	}
 
-	public void save(final Request request) {
-		this.requestRepository.save(request);
+	public Request save(final Request request) {
+		Assert.notNull(request);
+		Request result;
+
+		result = this.requestRepository.save(request);
+
+		return result;
 	}
 
 	public void delete(final Request request) {
