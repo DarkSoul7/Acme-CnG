@@ -111,6 +111,7 @@ public class RequestService {
 
 		}
 
+		result.setBanned(false);
 		return result;
 	}
 

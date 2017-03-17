@@ -109,7 +109,7 @@ public class OfferService {
 			result.setMoment(offerForm.getMoment());
 
 		}
-
+		result.setBanned(false);
 		return result;
 	}
 
