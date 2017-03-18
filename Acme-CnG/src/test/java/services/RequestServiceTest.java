@@ -1,6 +1,8 @@
 
 package services;
 
+import java.util.Collection;
+
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -10,10 +12,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 
+import utilities.AbstractTest;
 import domain.Place;
 import domain.Request;
 import form.RequestForm;
-import utilities.AbstractTest;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -25,72 +27,96 @@ public class RequestServiceTest extends AbstractTest {
 	// System under test ------------------------------------------------------
 
 	@Autowired
-	private RequestService requestService;
+	private RequestService	requestService;
 
 
 	// Tests ------------------------------------------------------------------
 
+	/***
+	 * Post an request
+	 * Testing cases:
+	 * 1º Good register -> expected: the request posted
+	 * 2º Unauthenticated customer -> expected: IllegalArgumentException
+	 */
 	@Test
-	public void createAndSavePositiveTest() {
-		this.authenticate("customer1");
+	public void RequestCreateDriver() {
+		final Object testingData[][] = {
+			{
+				"customer1", null
+			}, {
+				null, IllegalArgumentException.class
+			}
+		};
 
-		final RequestForm requestForm = this.requestService.create();
-		final Place originPlace = new Place();
-		final Place destinationPlace = new Place();
-		originPlace.setAddress("CALLE 1");
-		originPlace.setAddress("CALLE 2");
-
-		requestForm.setDescription("Descripcion");
-		requestForm.setTitle("TITULO");
-		requestForm.setOriginPlace(originPlace);
-		requestForm.setDestinationPlace(destinationPlace);
-
-		Request request = this.requestService.reconstruct(requestForm, null);
-		request = this.requestService.save(request);
-		Assert.notNull(request);
-		Assert.isTrue(request.getId() != 0);
-		this.unauthenticate();
+		for (int i = 0; i < testingData.length; i++)
+			this.createRequestDriver((String) testingData[i][0], (Class<?>) testingData[i][1]);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void createAndSaveNegativeTestA() {
-		this.unauthenticate();
-		final RequestForm requestForm = this.requestService.create();
-		final Place originPlace = new Place();
-		final Place destinationPlace = new Place();
-		originPlace.setAddress("CALLE 1");
-		originPlace.setAddress("CALLE 2");
+	protected void createRequestDriver(final String principal, final Class<?> expectedException) {
 
-		requestForm.setDescription("Descripcion");
-		requestForm.setTitle("TITULO");
-		requestForm.setOriginPlace(originPlace);
-		requestForm.setDestinationPlace(destinationPlace);
+		Class<?> caught = null;
 
-		Request request = this.requestService.reconstruct(requestForm, null);
-		request = this.requestService.save(request);
-		Assert.notNull(request);
-		Assert.isTrue(request.getId() != 0);
-		this.unauthenticate();
+		try {
+			this.authenticate(principal);
+
+			final RequestForm requestForm = this.requestService.create();
+			final Place originPlace = new Place();
+			final Place destinationPlace = new Place();
+			originPlace.setAddress("CALLE 1");
+			originPlace.setAddress("CALLE 2");
+
+			requestForm.setDescription("Descripcion");
+			requestForm.setTitle("TITULO");
+			requestForm.setOriginPlace(originPlace);
+			requestForm.setDestinationPlace(destinationPlace);
+
+			Request request = this.requestService.reconstruct(requestForm, null);
+			request = this.requestService.save(request);
+			Assert.isTrue(request.getId() != 0);
+			this.unauthenticate();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expectedException, caught);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void createAndSaveNegativeTestB() {
-		this.unauthenticate();
-		final RequestForm requestForm = this.requestService.create();
-		final Place originPlace = new Place();
-		final Place destinationPlace = new Place();
-		originPlace.setAddress("CALLE 1");
-		originPlace.setAddress("CALLE 2");
+	/***
+	 * Find requests by keyWord
+	 * Testing cases:
+	 * 1º Good search -> expected: collection of requests found
+	 * 2º Bad search; A customer must be authenticated -> expected: IllegalArgumentException
+	 */
+	@Test
+	public void searchRequestByKeyWordDriver() {
+		final Object testingData[][] = {
 
-		requestForm.setDescription("Descripcion");
-		requestForm.setTitle("TITULO");
-		requestForm.setOriginPlace(originPlace);
-		requestForm.setDestinationPlace(destinationPlace);
+			//customer, expected exception
+			{
+				"customer1", null
+			}, {
+				null, IllegalArgumentException.class
+			}
+		};
 
-		Request request = this.requestService.reconstruct(requestForm, null);
-		request = this.requestService.save(request);
-		Assert.notNull(request);
-		Assert.isTrue(request.getId() != 0);
-		this.unauthenticate();
+		for (int i = 0; i < testingData.length; i++)
+			this.searchRequestByKeyWordTemplate((String) testingData[i][0], (Class<?>) testingData[i][1]);
+	}
+
+	protected void searchRequestByKeyWordTemplate(final String principal, final Class<?> expectedException) {
+		Class<?> caught = null;
+
+		try {
+			this.authenticate(principal);
+
+			final Collection<Request> request = this.requestService.findRequestKeyWord("viaje");
+			Assert.notNull(request);
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expectedException, caught);
 	}
 }

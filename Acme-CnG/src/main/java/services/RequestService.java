@@ -67,6 +67,7 @@ public class RequestService {
 
 	//Other business methods
 	public Collection<Request> findRequestKeyWord(final String keyWord) {
+		this.customerService.findByPrincipal();
 		return this.requestRepository.findRequestKeyWord(keyWord);
 	}
 

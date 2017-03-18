@@ -29,85 +29,56 @@ public class CustomerServiceTest extends AbstractTest {
 
 	// Tests ------------------------------------------------------------------
 
+	/***
+	 * Register a customer.
+	 * Testing cases:
+	 * 1º Good register -> expected: customer registered
+	 * 2º Password != repeatPassword -> expected: IllegalArgumentException
+	 * 3º User does not accept use condition -> expected: IllegalArgumentException
+	 */
 	@Test
-	public void createAndReconstructAndSavePositiveTest() {
-		this.unauthenticate();
-		final CustomerForm customerForm = this.customerService.create();
+	public void registerCustomerDriver() {
+		final Object testingData[][] = {
+			//repeatPassword, conditions, expectedException
+			{
+				"testing", true, null
+			}, {
+				"exception", true, IllegalArgumentException.class
+			}, {
+				"testing", false, IllegalArgumentException.class
+			}
+		};
 
-		customerForm.setAcceptCondition(true);
-		customerForm.setEmail("test@testing.com");
-		customerForm.setFullName("Testing Test Test");
-		customerForm.setPassword("testing");
-		customerForm.setUsername("testing");
-		customerForm.setRepeatPassword("testing");
-		customerForm.setPhone("666666666");
-
-		Customer customer = this.customerService.reconstruct(customerForm, null);
-
-		customer = this.customerService.save(customer);
-		Assert.isTrue(customer.getId() != 0);
+		for (int i = 0; i < testingData.length; i++)
+			this.registerCustomerTemplate((String) testingData[i][0], (boolean) testingData[i][1], (Class<?>) testingData[i][2]);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void createAndReconstructAndSaveNegativeTestA() {
-		this.unauthenticate();
-		final CustomerForm customerForm = this.customerService.create();
+	protected void registerCustomerTemplate(final String repeatPassword, final boolean conditions, final Class<?> expectedException) {
 
-		customerForm.setAcceptCondition(true);
-		customerForm.setEmail("test@testing.com");
-		customerForm.setFullName("Testing Test Test");
-		customerForm.setPassword("testing1");
-		customerForm.setUsername("testing");
-		customerForm.setRepeatPassword("testing2");
-		customerForm.setPhone("666666666");
+		Class<?> caught = null;
 
-		Assert.isTrue(customerForm.getPassword().equals(customerForm.getRepeatPassword()));
+		try {
+			this.unauthenticate();
+			final CustomerForm customerForm = this.customerService.create();
 
-		Customer customer = this.customerService.reconstruct(customerForm, null);
+			customerForm.setAcceptCondition(conditions);
+			customerForm.setEmail("test@testing.com");
+			customerForm.setFullName("Testing Test Test");
+			customerForm.setPassword("testing");
+			customerForm.setUsername("testing");
+			customerForm.setRepeatPassword(repeatPassword);
+			customerForm.setPhone("666666666");
 
-		customer = this.customerService.save(customer);
-		Assert.isTrue(customer.getId() != 0);
+			Customer customer = this.customerService.reconstruct(customerForm, null);
+
+			customer = this.customerService.save(customer);
+			Assert.isTrue(customerForm.isAcceptCondition() == true);
+			Assert.isTrue(customerForm.getPassword().equals(customerForm.getRepeatPassword()));
+			Assert.isTrue(customer.getId() != 0);
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+		this.checkExceptions(expectedException, caught);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void createAndReconstructAndSaveNegativeTestB() {
-		this.unauthenticate();
-		final CustomerForm customerForm = this.customerService.create();
-
-		customerForm.setAcceptCondition(false);
-		customerForm.setEmail("test@testing.com");
-		customerForm.setFullName("Testing Test Test");
-		customerForm.setPassword("testing1");
-		customerForm.setUsername("testing");
-		customerForm.setRepeatPassword("testing2");
-		customerForm.setPhone("666666666");
-
-		Customer customer = this.customerService.reconstruct(customerForm, null);
-
-		Assert.isTrue(customerForm.isAcceptCondition() == true);
-		customer = this.customerService.save(customer);
-		Assert.isTrue(customer.getId() != 0);
-	}
-
-	@Test
-	public void findByPrincipalPositiveTest() {
-		this.authenticate("customer1");
-		final Customer customer = this.customerService.findByPrincipal();
-		Assert.notNull(customer);
-		this.unauthenticate();
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void findByPrincipalNegativeTestA() {
-		this.unauthenticate();
-		final Customer customer = this.customerService.findByPrincipal();
-		Assert.notNull(customer);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void findByPrincipalNegativeTestB() {
-		this.authenticate("usuarioErroneo");
-		final Customer customer = this.customerService.findByPrincipal();
-		Assert.notNull(customer);
-	}
 }

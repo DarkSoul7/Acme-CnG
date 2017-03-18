@@ -66,6 +66,7 @@ public class OfferService {
 	//Other business methods
 
 	public Collection<Offer> findOfferKeyWord(final String keyWord) {
+		this.customerService.findByPrincipal();
 		return this.offerRepository.findOfferKeyWord(keyWord);
 	}
 

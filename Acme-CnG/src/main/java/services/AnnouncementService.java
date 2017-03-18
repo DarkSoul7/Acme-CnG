@@ -67,4 +67,5 @@ public class AnnouncementService {
 		announcement.setBanned(true);
 		this.save(announcement);
 	}
+
 }

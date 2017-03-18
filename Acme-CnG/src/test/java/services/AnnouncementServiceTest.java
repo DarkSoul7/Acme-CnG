@@ -39,21 +39,55 @@ public class AnnouncementServiceTest extends AbstractTest {
 
 	/***
 	 * Ban an offer or a request that he or she finds inappropriate.
-	 * Such offers and re-quests must not be displayed to a general audience, only
-	 * to the administrators and the customer who posted it.
+	 * 
+	 * Test cases:
+	 * 1º Good test -> expected: announcement(Offer) banned
+	 * 2º Good test -> expected: announcement(Request) banned
+	 * 3º Bad test; A customer cannot ban an announcement; expected IllegalArgumentException
+	 * 4º Bad test; An unauthenticated actor cannot ban an announcement; expected IllegalArgumentException
+	 * 5º Bad test; A banned announcement(Offer) cannot be re-banned ; expected IllegalArgumentException
+	 * 6º Bad test; A banned announcement(Request) cannot be re-banned ; expected IllegalArgumentException
 	 */
 
-	//Trying ban an announcement
-
-	//Ban an offer
-
 	@Test
-	public void banOfferPositiveTest() {
-		this.authenticate("admin");
-		final Offer offer = this.offerService.findOne(46);
-		this.announcementService.banAnnouncement(offer);
-		Assert.isTrue(offer.getBanned() == true);
-		this.unauthenticate();
+	public void banAnnouncementDriver() {
+		final Object testingData[][] = {
+			//Logged actor, announcement id, expected exception
+			{
+				"admin", 46, null
+			}, {
+				"admin", 69, null
+			}, {
+				"customer", 46, IllegalArgumentException.class
+			}, {
+				null, 69, IllegalArgumentException.class
+			}, {
+				"admin", 47, IllegalArgumentException.class
+			}, {
+				"admin", 71, IllegalArgumentException.class
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.banAnnoucenmentTemplate((String) testingData[i][0], (int) testingData[i][1], (Class<?>) testingData[i][2]);
+	}
+
+	protected void banAnnoucenmentTemplate(final String principal, final int announcementId, final Class<?> expectedException) {
+
+		Class<?> caught = null;
+
+		try {
+			this.authenticate(principal);
+			final Announcement announcement = this.announcementService.findOne(announcementId);
+			this.announcementService.banAnnouncement(announcement);
+			Assert.isTrue(announcement.getBanned() == true);
+			this.unauthenticate();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expectedException, caught);
 	}
 
 	//Ban a request

@@ -41,120 +41,117 @@ public class CommentServiceTest extends AbstractTest {
 
 	// Tests ------------------------------------------------------------------
 
-	//Post a comment on commentable entity. (Actor, offer or request)
+	/***
+	 * Post a comment on another actor, on an offer, or a request.
+	 * Test cases:
+	 * 1º Good test; A customer comment on other customer. expected -> comment persisted
+	 * 2º Good test; A administrator comment on other customer. expected -> comment persisted
+	 * 3º Good test; A customer comment an offer. expected -> comment persisted
+	 * 4º Good test; A customer comment a request customer. expected -> comment persisted
+	 * 5º Bad test; An unauthenticated actor cannot post comments. expected -> IllegalArgumentException
+	 * 5º Bad test; An authenticated actor cannot post comments to himself. expected -> IllegalArgumentException
+	 */
 	@Test
-	public void doCommentPositiveTestA() {
-		this.authenticate("customer1");
-		final Customer customer2 = this.customerService.findOne(48);
-		Comment comment = this.commentService.create(customer2.getId(), customer2.getClass().getSimpleName());
-		comment.setStars(5);
-		comment.setText("Testing");
-		comment.setTitle("Test");
-		comment = this.commentService.save(comment);
-		Assert.isTrue(comment.getId() != 0);
-		this.unauthenticate();
+	public void postCommentDriver() {
+		final Object testingData[][] = {
+			//Actor, commentable id, commentable type, expected exception
+			{
+				//Comment of customer
+				"customer1", 48, "Customer", null
+			}, {
+				//Comment on customer
+				"admin", 48, "Customer", null
+			}, { //Comment on offer
+				"customer1", 46, "Offer", null
+			}, {
+				//Comment on request
+				"customer2", 69, "Request", null
+			}, {
+				null, 48, "Customer", IllegalArgumentException.class
+			}, {
+				"customer1", 45, "Customer", IllegalArgumentException.class
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.postCommentTemplate((String) testingData[i][0], (int) testingData[i][1], (String) testingData[i][2], (Class<?>) testingData[i][3]);
 	}
 
+	protected void postCommentTemplate(final String principal, final int commentableId, final String commentableType, final Class<?> expectedException) {
+
+		Class<?> caught = null;
+
+		try {
+			this.authenticate(principal);
+			Comment comment = null;
+
+			if (commentableType.equals("Customer")) {
+				final Customer customer2 = this.customerService.findOne(commentableId);
+				comment = this.commentService.create(customer2.getId(), commentableType);
+			} else if (commentableType.equals("Offer")) {
+				final Offer offer = this.offerService.findOne(commentableId);
+				comment = this.commentService.create(offer.getId(), commentableType);
+			} else if (commentableType.equals("Request")) {
+				final Request request = this.requestService.findOne(commentableId);
+				comment = this.commentService.create(request.getId(), commentableType);
+			}
+
+			comment.setStars(5);
+			comment.setText("Testing");
+			comment.setTitle("Test");
+			comment = this.commentService.save(comment);
+			Assert.isTrue(comment.getId() != 0);
+			this.unauthenticate();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expectedException, caught);
+
+	}
+
+	/***
+	 * Ban a comment
+	 * Test cases:
+	 * 1º Good test; A logged Administrator ban a comment -> expected: comment banned
+	 * 2º Bad test; An unauthenticated actor cannot ban a comment -> expected: IllegalArgumentException
+	 * 3º Bad test; A customer cannot ban a comment -> expected: IllegalArgumentException
+	 * 4º Bad test; A banned comment cannot be re-banned -> expected: IllegalArgumentException
+	 */
 	@Test
-	public void doCommentPositiveTestB() {
-		this.authenticate("admin");
-		final Customer customer2 = this.customerService.findOne(48);
-		Comment comment = this.commentService.create(customer2.getId(), customer2.getClass().getSimpleName());
-		comment.setStars(5);
-		comment.setText("Testing");
-		comment.setTitle("Test");
-		comment = this.commentService.save(comment);
-		Assert.isTrue(comment.getId() != 0);
-		this.unauthenticate();
+	public void banCommentDriver() {
+		final Object testingData[][] = {
+			//Actor, comment id, expected exception
+			{
+				"admin", 57, null
+			}, {
+				null, 57, IllegalArgumentException.class
+			}, {
+				"customer1", 57, IllegalArgumentException.class
+			}, {
+				"admin", 58, IllegalArgumentException.class
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.banCommentTemplate((String) testingData[i][0], (int) testingData[i][1], (Class<?>) testingData[i][2]);
 	}
 
-	@Test
-	public void doCommentPositiveTestC() {
-		this.authenticate("customer1");
-		final Offer offer = this.offerService.findOne(46);
-		Comment comment = this.commentService.create(offer.getId(), offer.getClass().getSimpleName());
-		comment.setStars(5);
-		comment.setText("Testing");
-		comment.setTitle("Test");
-		comment = this.commentService.save(comment);
-		Assert.isTrue(comment.getId() != 0);
-		this.unauthenticate();
+	protected void banCommentTemplate(final String principal, final int commentId, final Class<?> expectedException) {
+
+		Class<?> caught = null;
+
+		try {
+			this.authenticate(principal);
+			final Comment comment = this.commentService.findOne(commentId);
+			this.commentService.banComment(comment);
+			this.unauthenticate();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+		this.checkExceptions(expectedException, caught);
 	}
 
-	@Test
-	public void doCommentPositiveTestD() {
-		this.authenticate("customer2");
-		final Request request = this.requestService.findOne(69);
-		Comment comment = this.commentService.create(request.getId(), request.getClass().getSimpleName());
-		comment.setStars(5);
-		comment.setText("Testing");
-		comment.setTitle("Test");
-		comment = this.commentService.save(comment);
-		Assert.isTrue(comment.getId() != 0);
-		this.unauthenticate();
-	}
-
-	//Unauthenticated actor cannot post a comment 
-	@Test(expected = IllegalArgumentException.class)
-	public void doCommentNegativeTestA() {
-		this.unauthenticate();
-		final Request request = this.requestService.findOne(69);
-		Comment comment = this.commentService.create(request.getId(), request.getClass().getSimpleName());
-		comment.setStars(5);
-		comment.setText("Testing");
-		comment.setTitle("Test");
-		comment = this.commentService.save(comment);
-		Assert.isTrue(comment.getId() != 0);
-	}
-
-	//An actor cannot post comments to himself
-	@Test(expected = IllegalArgumentException.class)
-	public void doCommentNegativeTestB() {
-		this.authenticate("customer1");
-		final Customer customer = this.customerService.findOne(45);
-		Comment comment = this.commentService.create(customer.getId(), customer.getClass().getSimpleName());
-		comment.setStars(5);
-		comment.setText("Testing");
-		comment.setTitle("Test");
-		comment = this.commentService.save(comment);
-		Assert.isTrue(comment.getId() != 0);
-		this.unauthenticate();
-	}
-
-	//Ban a comment that he or she finds inappropriate. Such comments must not be displayed 
-	//to a general audience, only to the administrators and the actor who posted it.
-
-	@Test
-	public void banCommentPositiveTestA() {
-		this.authenticate("admin");
-		final Comment comment = this.commentService.findOne(57);
-		this.commentService.banComment(comment);
-		this.unauthenticate();
-	}
-
-	//Unauthenticated actor cannot ban a comment
-	@Test(expected = IllegalArgumentException.class)
-	public void banCommentNegativeTestA() {
-		this.unauthenticate();
-		final Comment comment = this.commentService.findOne(57);
-		this.commentService.banComment(comment);
-	}
-
-	//A customer cannot ban a comment
-	@Test(expected = IllegalArgumentException.class)
-	public void banCommentNegativeTestB() {
-		this.authenticate("customer");
-		final Comment comment = this.commentService.findOne(57);
-		this.commentService.banComment(comment);
-		this.unauthenticate();
-	}
-
-	//A banned comment cannot be banned again
-	@Test(expected = IllegalArgumentException.class)
-	public void banCommentNegativeTestC() {
-		this.authenticate("admin");
-		final Comment comment = this.commentService.findOne(58);
-		this.commentService.banComment(comment);
-		this.unauthenticate();
-	}
 }
