@@ -35,11 +35,12 @@ public class CustomerController extends AbstractController {
 	public CustomerController() {
 		super();
 	}
+	
 
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public ModelAndView register() {
 		ModelAndView result;
-		CustomerForm customerForm = new CustomerForm();
+		CustomerForm customerForm = customerService.create();
 		result = createEditModelAndView(customerForm);
 
 		return result;

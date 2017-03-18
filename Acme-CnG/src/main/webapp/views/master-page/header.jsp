@@ -24,27 +24,29 @@
 	<ul id="jMenu">
 		<!-- Do not forget the "fNiv" class for the first level links !! -->
 		<security:authorize access="hasRole('ADMIN')">
-			<li><a class="fNiv"><spring:message
-						code="master.page.administrator" /></a>
+			<li><a class="fNiv"><spring:message code="master.page.administrator" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="administrator/action-1.do"><spring:message
-								code="master.page.administrator.action.1" /></a></li>
-					<li><a href="administrator/action-2.do"><spring:message
-								code="master.page.administrator.action.2" /></a></li>
+					<li><a href="administrator/action-1.do"><spring:message code="master.page.administrator.action.1" /></a></li>
+					<li><a href="administrator/action-2.do"><spring:message code="master.page.administrator.action.2" /></a></li>
 				</ul></li>
 		</security:authorize>
 
 		<security:authorize access="hasRole('CUSTOMER')">
-			<li><a class="fNiv"><spring:message
-						code="master.page.customer" /></a>
+			<li><a class="fNiv"><spring:message code="master.page.customer.announcement.offer" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="customer/action-1.do"><spring:message
-								code="master.page.customer.action.1" /></a></li>
-					<li><a href="customer/action-2.do"><spring:message
-								code="master.page.customer.action.2" /></a></li>
-				</ul></li>
+					<li><a href="offer/register.do"><spring:message code="master.page.customer.announcement.offer.create" /></a></li>
+					<li><a href="offer/list.do"><spring:message code="master.page.customer.announcement.offer.list" /></a></li>
+				</ul>
+			</li>
+			<li><a class="fNiv"><spring:message code="master.page.customer.announcement.request" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="request/register.do"><spring:message code="master.page.customer.announcement.request.create" /></a></li>
+					<li><a href="request/list.do"><spring:message code="master.page.customer.announcement.request.list" /></a></li>
+				</ul>
+			</li>
 		</security:authorize>
 
 		<security:authorize access="isAnonymous()">
