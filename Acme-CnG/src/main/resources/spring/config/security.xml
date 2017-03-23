@@ -59,6 +59,15 @@
 		<security:intercept-url pattern="/request/register.do" access="hasRole('CUSTOMER')" />
 		<security:intercept-url pattern="/request/list.do" access="hasRole('CUSTOMER')" /> 
 		
+		<!-- COMMENT -->
+		<security:intercept-url pattern="/comment/createCommentActor.do" access="isAuthenticated()" />
+		<security:intercept-url pattern="/comment/createCommentOffer.do" access="isAuthenticated()" />
+		<security:intercept-url pattern="/comment/createCommentRequest.do" access="isAuthenticated()" />
+		<security:intercept-url pattern="/comment/list.do" access="isAuthenticated()" /> 
+		
+		<!-- ACTOR -->
+		<security:intercept-url pattern="/actor/list.do" access="isAuthenticated()" />
+
 		<!-- MESSAGES -->
 		
 		<security:intercept-url pattern="/message/send.do" access="isAuthenticated()" />

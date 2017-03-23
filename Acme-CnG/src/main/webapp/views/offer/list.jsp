@@ -50,4 +50,7 @@
 	<spring:message code="offer.destinationPlace.gpsCoordinates.longitude" var="destinationPlaceGPSLatitude" />
 	<display:column property="destinationPlace.gpsCoordinates.longitude" title="${destinationPlaceGPSLatitude}" />
 
+	<display:column>
+		<acme:cancel url="comment/createCommentOffer.do?offerId=${row.id}" code="actor.comment"/>
+	</display:column>
 </display:table>

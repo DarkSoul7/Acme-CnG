@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
 
-import repositories.CommentRepository;
 import domain.Actor;
 import domain.Administrator;
 import domain.Comment;
+import form.CommentForm;
+import repositories.CommentRepository;
 
 @Service
 @Transactional
@@ -44,7 +46,6 @@ public class CommentService {
 		Assert.isTrue(commentableId != actor.getId());
 
 		final Comment result = new Comment();
-		result.setAuthor(actor);
 
 		result.setCommentableId(commentableId);
 		result.setCommentableType(commentableType);
@@ -69,10 +70,12 @@ public class CommentService {
 		if (comment.getId() != 0 && actor.getUserAccount().getAuthorities().iterator().next().getAuthority().equals("ADMINISTRATOR"))
 			result = comment;
 		else {
+			comment.setAuthor(actor);
 			Assert.isTrue(comment.getAuthor().equals(actor));
 			Assert.isTrue(comment.getCommentableId() != actor.getId());
 			comment.setMoment(new Date(System.currentTimeMillis() - 1000));
 			comment.setBanned(false);
+
 		}
 
 		result = this.commentRepository.save(comment);
@@ -116,4 +119,18 @@ public class CommentService {
 	public Collection<Actor> actorsWhoHavePostThe10PercentMessages() {
 		return this.commentRepository.actorsWhoHavePostThe10PercentMessages();
 	}
+
+	public Comment reconstruct(final CommentForm commentForm, final BindingResult binding) {
+		Assert.notNull(commentForm);
+
+		final Comment result = new Comment();
+		result.setStars(commentForm.getStars());
+		result.setCommentableId(commentForm.getCommentableId());
+		result.setCommentableType(commentForm.getCommentableType());
+		result.setText(commentForm.getText());
+		result.setTitle(commentForm.getTitle());
+
+		return result;
+	}
+
 }

@@ -31,6 +31,9 @@
 					<li><a href="administrator/action-2.do"><spring:message code="master.page.administrator.action.2" /></a></li>
 				</ul></li>
 		</security:authorize>
+		<security:authorize access="hasRole('ADMINISTRATOR')">
+			<li><a href="comment/list.do"><spring:message code="master.page.list.comment" /></a></li>
+		</security:authorize>
 
 		<security:authorize access="hasRole('CUSTOMER')">
 			<li><a class="fNiv"><spring:message code="master.page.customer.announcement.offer" /></a>
@@ -62,12 +65,13 @@
 		<security:authorize access="isAuthenticated()">
 			<li><a class="fNiv"> <spring:message code="master.page.messagingSystem" /> (<security:authentication property="principal.username" />)
 			</a>
+				<li><a href="actor/list.do"><spring:message code="master.page.list.actor" /></a></li>
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="message/send.do"><spring:message code="master.page.messagingSystem.send" /></a></li>
 					<li><a href="message/sentMessages.do"><spring:message code="master.page.messagingSystem.sentMessages" /></a></li>
 					<li><a href="message/receivedMessages.do"><spring:message code="master.page.messagingSystem.receivedMessages" /></a></li>
-				</ul></li>
+				</ul>
 			<li><a class="fNiv" href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>
 		</security:authorize>
 	</ul>
