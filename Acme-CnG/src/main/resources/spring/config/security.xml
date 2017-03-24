@@ -63,7 +63,9 @@
 		<security:intercept-url pattern="/comment/createCommentActor.do" access="isAuthenticated()" />
 		<security:intercept-url pattern="/comment/createCommentOffer.do" access="isAuthenticated()" />
 		<security:intercept-url pattern="/comment/createCommentRequest.do" access="isAuthenticated()" />
-		<security:intercept-url pattern="/comment/list.do" access="isAuthenticated()" /> 
+		<security:intercept-url pattern="/comment/showComments.do" access="isAuthenticated()" />
+		<security:intercept-url pattern="/comment/ban.do" access="hasRole('ADMINISTRATOR')" />
+		
 		
 		<!-- ACTOR -->
 		<security:intercept-url pattern="/actor/list.do" access="isAuthenticated()" />

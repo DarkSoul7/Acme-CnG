@@ -13,6 +13,12 @@ import domain.Comment;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
+	@Query("select c from Comment c where c.commentableId=?1 and (c.author.id=?2 or c.banned=false)")
+	public Collection<Comment> commentsOfObject(int id, int idActor);
+
+	@Query("select c from Comment c where c.commentableId=?1")
+	public Collection<Comment> commentsAll(int id);
+
 	//Dashboard
 
 	//B1 a)

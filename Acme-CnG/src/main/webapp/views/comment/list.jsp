@@ -32,4 +32,22 @@
 	<spring:message code="comment.stars" var="stars" />
 	<display:column property="stars" title="${stars}" />
 	
+	<spring:message code="comment.status" var="nameColumn" />
+	<display:column title="${nameColumn}">
+		<jstl:if test="${!row.banned}">
+			<spring:message code="comment.no" var="ban" />
+			<jstl:out value="${ban}"></jstl:out>
+		</jstl:if>
+		<jstl:if test="${row.banned}">
+			<spring:message code="comment.yes" var="ban" />
+			<jstl:out value="${ban}"></jstl:out>
+		</jstl:if>
+	</display:column>
+	<display:column>
+		<security:authorize access="hasRole('ADMINISTRATOR')">
+			<jstl:if test="${!row.banned}">
+				<acme:cancel url="comment/ban.do?commentId=${row.id}" code="comment.ban"/>
+			</jstl:if>
+		</security:authorize>
+	</display:column>
 </display:table>

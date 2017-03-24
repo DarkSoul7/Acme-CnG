@@ -36,15 +36,29 @@ public class CommentController extends AbstractController {
 		super();
 	}
 
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list() {
+	@RequestMapping(value = "/showComments", method = RequestMethod.GET)
+	public ModelAndView list(@RequestParam final int id) {
+		final Actor actor = this.actorService.findByPrincipal();
 		ModelAndView result;
-		final Collection<Comment> comments = this.commentService.findAll();
+		final Collection<Comment> comments;
+		if (actor.getUserAccount().getAuthorities().iterator().next().getAuthority().equals("ADMINISTRATOR"))
+			comments = this.commentService.commentsAll(id);
+		else
+			comments = this.commentService.commentsOfObject(id, actor.getId());
 
 		result = new ModelAndView("comment/list");
 		result.addObject("comments", comments);
 		result.addObject("RequestURI", "comment/list.do");
 
+		return result;
+	}
+
+	@RequestMapping(value = "/ban", method = RequestMethod.GET)
+	public ModelAndView banComment(@RequestParam final int commentId) {
+		ModelAndView result = new ModelAndView();
+		final Comment comment = this.commentService.findOne(commentId);
+		this.commentService.banComment(comment);
+		result = new ModelAndView("redirect:/comment/showComments.do?id=" + comment.getCommentableId());
 		return result;
 	}
 

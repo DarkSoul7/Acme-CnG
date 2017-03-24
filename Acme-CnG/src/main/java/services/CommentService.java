@@ -62,6 +62,14 @@ public class CommentService {
 
 	}
 
+	public Collection<Comment> commentsOfObject(final int id, final int authorId) {
+		return this.commentRepository.commentsOfObject(id, authorId);
+	}
+
+	public Collection<Comment> commentsAll(final int id) {
+		return this.commentRepository.commentsAll(id);
+	}
+
 	public Comment save(final Comment comment) {
 		final Actor actor = this.actorService.findByPrincipal();
 		Assert.notNull(comment);
