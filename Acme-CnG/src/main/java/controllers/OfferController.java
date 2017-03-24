@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import domain.Customer;
 import domain.Offer;
 import form.OfferForm;
+import services.CustomerService;
 import services.OfferService;
 
 @Controller
@@ -21,6 +23,9 @@ public class OfferController extends AbstractController {
 
 	@Autowired
 	private OfferService offerService;
+	
+	@Autowired
+	private CustomerService customerService;
 
 	// Constructors -----------------------------------------------------------
 
@@ -31,10 +36,10 @@ public class OfferController extends AbstractController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		ModelAndView result;
-		Collection<Offer> offers = offerService.findAll();
-
+		Collection<OfferForm> offersForms = offerService.findOfferWithApplication();
+		
 		result = new ModelAndView("offer/list");
-		result.addObject("offers", offers);
+		result.addObject("offersForms", offersForms);
 		result.addObject("RequestURI", "offer/list.do");
 
 		return result;

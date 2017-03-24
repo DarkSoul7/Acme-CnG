@@ -553,7 +553,7 @@
 		<property name="status" value="ACCEPTED" />
 		<property name="announcementId" value="46" />
 		<property name="announcementType" value="Offer" />
-		<property name="customer" ref="customer1" />
+		<property name="customer" ref="customer2" />
 		
 	</bean>
 	

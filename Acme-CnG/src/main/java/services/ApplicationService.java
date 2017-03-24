@@ -93,6 +93,17 @@ public class ApplicationService {
 
 	//Other business methods
 
+	public void pendingApplication(final Application application) {
+		Assert.notNull(application);
+		final Announcement announcement = this.announcementService.findOne(application.getAnnouncementId());
+		Assert.notNull(announcement);
+		final Customer customer = this.customerService.findByPrincipal();
+		Assert.isTrue(application.getCustomer().equals(customer));
+		application.setStatus(Status.PENDING);
+
+		this.save(application);
+	}
+	
 	public void acceptApplication(final Application application) {
 		Assert.notNull(application);
 		final Announcement announcement = this.announcementService.findOne(application.getAnnouncementId());

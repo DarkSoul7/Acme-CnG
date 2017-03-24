@@ -97,6 +97,6 @@ public class Announcement extends DomainEntity {
 		this.destinationPlace = destinationPlace;
 	}
 
-	//Relationship
+	
 
 }

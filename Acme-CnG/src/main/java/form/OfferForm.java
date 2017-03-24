@@ -35,6 +35,7 @@ public class OfferForm {
 	private Boolean	banned;
 	private Place	originPlace;
 	private Place	destinationPlace;
+	private Boolean containsApplication;
 
 
 	//Getter & setter
@@ -108,5 +109,15 @@ public class OfferForm {
 	public void setDestinationPlace(final Place destinationPlace) {
 		this.destinationPlace = destinationPlace;
 	}
+
+	public Boolean getContainsApplication() {
+		return containsApplication;
+	}
+
+	public void setContainsApplication(Boolean containsApplication) {
+		this.containsApplication = containsApplication;
+	}
+	
+	
 
 }

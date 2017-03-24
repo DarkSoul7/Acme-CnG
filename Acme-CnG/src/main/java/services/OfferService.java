@@ -1,7 +1,9 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,25 +11,30 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 
-import repositories.OfferRepository;
+import domain.Actor;
+import domain.Application;
 import domain.Customer;
 import domain.Offer;
 import form.OfferForm;
+import repositories.OfferRepository;
+import security.Authority;
 
 @Service
 @Transactional
 public class OfferService {
 
-	//Managed repository
+	// Managed repository
 
 	@Autowired
-	private OfferRepository	offerRepository;
+	private OfferRepository offerRepository;
 
 	@Autowired
-	private CustomerService	customerService;
+	private CustomerService customerService;
 
+	@Autowired
+	private ActorService actorService;
 
-	//Supported services
+	// Supported services
 
 	public OfferService() {
 		super();
@@ -63,7 +70,7 @@ public class OfferService {
 		this.offerRepository.delete(offer);
 	}
 
-	//Other business methods
+	// Other business methods
 
 	public Collection<Offer> findOfferKeyWord(final String keyWord) {
 		this.customerService.findByPrincipal();
@@ -71,7 +78,8 @@ public class OfferService {
 	}
 
 	/***
-	 * De ésta forma se evita la posibilidad de hackeo al cambiar el Id de la offer desde la vista
+	 * De ésta forma se evita la posibilidad de hackeo al cambiar el Id de la
+	 * offer desde la vista
 	 * 
 	 * @param offerForm
 	 * @param binding
@@ -114,13 +122,119 @@ public class OfferService {
 		return result;
 	}
 
-	//DASHBOARD
+	public Collection<OfferForm> findOfferWithApplication() {
+		Collection<OfferForm> result = new ArrayList<OfferForm>();
+		Actor actor = actorService.findByPrincipal();
+		Collection<Offer> offers = this.findAll();
+
+		Collection<String> authorities = new ArrayList<String>();
+
+		for (Authority a : actor.getUserAccount().getAuthorities()) {
+			authorities.add(a.getAuthority());
+		}
+
+		if (authorities.contains(Authority.ADMINISTRATOR)) {
+			for (Offer o : offers) {
+				OfferForm offerForm = new OfferForm();
+				offerForm = mapTo(o);
+				offerForm.setContainsApplication(true);
+				result.add(offerForm);
+			}
+		} else if (authorities.contains(Authority.CUSTOMER)) {
+			Customer customer = customerService.findByPrincipal();
+
+			if (customer.getApplications().size() > 0) {
+				for (Offer o : offers) {
+					OfferForm offerForm = new OfferForm();
+					Boolean find = false;
+					for (Application a : customer.getApplications()) {
+						if (o.getId() == a.getAnnouncementId()) {
+							offerForm = mapTo(o);
+							offerForm.setContainsApplication(true);
+							find = true;
+
+							if (o.getMoment().after(new Date())) {
+								if (o.getBanned()) {
+									if (o.getCustomer().getId() == customer.getId()) {
+										result.add(offerForm);
+									}
+								} else {
+									result.add(offerForm);
+								}
+							}
+
+						}
+					}
+					if (!find) {
+						if (o.getMoment().after(new Date())) {
+							if (o.getBanned()) {
+								if (o.getCustomer().getId() == customer.getId()) {
+									offerForm = mapTo(o);
+									offerForm.setContainsApplication(true);
+									result.add(offerForm);
+								}
+							} else {
+								offerForm = mapTo(o);
+								offerForm.setContainsApplication(false);
+								result.add(offerForm);
+							}
+						}
+
+					}
+				}
+			} else {
+				for (Offer o : offers) {
+					OfferForm offerForm = new OfferForm();
+					offerForm = mapTo(o);
+					if (o.getMoment().after(new Date())) {
+						if (o.getBanned()) {
+							if (o.getCustomer().getId() == customer.getId()) {
+								offerForm.setContainsApplication(true);
+								result.add(offerForm);
+							}
+						}else{
+							if (o.getCustomer().getId() == customer.getId()) {
+								offerForm.setContainsApplication(true);
+							}else{
+								offerForm.setContainsApplication(false);
+							}
+							
+							result.add(offerForm);
+						}
+
+					} else {
+						if (o.getCustomer().getId() == customer.getId()) {
+							offerForm.setContainsApplication(true);
+							result.add(offerForm);
+						}
+					}
+				}
+			}
+		}
+
+		return result;
+	}
+
+	// DASHBOARD
 	public double getOfferAvg() {
 		return this.offerRepository.offerAvg();
 	}
 
 	public double avgOfferPerCustomer() {
 		return this.offerRepository.avgOfferPerCustomer();
+	}
+
+	public OfferForm mapTo(Offer offer) {
+		OfferForm result = new OfferForm();
+		result.setBanned(offer.getBanned());
+		result.setDescription(offer.getDescription());
+		result.setDestinationPlace(offer.getDestinationPlace());
+		result.setId(offer.getId());
+		result.setMoment(offer.getMoment());
+		result.setOriginPlace(offer.getOriginPlace());
+		result.setTitle(offer.getTitle());
+
+		return result;
 	}
 
 }
