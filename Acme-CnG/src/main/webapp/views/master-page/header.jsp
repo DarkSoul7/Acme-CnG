@@ -17,7 +17,7 @@
 <script type="text/javascript" src="scripts/functions.js"></script>
 
 <div>
-	<img src="images/logo.png" alt="Acme-CnG., Inc." />
+	<a href="/Acme-CnG"><img src="images/logo.png" alt="Acme-CnG., Inc." /></a>
 </div>
 
 <div>
@@ -33,6 +33,7 @@
 		</security:authorize>
 		<security:authorize access="hasRole('ADMINISTRATOR')">
 			<li><a href="comment/list.do"><spring:message code="master.page.list.comment" /></a></li>
+			<li><a href="banner/list.do"><spring:message code="master.page.list.banner" /></a></li>
 		</security:authorize>
 
 		<security:authorize access="hasRole('CUSTOMER')">

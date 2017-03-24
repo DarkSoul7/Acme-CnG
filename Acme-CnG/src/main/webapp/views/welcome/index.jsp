@@ -18,4 +18,6 @@
 
 <p><spring:message code="welcome.greeting.prefix" /> ${name}<spring:message code="welcome.greeting.suffix" /></p>
 
+	<img src="${banner}" style="width:250px; height:250px" alt="Banner" />
+
 <p><spring:message code="welcome.greeting.current.time" /> ${moment}</p> 

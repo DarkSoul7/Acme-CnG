@@ -13,14 +13,24 @@ package controllers;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.BannerService;
+import domain.Banner;
+
 @Controller
 @RequestMapping("/welcome")
 public class WelcomeController extends AbstractController {
+
+	//Used services
+
+	@Autowired
+	private BannerService	bannerService;
+
 
 	// Constructors -----------------------------------------------------------
 
@@ -38,14 +48,16 @@ public class WelcomeController extends AbstractController {
 
 		formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		moment = formatter.format(new Date());
+		final Banner banner = this.bannerService.getActiveBanner();
 
 		result = new ModelAndView("welcome/index");
 		result.addObject("name", name);
 		result.addObject("moment", moment);
+		result.addObject("banner", banner.getPicture());
 
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/cookies")
 	public ModelAndView cookies() {
 
