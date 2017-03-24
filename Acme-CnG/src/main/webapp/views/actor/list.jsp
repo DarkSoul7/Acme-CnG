@@ -33,6 +33,10 @@
 	<display:column property="email" title="${email}" />
 	
 	<display:column>
+		<acme:cancel url="comment/showComments.do?id=${row.id}" code="actor.showComment"/>
+	</display:column>
+	
+	<display:column>
 		<jstl:if test="${row.id != actorId}">
 			<acme:cancel url="comment/createCommentActor.do?actorId=${row.id}" code="actor.comment"/>
 		</jstl:if>

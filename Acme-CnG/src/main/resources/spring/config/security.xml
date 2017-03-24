@@ -55,14 +55,6 @@
 		<security:intercept-url pattern="/offer/register.do" access="hasRole('CUSTOMER')" /> 
 		<security:intercept-url pattern="/offer/list.do" access="hasRole('CUSTOMER')" />
 		
-		<!-- BANNER -->
-		
-		<security:intercept-url pattern="/banner/list.do" access="hasRole('ADMINISTRATOR')" />
-		<security:intercept-url pattern="/banner/create.do" access="hasRole('ADMINISTRATOR')" />
-		<security:intercept-url pattern="/banner/save.do" access="hasRole('ADMINISTRATOR')" />
-		<security:intercept-url pattern="/banner/edit.do" access="hasRole('ADMINISTRATOR')" />
-		<security:intercept-url pattern="/banner/delete.do" access="hasRole('ADMINISTRATOR')" />
-		
 		<!-- REQUEST -->
 		<security:intercept-url pattern="/request/register.do" access="hasRole('CUSTOMER')" />
 		<security:intercept-url pattern="/request/list.do" access="hasRole('CUSTOMER')" /> 
@@ -73,6 +65,7 @@
 		<security:intercept-url pattern="/comment/createCommentRequest.do" access="isAuthenticated()" />
 		<security:intercept-url pattern="/comment/showComments.do" access="isAuthenticated()" />
 		<security:intercept-url pattern="/comment/ban.do" access="hasRole('ADMINISTRATOR')" />
+		
 		
 		<!-- ACTOR -->
 		<security:intercept-url pattern="/actor/list.do" access="isAuthenticated()" />
