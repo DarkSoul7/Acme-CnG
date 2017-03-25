@@ -19,19 +19,19 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="${requestURI}" modelAttribute="commentForm">
+<form:form action="${RequestURI}" modelAttribute="banner">
 
-	<form:hidden path="commentableId"/>
-	<form:hidden path="commentableType"/>
-
-		<acme:textbox code="comment.title" path="title" />
+	<form:hidden path="id"/>
+	<form:hidden path="version"/>
+	<form:hidden path="active"/>
+	
+	
+		<acme:textbox code="banner.picture" path="picture" />
+		<spring:message code="banner.pictureDetails" var="pictureDetails" />
+			<p><font size="4" color="blue"><jstl:out value="${pictureDetails}"/></font></p>
 		<br />
-		<acme:textarea code="comment.text" path="text" />
-		<br />
-		<acme:textbox code="comment.stars" path="stars" />
-		<br />
 
-	<acme:submit code="comment.save" name="save" />
+	<acme:submit code="banner.save" name="save" />
 
-	<acme:cancel code="comment.cancel" url="welcome/index.do" />
+	<acme:cancel code="banner.cancel" url="banner/list.do" />
 </form:form>

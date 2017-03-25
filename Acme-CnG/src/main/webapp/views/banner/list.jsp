@@ -41,6 +41,12 @@
 	</display:column>
 	
 	<display:column>
+		<jstl:if test="${row.active != true }">
+			<acme:cancel url="banner/activeBanner.do?bannerId=${row.id}" code="banner.activeButton"/>
+		</jstl:if>
+	</display:column>
+	
+	<display:column>
 		<acme:cancel url="banner/edit.do?bannerId=${row.id}" code="banner.edit"/>
 	</display:column>
 	
@@ -49,3 +55,20 @@
 	</display:column>
 	
 </display:table>
+<jstl:if test="${editError != null}">
+	<br/>
+	<spring:message code="${editError}" var="editError" />
+	<p><font size="4" color="red"><jstl:out value="${editError}"/></font></p>
+</jstl:if>
+<jstl:if test="${deleteError != null}">
+	<br/>
+	<spring:message code="${deleteError}" var="deleteError" />
+	<p><font size="4" color="red"><jstl:out value="${deleteError}"/></font></p>
+</jstl:if>
+<jstl:if test="${activeBannerError != null}">
+	<br/>
+	<spring:message code="${activeBannerError}" var="activeBannerError" />
+	<p><font size="4" color="red"><jstl:out value="${activeBannerError}"/></font></p>
+</jstl:if>
+<br/>
+<acme:cancel url="banner/create.do?" code="banner.create"/>

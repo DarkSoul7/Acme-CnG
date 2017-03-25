@@ -36,7 +36,7 @@ public class BannerController extends AbstractController {
 	//List
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list() {
+	public ModelAndView list(@RequestParam(required = false) final String activeBannerError, @RequestParam(required = false) final String editError, @RequestParam(required = false) final String deleteError) {
 		final ModelAndView result;
 
 		final Collection<Banner> banners = this.bannerService.findAll();
@@ -44,19 +44,21 @@ public class BannerController extends AbstractController {
 		result = new ModelAndView("banner/list");
 		result.addObject("banners", banners);
 		result.addObject("RequestURI", "banner/list.do");
+		result.addObject("editError", editError);
+		result.addObject("deleteError", deleteError);
+		result.addObject("activeBannerError", activeBannerError);
 
 		return result;
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create(@RequestParam(required = false) final String editError, @RequestParam(required = false) final String deleteError) {
+	public ModelAndView create() {
 		ModelAndView result;
 
 		final Banner banner = this.bannerService.create();
 
 		result = this.createEditModelAndView(banner);
-		result.addObject("editError", editError);
-		result.addObject("deleteError", deleteError);
+
 		return result;
 	}
 
@@ -70,7 +72,7 @@ public class BannerController extends AbstractController {
 			try {
 
 				this.bannerService.save(banner);
-				result = new ModelAndView("redirect:/list.do");
+				result = new ModelAndView("redirect:/banner/list.do");
 
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(banner, "banner.save.error");
@@ -86,7 +88,6 @@ public class BannerController extends AbstractController {
 			final Banner banner = this.bannerService.findOne(bannerId);
 			Assert.notNull(banner);
 			result = this.createEditModelAndView(banner);
-			result = new ModelAndView("redirect:/banner/list.do");
 
 		} catch (final Throwable e) {
 			result = new ModelAndView("redirect:/banner/list.do");
@@ -109,6 +110,24 @@ public class BannerController extends AbstractController {
 			result = new ModelAndView("redirect:/banner/list.do");
 			result.addObject("deleteError", "banner.delete.error");
 		}
+		return result;
+	}
+
+	//Active a banner
+
+	@RequestMapping(value = "/activeBanner", method = RequestMethod.GET)
+	public ModelAndView activeBanner(@RequestParam final int bannerId) {
+		ModelAndView result;
+
+		try {
+			final Banner banner = this.bannerService.findOne(bannerId);
+			this.bannerService.activeBanner(banner);
+			result = new ModelAndView("redirect:/banner/list.do");
+		} catch (final Throwable e) {
+			result = new ModelAndView("redirect:/banner/list.do");
+			result.addObject("activeBannerError", "banner.active.error");
+		}
+
 		return result;
 	}
 

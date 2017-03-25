@@ -15,5 +15,19 @@
 		<put-attribute name="body" value="/views/banner/list.jsp" />
 	</definition>
 	
+	<definition name="banner/create" extends="master.page">	
+		<put-attribute name="title" value="Crear anuncio" />
+		<put-attribute name="body" value="/views/banner/register.jsp" />
+	</definition>
+	
+	<definition name="banner/edit" extends="master.page">	
+		<put-attribute name="title" value="Editar anuncio" />
+		<put-attribute name="body" value="/views/banner/register.jsp" />
+	</definition>
+	
+	<definition name="banner/save" extends="master.page">	
+		<put-attribute name="title" value="Guardar anuncio" />
+		<put-attribute name="body" value="/views/banner/register.jsp" />
+	</definition>
 
 </tiles-definitions>
