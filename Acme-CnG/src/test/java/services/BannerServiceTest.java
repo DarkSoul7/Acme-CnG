@@ -88,13 +88,13 @@ public class BannerServiceTest extends AbstractTest {
 		final Object testingData[][] = {
 			//Actor, banner id, Expected exception
 			{
-				"admin", 74, null
+				"admin", 79, null
 			}, {
-				"customer", 74, IllegalArgumentException.class
+				"customer", 79, IllegalArgumentException.class
 			}, {
-				null, 74, IllegalArgumentException.class
+				null, 79, IllegalArgumentException.class
 			}, {
-				"admin", 73, IllegalArgumentException.class
+				"admin", 78, IllegalArgumentException.class
 			}
 		};
 
@@ -120,37 +120,4 @@ public class BannerServiceTest extends AbstractTest {
 		this.checkExceptions(expectedException, caught);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void activeBannerNegativeTestA() {
-		this.unauthenticate();
-		final Banner banner = this.bannerService.findOne(74);
-		this.bannerService.activeBanner(banner);
-		Assert.isTrue(banner.getActive() == true);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void activeBannerNegativeTestB() {
-		this.authenticate("customer1");
-		final Banner banner = this.bannerService.findOne(74);
-		this.bannerService.activeBanner(banner);
-		Assert.isTrue(banner.getActive() == true);
-		this.unauthenticate();
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void activeBannerNegativeTestC() {
-		this.authenticate("admin");
-		final Banner banner = this.bannerService.findOne(100);
-		this.bannerService.activeBanner(banner);
-		Assert.isTrue(banner.getActive() == true);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void activeBannerNegativeTestD() {
-		this.authenticate("admin");
-		final Banner banner = this.bannerService.findOne(73);
-		this.bannerService.activeBanner(banner);
-		Assert.isTrue(banner.getActive() == true);
-		this.unauthenticate();
-	}
 }

@@ -110,7 +110,7 @@ public class RequestServiceTest extends AbstractTest {
 		try {
 			this.authenticate(principal);
 
-			final Collection<Request> request = this.requestService.findRequestKeyWord("viaje");
+			final Collection<RequestForm> request = this.requestService.findRequestKeyWord("viaje");
 			Assert.notNull(request);
 
 		} catch (final Throwable oops) {

@@ -13,12 +13,12 @@ import domain.Message;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Integer> {
 
-	@Query("select m from Message m where m.sender.id = ?1 and m.original = true") 
+	@Query("select m from Message m where m.sender.id = ?1 and m.original = true")
 	public Collection<Message> findAllSentByActor(int actorId);
 
 	@Query("select m from Message m where m.receiver.id = ?1 and m.original = false")
 	public Collection<Message> findAllReceivedByActor(int actorId);
- 
+
 	// Dashboard
 
 	/**
@@ -37,7 +37,7 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
 	 * Número medio de mensajes enviados por actores
 	 **/
 	@Query("select avg(a.sentMessages.size) from Actor a")
-	public Integer getAverageNumberOfSentMessagesPerActor();
+	public double getAverageNumberOfSentMessagesPerActor();
 
 	/**
 	 * Número mínimo de mensajes recibidos por actores
@@ -55,7 +55,7 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
 	 * Número medio de mensajes recibidos por actores
 	 **/
 	@Query("select avg(a.receivedMessages.size) from Actor a")
-	public Integer getAverageNumberOfReceivedMessagesPerActor();
+	public double getAverageNumberOfReceivedMessagesPerActor();
 
 	/**
 	 * Actores con más mensajes enviados

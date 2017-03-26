@@ -20,6 +20,16 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
+<security:authorize access="hasRole('CUSTOMER')">
+	<form action="offer/searchWord.do" method="post">
+
+		<label> <spring:message code="offer.keyWord" />
+		</label> <input type="text" name="word" /> <input type="submit"
+			name="searchWord" value="<spring:message code="keyWord.filter"/>" />
+
+	</form>
+</security:authorize>
+
 <display:table name="offersForms" id="row" requestURI="${RequestURI}"
 	pagesize="5">
 
@@ -94,7 +104,7 @@
 					code="offer.request" />
 			</jstl:if>
 		</display:column>
-		
+
 		<display:column>
 			<jstl:if test="${row.customer.id == customerId}">
 				<acme:cancel
@@ -102,7 +112,16 @@
 					code="offer.application" />
 			</jstl:if>
 		</display:column>
-		
+
+	</security:authorize>
+
+	<security:authorize access="hasRole('ADMINISTRATOR')">
+		<display:column>
+			<jstl:if test="${!row.banned}">
+				<acme:cancel url="offer/ban.do?idOffer=${row.id}"
+					code="offer.banned" />
+			</jstl:if>
+		</display:column>
 	</security:authorize>
 
 </display:table>
