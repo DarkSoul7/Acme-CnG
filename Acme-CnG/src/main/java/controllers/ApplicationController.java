@@ -29,11 +29,17 @@ public class ApplicationController extends AbstractController {
 	@RequestMapping(value = "/request", method = RequestMethod.GET)
 	public ModelAndView register(@Valid int announcementId, @Valid String announcementType) {
 		ModelAndView result;
-		if ("OFFER".equals(announcementType.toUpperCase()) || "REQUEST".equals(announcementType.toUpperCase())) {
+		if ("OFFER".equals(announcementType.toUpperCase())) {
 			Application application = applicationService.create(announcementId, announcementType);
 			applicationService.save(application);
+			result = new ModelAndView("redirect:/offer/list.do");
+		}else if("REQUEST".equals(announcementType.toUpperCase())){
+			Application application = applicationService.create(announcementId, announcementType);
+			applicationService.save(application);
+			result = new ModelAndView("redirect:/request/list.do");
+		}else{
+			result = new ModelAndView("redirect:/welcome/index.do");
 		}
-		result = new ModelAndView("redirect:/offer/list.do");
 
 		return result;
 	}

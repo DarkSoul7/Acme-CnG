@@ -94,7 +94,7 @@
 					code="offer.request" />
 			</jstl:if>
 		</display:column>
-		
+
 		<display:column>
 			<jstl:if test="${row.customer.id == customerId}">
 				<acme:cancel
@@ -102,7 +102,16 @@
 					code="offer.application" />
 			</jstl:if>
 		</display:column>
-		
+
+	</security:authorize>
+
+	<security:authorize access="hasRole('ADMINISTRATOR')">
+		<display:column>
+			<jstl:if test="${!row.banned}">
+				<acme:cancel url="offer/ban.do?idOffer=${row.id}"
+					code="offer.banned" />
+			</jstl:if>
+		</display:column>
 	</security:authorize>
 
 </display:table>
