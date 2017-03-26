@@ -22,14 +22,14 @@ import services.RequestService;
 
 @Controller
 @RequestMapping("/request")
-public class RequestController extends AbstractController{
+public class RequestController extends AbstractController {
 
 	@Autowired
 	private RequestService requestService;
-	
+
 	@Autowired
 	private ActorService actorService;
-	
+
 	@Autowired
 	private AnnouncementService announcementService;
 
@@ -38,28 +38,28 @@ public class RequestController extends AbstractController{
 	public RequestController() {
 		super();
 	}
-	
+
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		ModelAndView result;
 		Collection<RequestForm> requestForms = requestService.findRequestWithApplication();
 		Actor actor = actorService.findByPrincipal();
 		result = new ModelAndView("request/list");
-		
+
 		Authority customerAuthority = new Authority();
 		customerAuthority.setAuthority(Authority.CUSTOMER);
 		int customerId = 0;
 		if (actor.getUserAccount().getAuthorities().contains(customerAuthority)) {
 			customerId = actor.getId();
 		}
-		
+
 		result.addObject("customerId", customerId);
 		result.addObject("requestForms", requestForms);
 		result.addObject("RequestURI", "request/list.do");
 
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/ban", method = RequestMethod.GET)
 	public ModelAndView ban(@Valid int idRequest) {
 		ModelAndView result;
@@ -69,7 +69,29 @@ public class RequestController extends AbstractController{
 
 		return result;
 	}
-	
+
+	// Search by key word
+	@RequestMapping(value = "/searchWord", method = RequestMethod.POST)
+	public ModelAndView searchByKeyWord(@Valid String word) {
+		
+		ModelAndView result;
+		Collection<RequestForm> requestForms = requestService.findRequestKeyWord(word);
+		Actor actor = actorService.findByPrincipal();
+		result = new ModelAndView("request/list");
+
+		Authority customerAuthority = new Authority();
+		customerAuthority.setAuthority(Authority.CUSTOMER);
+		int customerId = 0;
+		if (actor.getUserAccount().getAuthorities().contains(customerAuthority)) {
+			customerId = actor.getId();
+		}
+
+		result.addObject("customerId", customerId);
+		result.addObject("requestForms", requestForms);
+		result.addObject("RequestURI", "request/list.do");
+
+		return result;
+	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public ModelAndView register() {
@@ -79,7 +101,7 @@ public class RequestController extends AbstractController{
 
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/register", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid RequestForm requestForm, BindingResult binding) {
 		ModelAndView result = new ModelAndView();

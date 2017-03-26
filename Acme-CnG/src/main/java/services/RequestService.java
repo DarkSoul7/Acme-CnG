@@ -74,9 +74,33 @@ public class RequestService {
 	}
 
 	//Other business methods
-	public Collection<Request> findRequestKeyWord(final String keyWord) {
-		this.customerService.findByPrincipal();
-		return this.requestRepository.findRequestKeyWord(keyWord);
+	public Collection<RequestForm> findRequestKeyWord(final String keyWord) {
+		Collection<RequestForm> result = new ArrayList<RequestForm>();
+		Actor actor = actorService.findByPrincipal();
+		Authority customerAuthority = new Authority();
+
+		customerAuthority.setAuthority(Authority.CUSTOMER);
+
+		if (actor.getUserAccount().getAuthorities().contains(customerAuthority)) {
+			result = this.findRequestKeyWordWithoutApplications(keyWord);
+			result.addAll(this.findRequestKeyWordIAppliedOrMine(keyWord));
+		} else {
+			throw new IllegalAccessError();
+		}
+
+		return result;
+	}
+	
+	public Collection<RequestForm> findRequestKeyWordWithoutApplications(String keyWord) {
+		Customer principal = customerService.findByPrincipal();
+
+		return this.requestRepository.findRequestKeyWordWithoutApplications(principal.getId(), keyWord);
+	}
+
+	public Collection<RequestForm> findRequestKeyWordIAppliedOrMine(String keyWord) {
+		Customer principal = customerService.findByPrincipal();
+
+		return this.requestRepository.findRequestKeyWordIAppliedOrMine(principal.getId(), keyWord);
 	}
 	
 	public Collection<RequestForm> getRequestsWithoutApplications() {

@@ -16,6 +16,7 @@ import domain.Actor;
 import domain.Customer;
 import domain.Offer;
 import form.OfferForm;
+import form.RequestForm;
 
 @Service
 @Transactional
@@ -74,9 +75,33 @@ public class OfferService {
 
 	// Other business methods
 
-	public Collection<Offer> findOfferKeyWord(final String keyWord) {
-		this.customerService.findByPrincipal();
-		return this.offerRepository.findOfferKeyWord(keyWord);
+	public Collection<OfferForm> findOfferKeyWord(final String keyWord) {
+		Collection<OfferForm> result = new ArrayList<OfferForm>();
+		Actor actor = actorService.findByPrincipal();
+		Authority customerAuthority = new Authority();
+
+		customerAuthority.setAuthority(Authority.CUSTOMER);
+
+		if (actor.getUserAccount().getAuthorities().contains(customerAuthority)) {
+			result = this.findOfferKeyWordWithoutApplications(keyWord);
+			result.addAll(this.findOfferKeyWordIAppliedOrMine(keyWord));
+		} else {
+			throw new IllegalAccessError();
+		}
+
+		return result;
+	}
+	
+	public Collection<OfferForm> findOfferKeyWordWithoutApplications(String keyWord) {
+		Customer principal = customerService.findByPrincipal();
+
+		return this.offerRepository.findOfferKeyWordWithoutApplications(principal.getId(), keyWord);
+	}
+
+	public Collection<OfferForm> findOfferKeyWordIAppliedOrMine(String keyWord) {
+		Customer principal = customerService.findByPrincipal();
+
+		return this.offerRepository.findOfferKeyWordIAppliedOrMine(principal.getId(), keyWord);
 	}
 
 	public Collection<OfferForm> getOffersWithoutApplications() {

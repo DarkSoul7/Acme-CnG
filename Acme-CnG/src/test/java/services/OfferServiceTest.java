@@ -112,7 +112,7 @@ public class OfferServiceTest extends AbstractTest {
 		try {
 			this.authenticate(principal);
 
-			final Collection<Offer> offers = this.offerService.findOfferKeyWord("viaje");
+			final Collection<OfferForm> offers = this.offerService.findOfferKeyWord("viaje");
 			Assert.notNull(offers);
 
 		} catch (final Throwable oops) {

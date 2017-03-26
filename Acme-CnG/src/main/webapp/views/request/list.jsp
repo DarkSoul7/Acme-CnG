@@ -20,6 +20,16 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
+<security:authorize access="hasRole('CUSTOMER')">
+	<form action="request/searchWord.do" method="post">
+
+		<label> <spring:message code="request.keyWord" />
+		</label> <input type="text" name="word" /> <input type="submit"
+			name="searchWord" value="<spring:message code="keyWord.filter"/>" />
+
+	</form>
+</security:authorize>
+
 <display:table name="requestForms" id="row" requestURI="${RequestURI}"
 	pagesize="5">
 
