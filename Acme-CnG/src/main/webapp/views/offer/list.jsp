@@ -20,8 +20,7 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<display:table name="offersForms" id="row" requestURI="${RequestURI}"
-	pagesize="5">
+<display:table name="offersForms" id="row" requestURI="${RequestURI}" pagesize="5">
 
 	<spring:message code="offer.title" var="title" />
 	<display:column property="title" title="${title}" />

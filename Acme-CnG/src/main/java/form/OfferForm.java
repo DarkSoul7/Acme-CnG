@@ -17,6 +17,7 @@ import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import domain.Offer;
 import domain.Place;
 
 public class OfferForm {
@@ -24,6 +25,18 @@ public class OfferForm {
 	//Constructor
 	public OfferForm() {
 		super();
+	}
+
+	public OfferForm(final Offer offer, final String containsApplication) {
+		super();
+		this.id = offer.getId();
+		this.title = offer.getTitle();
+		this.description = offer.getDescription();
+		this.moment = offer.getMoment();
+		this.banned = offer.getBanned();
+		this.originPlace = offer.getOriginPlace();
+		this.destinationPlace = offer.getDestinationPlace();
+		this.containsApplication = Boolean.valueOf(containsApplication);
 	}
 
 
@@ -35,7 +48,7 @@ public class OfferForm {
 	private Boolean	banned;
 	private Place	originPlace;
 	private Place	destinationPlace;
-	private Boolean containsApplication;
+	private Boolean	containsApplication;
 
 
 	//Getter & setter
@@ -114,10 +127,8 @@ public class OfferForm {
 		return containsApplication;
 	}
 
-	public void setContainsApplication(Boolean containsApplication) {
+	public void setContainsApplication(final Boolean containsApplication) {
 		this.containsApplication = containsApplication;
 	}
-	
-	
 
 }
