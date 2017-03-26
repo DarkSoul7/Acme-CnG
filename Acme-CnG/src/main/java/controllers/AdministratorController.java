@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ApplicationService;
 import services.CommentService;
 import services.CustomerService;
+import services.MessageService;
 import services.OfferService;
 import services.RequestService;
 import domain.Actor;
@@ -46,6 +47,9 @@ public class AdministratorController extends AbstractController {
 
 	@Autowired
 	private CommentService		comentService;
+
+	@Autowired
+	private MessageService		messageService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -106,6 +110,36 @@ public class AdministratorController extends AbstractController {
 		result.addObject("actorsWhoHavePostThe10PercentMessages", actorsWhoHavePostThe10PercentMessages);
 
 		result.addObject("RequestURI", "administrator/dashboardB.do");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/dashboardA", method = RequestMethod.GET)
+	public ModelAndView dashboardA() {
+		ModelAndView result;
+
+		final int getMinimumNumberOfSentMessagesPerActor = this.messageService.getMinimumNumberOfSentMessagesPerActor();
+		final int getMaximumNumberOfSentMessagesPerActor = this.messageService.getMaximumNumberOfSentMessagesPerActor();
+		final double getAverageNumberOfSentMessagesPerActor = this.messageService.getAverageNumberOfSentMessagesPerActor();
+
+		final int getMinimumNumberOfReceivedMessagesPerActor = this.messageService.getMinimumNumberOfReceivedMessagesPerActor();
+		final int getMaximumNumberOfReceivedMessagesPerActor = this.messageService.getMaximumNumberOfReceivedMessagesPerActor();
+		final double getAverageNumberOfReceivedMessagesPerActor = this.messageService.getAverageNumberOfReceivedMessagesPerActor();
+
+		final Collection<Actor> getActorsWhoHaveSentMoreMessages = this.messageService.getActorsWhoHaveSentMoreMessages();
+
+		final Collection<Actor> getActorsWhoHaveReceivedMoreMessages = this.messageService.getActorsWhoHaveReceivedMoreMessages();
+
+		result = new ModelAndView("administrator/dashboardA");
+		result.addObject("getMinimumNumberOfSentMessagesPerActor", getMinimumNumberOfSentMessagesPerActor);
+		result.addObject("getMaximumNumberOfSentMessagesPerActor", getMaximumNumberOfSentMessagesPerActor);
+		result.addObject("getAverageNumberOfSentMessagesPerActor", getAverageNumberOfSentMessagesPerActor);
+		result.addObject("getMinimumNumberOfReceivedMessagesPerActor", getMinimumNumberOfReceivedMessagesPerActor);
+		result.addObject("getMaximumNumberOfReceivedMessagesPerActor", getMaximumNumberOfReceivedMessagesPerActor);
+		result.addObject("getAverageNumberOfReceivedMessagesPerActor", getAverageNumberOfReceivedMessagesPerActor);
+		result.addObject("getActorsWhoHaveSentMoreMessages", getActorsWhoHaveSentMoreMessages);
+		result.addObject("getActorsWhoHaveReceivedMoreMessages", getActorsWhoHaveReceivedMoreMessages);
+		result.addObject("RequestURI", "administrator/dashboardA.do");
 
 		return result;
 	}

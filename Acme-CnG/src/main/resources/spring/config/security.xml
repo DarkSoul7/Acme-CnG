@@ -59,9 +59,6 @@
 		<!-- CUSTOMER -->
 		<security:intercept-url pattern="/customer/register.do" access="isAnonymous()" /> 
 		
-		<!-- DASHBOARD -->
-		<security:intercept-url pattern="/administrator/dashboardC.do" access="hasRole('ADMINISTRATOR')" /> 
-		
 		<!-- OFFER -->
 		<security:intercept-url pattern="/offer/register.do" access="hasRole('CUSTOMER')" /> 
 		<security:intercept-url pattern="/offer/list.do" access="isAuthenticated()" />

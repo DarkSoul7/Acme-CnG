@@ -115,12 +115,9 @@ public class MessageService {
 		return result;
 	}
 
-	public Integer getAverageNumberOfSentMessagesPerActor() {
-		Integer result = null;
+	public double getAverageNumberOfSentMessagesPerActor() {
 
-		result = this.messageRepository.getAverageNumberOfSentMessagesPerActor();
-
-		return result;
+		return this.messageRepository.getAverageNumberOfSentMessagesPerActor();
 	}
 
 	public Integer getMinimumNumberOfReceivedMessagesPerActor() {
@@ -139,12 +136,8 @@ public class MessageService {
 		return result;
 	}
 
-	public Integer getAverageNumberOfReceivedMessagesPerActor() {
-		Integer result = null;
-
-		result = this.messageRepository.getAverageNumberOfReceivedMessagesPerActor();
-
-		return result;
+	public double getAverageNumberOfReceivedMessagesPerActor() {
+		return this.messageRepository.getAverageNumberOfReceivedMessagesPerActor();
 	}
 
 	public Collection<Actor> getActorsWhoHaveSentMoreMessages() {
