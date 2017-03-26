@@ -10,6 +10,8 @@
 
 package controllers;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,7 @@ import services.ApplicationService;
 import services.CustomerService;
 import services.OfferService;
 import services.RequestService;
+import domain.Customer;
 
 @Controller
 @RequestMapping("/administrator")
@@ -60,8 +63,20 @@ public class AdministratorController extends AbstractController {
 
 		final double applicationAvg = this.applicationService.avgApplicationsPerAnnouncement();
 
-		//		final double moreApplicationCustomer = this.customerService.
+		final Collection<Customer> moreApplicationAcceptedCustomer = this.customerService.getCustomerWithMoreAcceptedApplications();
 
-		return null;
+		final Collection<Customer> moreApplicationDeniedCustomer = this.customerService.getCustomerWithMoreDeniedApplications();
+
+		result = new ModelAndView("administrator/dashboardC");
+		result.addObject("offerAvg", offerAvg);
+		result.addObject("requestAvg", requestAvg);
+		result.addObject("offersAvgPerCustomer", offersAvgPerCustomer);
+		result.addObject("requestAvgPerCustomer", requestAvgPerCustomer);
+		result.addObject("applicationAvg", applicationAvg);
+		result.addObject("moreApplicationAcceptedCustomer", moreApplicationAcceptedCustomer);
+		result.addObject("moreApplicationDeniedCustomer", moreApplicationDeniedCustomer);
+		result.addObject("RequestURI", "administrator/dashboardC.do");
+
+		return result;
 	}
 }

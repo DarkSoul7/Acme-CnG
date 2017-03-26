@@ -152,14 +152,14 @@ public class CustomerService {
 	}
 
 	//DASHBOARD
-	public Collection<Customer> getCustomerWithMoreAcceptedRequest() {
+	public Collection<Customer> getCustomerWithMoreAcceptedApplications() {
 		Assert.notNull(this.administratorService.findByPrincipal());
-		return this.customerRepository.getCustomerWithMoreAcceptedRequest();
+		return this.customerRepository.getCustomerWithMoreAcceptedApplications();
 	}
 
-	public Collection<Customer> getCustomerWithMoreDeniedRequest() {
+	public Collection<Customer> getCustomerWithMoreDeniedApplications() {
 		Assert.notNull(this.administratorService.findByPrincipal());
-		return this.customerRepository.getCustomerWithMoreDeniedRequest();
+		return this.customerRepository.getCustomerWithMoreDeniedApplications();
 	}
 
 }

@@ -585,7 +585,7 @@
 	</bean>
 	
 	<bean id="application6" class="domain.Application">
-		<property name="status" value="PENDING" />
+		<property name="status" value="DENIED" />
 		<property name="announcementId" value="71" />
 		<property name="announcementType" value="Request" />
 		<property name="customer" ref="customer2" />
