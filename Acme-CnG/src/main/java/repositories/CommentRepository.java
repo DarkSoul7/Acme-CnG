@@ -21,8 +21,6 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
 	//Dashboard
 
-	//C1
-	//	@Query("")
 	//B1 a)
 	// Average number of comments per actor
 	@Query("select count(c)*1.0/(select count(a) from Actor a) from Comment c where c.commentableType = 'Customer' or c.commentableType = 'Administrator'")

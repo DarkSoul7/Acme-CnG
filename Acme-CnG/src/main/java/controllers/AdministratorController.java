@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ApplicationService;
+import services.CommentService;
 import services.CustomerService;
 import services.OfferService;
 import services.RequestService;
+import domain.Actor;
 import domain.Customer;
 
 @Controller
@@ -41,6 +43,9 @@ public class AdministratorController extends AbstractController {
 
 	@Autowired
 	private CustomerService		customerService;
+
+	@Autowired
+	private CommentService		comentService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -76,6 +81,31 @@ public class AdministratorController extends AbstractController {
 		result.addObject("moreApplicationAcceptedCustomer", moreApplicationAcceptedCustomer);
 		result.addObject("moreApplicationDeniedCustomer", moreApplicationDeniedCustomer);
 		result.addObject("RequestURI", "administrator/dashboardC.do");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/dashboardB", method = RequestMethod.GET)
+	public ModelAndView dashboardB() {
+		ModelAndView result;
+
+		final double commentsPerActor = this.comentService.commentsPerActor();
+		final double commentsPerOffer = this.comentService.commentsPerOffer();
+		final double commentsPerRequest = this.comentService.commentsPerRequest();
+
+		final double avgCommentsPerActor = this.comentService.avgCommentsPerActor();
+
+		final Collection<Actor> actorsWhoHavePostThe10PercentMessages = this.comentService.actorsWhoHavePostThe10PercentMessages();
+
+		result = new ModelAndView("administrator/dashboardB");
+
+		result.addObject("commentsPerActor", commentsPerActor);
+		result.addObject("commentsPerOffer", commentsPerOffer);
+		result.addObject("commentsPerRequest", commentsPerRequest);
+		result.addObject("avgCommentsPerActor", avgCommentsPerActor);
+		result.addObject("actorsWhoHavePostThe10PercentMessages", actorsWhoHavePostThe10PercentMessages);
+
+		result.addObject("RequestURI", "administrator/dashboardB.do");
 
 		return result;
 	}

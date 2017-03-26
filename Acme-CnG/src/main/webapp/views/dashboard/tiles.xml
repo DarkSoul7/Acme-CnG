@@ -20,5 +20,10 @@
 		<put-attribute name="title" value="Dashboard level C" />
 		<put-attribute name="body" value="/views/dashboard/dashboardC.jsp" />
 	</definition>
+	
+	<definition name="administrator/dashboardB" extends="master.page">
+		<put-attribute name="title" value="Estadísticas nivel B" />
+		<put-attribute name="body" value="/views/dashboard/dashboardB.jsp" />
+	</definition>
 		
 </tiles-definitions>
