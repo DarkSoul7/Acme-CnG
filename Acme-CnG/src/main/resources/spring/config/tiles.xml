@@ -32,6 +32,7 @@
 		<value>/views/request/tiles.xml</value>
 		<value>/views/actor/tiles.xml</value>
 		<value>/views/comment/tiles.xml</value>
+		<value>/views/application/tiles.xml</value>
 	</util:list>
 
 </beans>

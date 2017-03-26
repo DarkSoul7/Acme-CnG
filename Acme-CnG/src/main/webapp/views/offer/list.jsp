@@ -20,7 +20,8 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<display:table name="offersForms" id="row" requestURI="${RequestURI}" pagesize="5">
+<display:table name="offersForms" id="row" requestURI="${RequestURI}"
+	pagesize="5">
 
 	<spring:message code="offer.title" var="title" />
 	<display:column property="title" title="${title}" />
@@ -60,23 +61,48 @@
 		var="destinationPlaceGPSLatitude" />
 	<display:column property="destinationPlace.gpsCoordinates.longitude"
 		title="${destinationPlaceGPSLatitude}" />
-	
-	<display:column>
-		<acme:cancel url="comment/showComments.do?id=${row.id}" 
-		code="actor.showComment"/>
-	</display:column>
 
 	<display:column>
-		<acme:cancel url="comment/createCommentOffer.do?offerId=${row.id}"
-			code="actor.comment" />
+		<acme:cancel url="comment/showComments.do?id=${row.id}"
+			code="actor.showComment" />
 	</display:column>
-	
-	<display:column>
-		<jstl:if test="${!row.containsApplication}">
-			<acme:cancel
-				url="application/request.do?announcementId=${row.id}&announcementType=OFFER"
-				code="offer.request" />
+
+	<spring:message code="offer.status" var="status" />
+	<display:column title="${status}">
+		<jstl:if test="${!row.banned}">
+			<spring:message code="offer.banned.false" var="no" />
+			<jstl:out value="${no}"></jstl:out>
 		</jstl:if>
+
+		<jstl:if test="${row.banned}">
+			<spring:message code="offer.banned.true" var="yes" />
+			<jstl:out value="${yes}"></jstl:out>
+		</jstl:if>
+
 	</display:column>
+
+	<security:authorize access="hasRole('CUSTOMER')">
+		<display:column>
+			<acme:cancel url="comment/createCommentOffer.do?offerId=${row.id}"
+				code="actor.comment" />
+		</display:column>
+
+		<display:column>
+			<jstl:if test="${!row.containsApplication}">
+				<acme:cancel
+					url="application/request.do?announcementId=${row.id}&announcementType=OFFER"
+					code="offer.request" />
+			</jstl:if>
+		</display:column>
+		
+		<display:column>
+			<jstl:if test="${row.customer.id == customerId}">
+				<acme:cancel
+					url="application/listByAnnouncement.do?announcementId=${row.id}&announcementType=OFFER"
+					code="offer.application" />
+			</jstl:if>
+		</display:column>
+		
+	</security:authorize>
 
 </display:table>
