@@ -61,11 +61,11 @@
 		
 		<!-- OFFER -->
 		<security:intercept-url pattern="/offer/register.do" access="hasRole('CUSTOMER')" /> 
-		<security:intercept-url pattern="/offer/list.do" access="hasRole('CUSTOMER')" />
+		<security:intercept-url pattern="/offer/list.do" access="isAuthenticated()" />
 		
 		<!-- REQUEST -->
 		<security:intercept-url pattern="/request/register.do" access="hasRole('CUSTOMER')" />
-		<security:intercept-url pattern="/request/list.do" access="hasRole('CUSTOMER')" /> 
+		<security:intercept-url pattern="/request/list.do" access="isAuthenticated()" /> 
 		
 		<!-- COMMENT -->
 		<security:intercept-url pattern="/comment/createCommentActor.do" access="isAuthenticated()" />

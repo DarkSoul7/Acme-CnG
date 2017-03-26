@@ -32,8 +32,9 @@
 				</ul></li>
 		</security:authorize>
 		<security:authorize access="hasRole('ADMINISTRATOR')">
-			<li><a href="comment/list.do"><spring:message code="master.page.list.comment" /></a></li>
 			<li><a href="banner/list.do"><spring:message code="master.page.list.banner" /></a></li>
+			<li><a href="offer/list.do"><spring:message code="master.page.customer.announcement.offer.list" /></a></li>
+			<li><a href="request/list.do"><spring:message code="master.page.customer.announcement.request.list" /></a></li>
 		</security:authorize>
 
 		<security:authorize access="hasRole('CUSTOMER')">

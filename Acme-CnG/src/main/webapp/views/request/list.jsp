@@ -51,6 +51,10 @@
 	<display:column property="destinationPlace.gpsCoordinates.longitude" title="${destinationPlaceGPSLatitude}" />
 
 	<display:column>
+		<acme:cancel url="comment/showComments.do?id=${row.id}" code="actor.showComment"/>
+	</display:column>
+	
+	<display:column>
 		<acme:cancel url="comment/createCommentRequest.do?requestId=${row.id}" code="actor.comment"/>
 	</display:column>
 	

@@ -60,13 +60,17 @@
 		var="destinationPlaceGPSLatitude" />
 	<display:column property="destinationPlace.gpsCoordinates.longitude"
 		title="${destinationPlaceGPSLatitude}" />
+	
+	<display:column>
+		<acme:cancel url="comment/showComments.do?id=${row.id}" 
+		code="actor.showComment"/>
+	</display:column>
 
 	<display:column>
 		<acme:cancel url="comment/createCommentOffer.do?offerId=${row.id}"
 			code="actor.comment" />
 	</display:column>
-
-
+	
 	<display:column>
 		<jstl:if test="${!row.containsApplication}">
 			<acme:cancel
