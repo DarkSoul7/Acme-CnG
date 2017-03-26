@@ -3,7 +3,6 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,13 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 
+import repositories.OfferRepository;
+import security.Authority;
 import domain.Actor;
-import domain.Application;
 import domain.Customer;
 import domain.Offer;
 import form.OfferForm;
-import repositories.OfferRepository;
-import security.Authority;
 
 @Service
 @Transactional
@@ -26,13 +24,17 @@ public class OfferService {
 	// Managed repository
 
 	@Autowired
-	private OfferRepository offerRepository;
+	private OfferRepository			offerRepository;
 
 	@Autowired
-	private CustomerService customerService;
+	private CustomerService			customerService;
 
 	@Autowired
-	private ActorService actorService;
+	private ActorService			actorService;
+
+	@Autowired
+	private AdministratorService	administratorService;
+
 
 	// Supported services
 
@@ -75,6 +77,24 @@ public class OfferService {
 	public Collection<Offer> findOfferKeyWord(final String keyWord) {
 		this.customerService.findByPrincipal();
 		return this.offerRepository.findOfferKeyWord(keyWord);
+	}
+
+	public Collection<OfferForm> getOffersWithoutApplications() {
+		Customer principal = customerService.findByPrincipal();
+
+		return this.offerRepository.getOffersWithoutApplications(principal.getId());
+	}
+
+	public Collection<OfferForm> getOffersIAppliedOrMine() {
+		Customer principal = customerService.findByPrincipal();
+
+		return this.offerRepository.getOffersIAppliedOrMine(principal.getId());
+	}
+
+	public Collection<OfferForm> findAllForms() {
+		administratorService.findByPrincipal();
+
+		return this.offerRepository.findAllForms();
 	}
 
 	/***
@@ -125,91 +145,19 @@ public class OfferService {
 	public Collection<OfferForm> findOfferWithApplication() {
 		Collection<OfferForm> result = new ArrayList<OfferForm>();
 		Actor actor = actorService.findByPrincipal();
-		Collection<Offer> offers = this.findAll();
+		Authority adminAuthority = new Authority();
+		Authority customerAuthority = new Authority();
 
-		Collection<String> authorities = new ArrayList<String>();
+		adminAuthority.setAuthority(Authority.ADMINISTRATOR);
+		customerAuthority.setAuthority(Authority.CUSTOMER);
 
-		for (Authority a : actor.getUserAccount().getAuthorities()) {
-			authorities.add(a.getAuthority());
-		}
-
-		if (authorities.contains(Authority.ADMINISTRATOR)) {
-			for (Offer o : offers) {
-				OfferForm offerForm = new OfferForm();
-				offerForm = mapTo(o);
-				offerForm.setContainsApplication(true);
-				result.add(offerForm);
-			}
-		} else if (authorities.contains(Authority.CUSTOMER)) {
-			Customer customer = customerService.findByPrincipal();
-
-			if (customer.getApplications().size() > 0) {
-				for (Offer o : offers) {
-					OfferForm offerForm = new OfferForm();
-					Boolean find = false;
-					for (Application a : customer.getApplications()) {
-						if (o.getId() == a.getAnnouncementId()) {
-							offerForm = mapTo(o);
-							offerForm.setContainsApplication(true);
-							find = true;
-
-							if (o.getMoment().after(new Date())) {
-								if (o.getBanned()) {
-									if (o.getCustomer().getId() == customer.getId()) {
-										result.add(offerForm);
-									}
-								} else {
-									result.add(offerForm);
-								}
-							}
-
-						}
-					}
-					if (!find) {
-						if (o.getMoment().after(new Date())) {
-							if (o.getBanned()) {
-								if (o.getCustomer().getId() == customer.getId()) {
-									offerForm = mapTo(o);
-									offerForm.setContainsApplication(true);
-									result.add(offerForm);
-								}
-							} else {
-								offerForm = mapTo(o);
-								offerForm.setContainsApplication(false);
-								result.add(offerForm);
-							}
-						}
-
-					}
-				}
-			} else {
-				for (Offer o : offers) {
-					OfferForm offerForm = new OfferForm();
-					offerForm = mapTo(o);
-					if (o.getMoment().after(new Date())) {
-						if (o.getBanned()) {
-							if (o.getCustomer().getId() == customer.getId()) {
-								offerForm.setContainsApplication(true);
-								result.add(offerForm);
-							}
-						}else{
-							if (o.getCustomer().getId() == customer.getId()) {
-								offerForm.setContainsApplication(true);
-							}else{
-								offerForm.setContainsApplication(false);
-							}
-							
-							result.add(offerForm);
-						}
-
-					} else {
-						if (o.getCustomer().getId() == customer.getId()) {
-							offerForm.setContainsApplication(true);
-							result.add(offerForm);
-						}
-					}
-				}
-			}
+		if (actor.getUserAccount().getAuthorities().contains(adminAuthority)) {
+			result = this.findAllForms();
+		} else if (actor.getUserAccount().getAuthorities().contains(customerAuthority)) {
+			result = this.getOffersWithoutApplications();
+			result.addAll(this.getOffersIAppliedOrMine());
+		} else {
+			throw new IllegalAccessError();
 		}
 
 		return result;
@@ -224,7 +172,7 @@ public class OfferService {
 		return this.offerRepository.avgOfferPerCustomer();
 	}
 
-	public OfferForm mapTo(Offer offer) {
+	public OfferForm mapTo(final Offer offer) {
 		OfferForm result = new OfferForm();
 		result.setBanned(offer.getBanned());
 		result.setDescription(offer.getDescription());

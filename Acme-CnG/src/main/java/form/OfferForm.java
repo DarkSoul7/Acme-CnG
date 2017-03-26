@@ -17,28 +17,42 @@ import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import domain.Customer;
+import domain.Offer;
 import domain.Place;
 
 public class OfferForm {
 
-	//Constructor
+	// Attributes
+	private int id;
+	private String title;
+	private String description;
+	private Date moment;
+	private Boolean banned;
+	private Place originPlace;
+	private Place destinationPlace;
+	private Boolean containsApplication;
+	private Customer customer;
+
+	// Constructor
 	public OfferForm() {
 		super();
 	}
 
+	public OfferForm(final Offer offer, final String containsApplication) {
+		super();
+		this.id = offer.getId();
+		this.title = offer.getTitle();
+		this.description = offer.getDescription();
+		this.moment = offer.getMoment();
+		this.banned = offer.getBanned();
+		this.originPlace = offer.getOriginPlace();
+		this.destinationPlace = offer.getDestinationPlace();
+		this.containsApplication = Boolean.valueOf(containsApplication);
+		this.customer = offer.getCustomer();
+	}
 
-	//Attributes
-	private int		id;
-	private String	title;
-	private String	description;
-	private Date	moment;
-	private Boolean	banned;
-	private Place	originPlace;
-	private Place	destinationPlace;
-	private Boolean containsApplication;
-
-
-	//Getter & setter
+	// Getter & setter
 
 	public int getId() {
 		return this.id;
@@ -53,6 +67,7 @@ public class OfferForm {
 	public String getTitle() {
 		return this.title;
 	}
+
 	public void setTitle(final String title) {
 		this.title = title;
 	}
@@ -62,6 +77,7 @@ public class OfferForm {
 	public String getDescription() {
 		return this.description;
 	}
+
 	public void setDescription(final String description) {
 		this.description = description;
 	}
@@ -72,6 +88,7 @@ public class OfferForm {
 	public Date getMoment() {
 		return this.moment;
 	}
+
 	public void setMoment(final Date moment) {
 		this.moment = moment;
 	}
@@ -80,32 +97,33 @@ public class OfferForm {
 	public Boolean getBanned() {
 		return this.banned;
 	}
+
 	public void setBanned(final Boolean banned) {
 		this.banned = banned;
 	}
 
 	@Valid
 	@Embedded
-	@AttributeOverrides({
-		@AttributeOverride(name = "address", column = @Column(name = "originAddress")), @AttributeOverride(name = "gpsCoordinates.latitude", column = @Column(name = "originLatitude")),
-		@AttributeOverride(name = "gpsCoordinates.longitude", column = @Column(name = "originLongitude"))
-	})
+	@AttributeOverrides({ @AttributeOverride(name = "address", column = @Column(name = "originAddress")),
+			@AttributeOverride(name = "gpsCoordinates.latitude", column = @Column(name = "originLatitude")),
+			@AttributeOverride(name = "gpsCoordinates.longitude", column = @Column(name = "originLongitude")) })
 	public Place getOriginPlace() {
 		return this.originPlace;
 	}
+
 	public void setOriginPlace(final Place originPlace) {
 		this.originPlace = originPlace;
 	}
 
 	@Valid
 	@Embedded
-	@AttributeOverrides({
-		@AttributeOverride(name = "address", column = @Column(name = "destinationAddress")), @AttributeOverride(name = "gpsCoordinates.latitude", column = @Column(name = "destinationLatitude")),
-		@AttributeOverride(name = "gpsCoordinates.longitude", column = @Column(name = "destinationLongitude"))
-	})
+	@AttributeOverrides({ @AttributeOverride(name = "address", column = @Column(name = "destinationAddress")),
+			@AttributeOverride(name = "gpsCoordinates.latitude", column = @Column(name = "destinationLatitude")),
+			@AttributeOverride(name = "gpsCoordinates.longitude", column = @Column(name = "destinationLongitude")) })
 	public Place getDestinationPlace() {
 		return this.destinationPlace;
 	}
+
 	public void setDestinationPlace(final Place destinationPlace) {
 		this.destinationPlace = destinationPlace;
 	}
@@ -114,10 +132,16 @@ public class OfferForm {
 		return containsApplication;
 	}
 
-	public void setContainsApplication(Boolean containsApplication) {
+	public void setContainsApplication(final Boolean containsApplication) {
 		this.containsApplication = containsApplication;
 	}
-	
-	
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
 
 }

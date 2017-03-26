@@ -61,11 +61,13 @@
 		
 		<!-- OFFER -->
 		<security:intercept-url pattern="/offer/register.do" access="hasRole('CUSTOMER')" /> 
-		<security:intercept-url pattern="/offer/list.do" access="hasRole('CUSTOMER')" />
+		<security:intercept-url pattern="/offer/list.do" access="isAuthenticated()" />
+		<security:intercept-url pattern="/offer/ban.do" access="hasRole('ADMINISTRATOR')" />
 		
 		<!-- REQUEST -->
 		<security:intercept-url pattern="/request/register.do" access="hasRole('CUSTOMER')" />
-		<security:intercept-url pattern="/request/list.do" access="hasRole('CUSTOMER')" /> 
+		<security:intercept-url pattern="/request/list.do" access="isAuthenticated()" /> 
+		<security:intercept-url pattern="/request/ban.do" access="hasRole('ADMINISTRATOR')" /> 
 		
 		<!-- COMMENT -->
 		<security:intercept-url pattern="/comment/createCommentActor.do" access="isAuthenticated()" />
@@ -87,6 +89,12 @@
 		<security:intercept-url pattern="/message/sentMessages.do" access="isAuthenticated()" />
 		<security:intercept-url pattern="/message/receivedMessages.do" access="isAuthenticated()" />
 		<security:intercept-url pattern="/message/showMessage.do" access="isAuthenticated()" />
+		
+		<!-- APPLICATION -->
+		<security:intercept-url pattern="/application/request.do" access="hasRole('CUSTOMER')" />
+		<security:intercept-url pattern="/application/listByAnnouncement.do" access="hasRole('CUSTOMER')" />
+		<security:intercept-url pattern="/application/accepted.do" access="hasRole('CUSTOMER')" />
+		<security:intercept-url pattern="/application/denied.do" access="hasRole('CUSTOMER')" />
 	
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />
 

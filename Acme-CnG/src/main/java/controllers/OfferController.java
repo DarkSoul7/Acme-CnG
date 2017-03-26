@@ -11,9 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.Customer;
+import domain.Actor;
+import domain.Announcement;
 import domain.Offer;
 import form.OfferForm;
+import security.Authority;
+import services.ActorService;
+import services.AnnouncementService;
 import services.CustomerService;
 import services.OfferService;
 
@@ -26,6 +30,12 @@ public class OfferController extends AbstractController {
 	
 	@Autowired
 	private CustomerService customerService;
+	
+	@Autowired
+	private ActorService actorService;
+	
+	@Autowired
+	private AnnouncementService announcementService;
 
 	// Constructors -----------------------------------------------------------
 
@@ -37,10 +47,29 @@ public class OfferController extends AbstractController {
 	public ModelAndView list() {
 		ModelAndView result;
 		Collection<OfferForm> offersForms = offerService.findOfferWithApplication();
-		
+		Actor actor = actorService.findByPrincipal();
 		result = new ModelAndView("offer/list");
+		
+		Authority customerAuthority = new Authority();
+		customerAuthority.setAuthority(Authority.CUSTOMER);
+		int customerId = 0;
+		if (actor.getUserAccount().getAuthorities().contains(customerAuthority)) {
+			customerId = actor.getId();
+		}
+		
+		result.addObject("customerId", customerId);
 		result.addObject("offersForms", offersForms);
 		result.addObject("RequestURI", "offer/list.do");
+
+		return result;
+	}
+	
+	@RequestMapping(value = "/ban", method = RequestMethod.GET)
+	public ModelAndView ban(@Valid int idOffer) {
+		ModelAndView result;
+		Announcement announcement = announcementService.findOne(idOffer);
+		announcementService.banAnnouncement(announcement);
+		result = new ModelAndView("redirect:/offer/list.do");
 
 		return result;
 	}

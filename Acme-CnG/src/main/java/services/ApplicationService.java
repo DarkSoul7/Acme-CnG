@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import repositories.ApplicationRepository;
 import domain.Announcement;
 import domain.Application;
 import domain.Customer;
 import domain.Offer;
 import domain.Request;
 import domain.Status;
-import repositories.ApplicationRepository;
 
 @Service
 @Transactional
@@ -74,7 +74,7 @@ public class ApplicationService {
 		Offer offer = null;
 
 		//No se permite una aplicación de un customer a su propia oferta/petición 
-		if (application.getId() == 0){
+		if (application.getId() == 0)
 			if ("OFFER".equals(application.getAnnouncementType().toUpperCase())) {
 				offer = this.offerService.findOne(application.getAnnouncementId());
 				Assert.isTrue(!offer.getCustomer().equals(customer));
@@ -83,7 +83,6 @@ public class ApplicationService {
 				Assert.notNull(request);
 				Assert.isTrue(!request.getCustomer().equals(customer));
 			}
-		}
 		Application result;
 		result = this.applicationRepository.save(application);
 		return result;
@@ -112,16 +111,15 @@ public class ApplicationService {
 
 		this.save(application);
 	}
-	
-	public Collection<Application> findByAnnouncement(int idAnnouncement, String announcementType){
+
+	public Collection<Application> findByAnnouncement(final int idAnnouncement, final String announcementType) {
 		Collection<Application> result = new ArrayList<Application>();
-		
-		result = applicationRepository.findByAnnouncement(idAnnouncement, announcementType.toUpperCase());
-		
+
+		result = this.applicationRepository.findByAnnouncement(idAnnouncement, announcementType.toUpperCase());
+
 		return result;
 	}
 
-	
 	//Dashboard
 
 	public double avgApplicationsPerAnnouncement() {
