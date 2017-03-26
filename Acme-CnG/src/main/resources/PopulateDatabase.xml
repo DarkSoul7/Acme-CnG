@@ -138,7 +138,7 @@
 		</property>
 		<property name="receivedMessages">
 			<list>
-				<ref bean="copiedMessage4" />
+				<ref bean="copiedMessage4" /> 
 				<ref bean="copiedMessage5" />
 			</list>
 		</property>

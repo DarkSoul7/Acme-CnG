@@ -44,7 +44,7 @@ public class MessageService {
 		return messageForm;
 	}
 
-	// Este método no debe usarse nunca
+	// Este método no debe usarse nunca 
 	public Collection<Message> findAll() {
 		throw new IllegalArgumentException();
 	}

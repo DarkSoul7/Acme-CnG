@@ -13,7 +13,7 @@ import domain.Message;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Integer> {
 
-	@Query("select m from Message m where m.sender.id = ?1 and m.original = true")
+	@Query("select m from Message m where m.sender.id = ?1 and m.original = true") 
 	public Collection<Message> findAllSentByActor(int actorId);
 
 	@Query("select m from Message m where m.receiver.id = ?1 and m.original = false")
