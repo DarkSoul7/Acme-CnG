@@ -9,8 +9,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<display:table name="messages" id="row" requestURI="${requestURI}"
-	pagesize="5">
+<display:table name="messages" id="row" requestURI="${requestURI}" pagesize="5">
 
 	<spring:message code="message.title" var="title" />
 	<display:column property="title" title="${title}" />
@@ -29,7 +28,12 @@
 	
 	<spring:message code="message.sender" var="sender" />
 	<display:column title="${sender}">
-		<jstl:out value="${row.sender.fullName}" />
+		<jstl:out value="${row.sender.fullName} (${row.sender.userAccount.username})" />
+	</display:column>
+	
+	<spring:message code="message.receiver" var="receiver" />
+	<display:column title="${receiver}">
+		<jstl:out value="${row.receiver.fullName} (${row.receiver.userAccount.username})" />
 	</display:column>
 	
 	<display:column>
@@ -39,9 +43,11 @@
 	</display:column>
 	
 	<display:column>
-		<input type="button" name="message.deleteButton"
-				value="<spring:message code="message.delete" />"
-				onclick="javascript: confirmDeletion('${cookie.language.value}', 'message/delete.do?messageId=${row.id}&url=${requestURI}')" />
+		<jstl:if test="${row.childMessage == null}">
+			<input type="button" name="message.deleteButton"
+					value="<spring:message code="message.delete" />"
+					onclick="javascript: confirmDeletion('${cookie.language.value}', 'message/delete.do?messageId=${row.id}&url=${requestURI}')" />
+		</jstl:if>
 	</display:column>
 	
 </display:table>

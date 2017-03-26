@@ -108,7 +108,7 @@
 		</property>
 		<property name="receivedMessages">
 			<list>
-				<ref bean="message1" />
+				<ref bean="copiedMessage1" />
 			</list>
 		</property>
 		<property name="comments">
@@ -138,8 +138,8 @@
 		</property>
 		<property name="receivedMessages">
 			<list>
-				<ref bean="message4" />
-				<ref bean="message5" />
+				<ref bean="copiedMessage4" />
+				<ref bean="copiedMessage5" />
 			</list>
 		</property>
 		<property name="comments">
@@ -169,7 +169,7 @@
 		</property>
 		<property name="receivedMessages">
 			<list>
-				<ref bean="message2" />
+				<ref bean="copiedMessage2" />
 			</list>
 		</property>
 		<property name="comments">
@@ -193,6 +193,17 @@
 		<property name="text" value="En primer lugar quiero comunicarle..." />
 		<property name="moment" value="03/13/2017 18:00" />
 		<property name="attachments" value="http://www.acme.com/attachments/attachment1" />
+		<property name="original" value="true" />
+		<property name="sender" ref="administrator" />
+		<property name="receiver" ref="customer1" />
+	</bean>
+	
+	<bean id="copiedMessage1" class="domain.Message">
+		<property name="title" value="Muy importante" />
+		<property name="text" value="En primer lugar quiero comunicarle..." />
+		<property name="moment" value="03/13/2017 18:00" />
+		<property name="attachments" value="http://www.acme.com/attachments/attachment1" />
+		<property name="original" value="false" />
 		<property name="sender" ref="administrator" />
 		<property name="receiver" ref="customer1" />
 	</bean>
@@ -202,6 +213,17 @@
 		<property name="text" value="En primer lugar quiero comunicarle..." />
 		<property name="moment" value="03/12/2017 15:20" />
 		<property name="attachments" value="http://www.acme.com/attachments/attachment2,http://www.acme.com/attachments/attachment3" />
+		<property name="original" value="true" />
+		<property name="sender" ref="customer1" />
+		<property name="receiver" ref="customer3" />
+	</bean>
+	
+	<bean id="copiedMessage2" class="domain.Message">
+		<property name="title" value="Muy importante" />
+		<property name="text" value="En primer lugar quiero comunicarle..." />
+		<property name="moment" value="03/12/2017 15:20" />
+		<property name="attachments" value="http://www.acme.com/attachments/attachment2,http://www.acme.com/attachments/attachment3" />
+		<property name="original" value="false" />
 		<property name="sender" ref="customer1" />
 		<property name="receiver" ref="customer3" />
 	</bean>
@@ -211,6 +233,17 @@
 		<property name="text" value="En primer lugar quiero comunicarle..." />
 		<property name="moment" value="02/28/2017 02:48" />
 		<property name="attachments" value="http://www.acme.com/attachments/attachment4" />
+		<property name="original" value="true" />
+		<property name="sender" ref="customer2" />
+		<property name="receiver" ref="administrator" />
+	</bean>
+	
+	<bean id="copiedMessage3" class="domain.Message">
+		<property name="title" value="Muy importante" />
+		<property name="text" value="En primer lugar quiero comunicarle..." />
+		<property name="moment" value="02/28/2017 02:48" />
+		<property name="attachments" value="http://www.acme.com/attachments/attachment4" />
+		<property name="original" value="false" />
 		<property name="sender" ref="customer2" />
 		<property name="receiver" ref="administrator" />
 	</bean>
@@ -220,6 +253,17 @@
 		<property name="text" value="En primer lugar quiero comunicarle..." />
 		<property name="moment" value="01/01/2017 00:00" />
 		<property name="attachments" value="http://www.acme.com/attachments/attachment5,http://www.acme.com/attachments/attachment6" />
+		<property name="original" value="true" />
+		<property name="sender" ref="customer3" />
+		<property name="receiver" ref="customer2" />
+	</bean>
+	
+	<bean id="copiedMessage4" class="domain.Message">
+		<property name="title" value="Muy importante" />
+		<property name="text" value="En primer lugar quiero comunicarle..." />
+		<property name="moment" value="01/01/2017 00:00" />
+		<property name="attachments" value="http://www.acme.com/attachments/attachment5,http://www.acme.com/attachments/attachment6" />
+		<property name="original" value="false" />
 		<property name="sender" ref="customer3" />
 		<property name="receiver" ref="customer2" />
 	</bean>
@@ -229,6 +273,17 @@
 		<property name="text" value="En primer lugar quiero comunicarle..." />
 		<property name="moment" value="02/14/2017 14:00" />
 		<property name="attachments" value="http://www.acme.com/attachments/attachment7,http://www.acme.com/attachments/attachment8" />
+		<property name="original" value="true" />
+		<property name="sender" ref="administrator" />
+		<property name="receiver" ref="customer2" />
+	</bean>
+	
+	<bean id="copiedMessage5" class="domain.Message">
+		<property name="title" value="Muy importante" />
+		<property name="text" value="En primer lugar quiero comunicarle..." />
+		<property name="moment" value="02/14/2017 14:00" />
+		<property name="attachments" value="http://www.acme.com/attachments/attachment7,http://www.acme.com/attachments/attachment8" />
+		<property name="original" value="false" />
 		<property name="sender" ref="administrator" />
 		<property name="receiver" ref="customer2" />
 	</bean>

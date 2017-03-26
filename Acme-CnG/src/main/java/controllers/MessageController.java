@@ -51,10 +51,20 @@ public class MessageController extends AbstractController {
 	@RequestMapping(value = "/showMessage", method = RequestMethod.GET)
 	public ModelAndView showMessage(@RequestParam(required = true) final int messageId) {
 		ModelAndView result;
-		Message message = this.messageService.findOne(messageId);
+		Message message;
+		String errorMessage;
+
+		try {
+			message = this.messageService.findOne(messageId);
+			errorMessage = null;
+		} catch (Throwable oops) {
+			message = null;
+			errorMessage = "message.nonAuthorized.error";
+		}
 
 		result = new ModelAndView("message/showMessage");
 		result.addObject("mes", message);
+		result.addObject("message", errorMessage);
 		result.addObject("requestURI", "message/showMessage.do");
 
 		return result;
@@ -62,12 +72,13 @@ public class MessageController extends AbstractController {
 
 	// SentMessages
 	@RequestMapping(value = "/sentMessages", method = RequestMethod.GET)
-	public ModelAndView sentMessages() {
+	public ModelAndView sentMessages(@RequestParam(required = false) final String message) {
 		ModelAndView result;
 		Collection<Message> messages = this.messageService.findAllSentByPrincipal();
 
 		result = new ModelAndView("message/sentMessages");
 		result.addObject("messages", messages);
+		result.addObject("message", message);
 		result.addObject("requestURI", "message/sentMessages.do");
 
 		return result;
@@ -75,12 +86,13 @@ public class MessageController extends AbstractController {
 
 	// ReceivedMessages
 	@RequestMapping(value = "/receivedMessages", method = RequestMethod.GET)
-	public ModelAndView receivedMessages() {
+	public ModelAndView receivedMessages(@RequestParam(required = false) final String message) {
 		ModelAndView result;
 		Collection<Message> messages = this.messageService.findAllReceivedByPrincipal();
 
 		result = new ModelAndView("message/receivedMessages");
 		result.addObject("messages", messages);
+		result.addObject("message", message);
 		result.addObject("requestURI", "message/receivedMessages.do");
 
 		return result;
@@ -101,22 +113,51 @@ public class MessageController extends AbstractController {
 	@RequestMapping(value = "/reply", method = RequestMethod.GET)
 	public ModelAndView reply(@RequestParam(required = true) final int messageId) {
 		ModelAndView result;
-		Message message = this.messageService.findOne(messageId);
-		MessageForm messageForm = this.messageService.toFormObject(message, true);
+		Message message;
+		MessageForm messageForm;
+		String errorMessage;
+		Boolean answerable;
 
-		result = this.createEditModelAndView(messageForm);
+		try {
+			message = this.messageService.findOne(messageId);
+			messageForm = this.messageService.toFormObject(message, true);
+			messageForm.setParentMessageId(message.getId());
+			errorMessage = null;
+			answerable = true;
+		} catch (Throwable oops) {
+			messageForm = messageService.create();
+			errorMessage = "message.nonAuthorizedReply.error";
+			answerable = false;
+		}
+
+		result = this.createEditModelAndView(messageForm, errorMessage);
+		result.addObject("answerable", answerable);
 
 		return result;
 	}
-
 	// Forward
 	@RequestMapping(value = "/forward", method = RequestMethod.GET)
 	public ModelAndView forward(@RequestParam(required = true) final int messageId) {
 		ModelAndView result;
-		Message message = this.messageService.findOne(messageId);
-		MessageForm messageForm = this.messageService.toFormObject(message, false);
+		Message message;
+		MessageForm messageForm;
+		String errorMessage;
+		Boolean answerable;
 
-		result = this.createEditModelAndView(messageForm);
+		try {
+			message = this.messageService.findOne(messageId);
+			messageForm = this.messageService.toFormObject(message, false);
+			messageForm.setParentMessageId(message.getId());
+			errorMessage = null;
+			answerable = true;
+		} catch (Throwable oops) {
+			messageForm = messageService.create();
+			errorMessage = "message.nonAuthorizedForward.error";
+			answerable = false;
+		}
+
+		result = this.createEditModelAndView(messageForm, errorMessage);
+		result.addObject("answerable", answerable);
 
 		return result;
 	}
@@ -127,18 +168,19 @@ public class MessageController extends AbstractController {
 		ModelAndView result = new ModelAndView();
 		Message message;
 
-		if (binding.hasErrors())
+		if (binding.hasErrors()) {
 			result = this.createEditModelAndView(messageForm);
-		else
+		} else {
 			try {
 				message = messageService.reconstruct(messageForm);
 				messageService.save(message);
 				result = new ModelAndView("redirect:/message/sentMessages.do");
 			} catch (IllegalArgumentException e) {
 				result = this.createEditModelAndView(messageForm, "message.attachments.error");
-			} catch (final Throwable oops) {
+			} catch (Throwable oops) {
 				result = this.createEditModelAndView(messageForm, "message.send.error");
 			}
+		}
 
 		return result;
 	}

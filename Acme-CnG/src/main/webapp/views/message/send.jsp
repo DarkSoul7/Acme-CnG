@@ -18,6 +18,7 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <form:form action="${requestURI}" modelAttribute="messageForm">
+	<form:hidden path="parentMessageId"/>
 	
 	<acme:textbox code="message.title" path="title" />
 	<br/>
@@ -31,9 +32,11 @@
 	<acme:select items="${actors}" itemLabel="fullName" code="message.receiver" path="receiver" />
 		
 	<br/>
-		
-	<acme:submit code="message.send" name="save"/>
 	
-	<acme:cancel code="message.cancel" url="welcome/index.do"/>
+	<jstl:if test="${true}">
+		<acme:submit code="message.send" name="save"/>
+	
+		<acme:cancel code="message.cancel" url="welcome/index.do"/>
+	</jstl:if>
 		
 </form:form>

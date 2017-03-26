@@ -7,6 +7,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
@@ -25,6 +26,7 @@ public class Message extends DomainEntity {
 	private String	text;
 	private Date	moment;
 	private String	attachments;
+	private Boolean	original;
 
 
 	//Constructor
@@ -33,7 +35,7 @@ public class Message extends DomainEntity {
 	}
 
 	//Getters and setters
-	
+
 	@NotBlank
 	public String getTitle() {
 		return this.title;
@@ -54,8 +56,8 @@ public class Message extends DomainEntity {
 
 	@Past
 	@NotNull
-	@Temporal(value=TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern="dd/MM/yyyy HH:mm")
+	@Temporal(value = TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	public Date getMoment() {
 		return this.moment;
 	}
@@ -72,11 +74,22 @@ public class Message extends DomainEntity {
 		this.attachments = attachments;
 	}
 
+	@NotNull
+	public Boolean getOriginal() {
+		return original;
+	}
+
+	public void setOriginal(final Boolean original) {
+		this.original = original;
+	}
+
 
 	//RellationShips
 
 	private Actor	sender;
 	private Actor	receiver;
+	private Message	childMessage;
+	private Message	parentMessage;
 
 
 	@Valid
@@ -97,6 +110,31 @@ public class Message extends DomainEntity {
 
 	public void setReceiver(final Actor receiver) {
 		this.receiver = receiver;
+	}
+
+	@Valid
+	@OneToOne(mappedBy = "parentMessage", optional = true)
+	public Message getChildMessage() {
+		return childMessage;
+	}
+
+	public void setChildMessage(final Message childMessage) {
+		this.childMessage = childMessage;
+	}
+
+	@Valid
+	@OneToOne(optional = true)
+	public Message getParentMessage() {
+		return parentMessage;
+	}
+
+	public void setParentMessage(final Message parentMessage) {
+		this.parentMessage = parentMessage;
+	}
+
+
+	{
+
 	}
 
 }

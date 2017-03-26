@@ -38,19 +38,31 @@ public class MessageService {
 	}
 
 	public MessageForm create() {
-		final Actor actor = this.actorService.findByPrincipal();
-		Assert.notNull(actor);
+		this.actorService.findByPrincipal();
 		final MessageForm messageForm = new MessageForm();
 
 		return messageForm;
 	}
 
+	// Este método no debe usarse nunca
 	public Collection<Message> findAll() {
-		return this.messageRepository.findAll();
+		throw new IllegalArgumentException();
 	}
 
 	public Message findOne(final int messageId) {
-		return this.messageRepository.findOne(messageId);
+		Message result;
+		Actor principal;
+
+		principal = actorService.findByPrincipal();
+		result = this.messageRepository.findOne(messageId);
+
+		if (result.getOriginal()) {
+			Assert.isTrue(principal.getId() == result.getSender().getId());
+		} else {
+			Assert.isTrue(principal.getId() == result.getReceiver().getId());
+		}
+
+		return result;
 
 	}
 
@@ -59,20 +71,37 @@ public class MessageService {
 		Assert.isTrue(principal.getId() == message.getSender().getId());
 		Assert.notNull(message);
 		Message result;
+		Message copiedMessage;
+
+		copiedMessage = this.cloneMessage(message);
+
+		if (message.getParentMessage() != null) {
+			if (message.getParentMessage().getOriginal()) {
+				Assert.isTrue(principal.getId() == message.getParentMessage().getSender().getId());
+			} else {
+				Assert.isTrue(principal.getId() == message.getParentMessage().getReceiver().getId());
+			}
+		}
 
 		result = this.messageRepository.save(message);
+		this.messageRepository.save(copiedMessage);
+
 		return result;
 	}
 
 	public void delete(final Message message) {
 		final Actor principal = this.actorService.findByPrincipal();
-		Assert.isTrue(principal.getId() == message.getReceiver().getId() || principal.getId() == message.getSender().getId());
+		if (message.getOriginal()) {
+			Assert.isTrue(principal.getId() == message.getSender().getId());
+		} else {
+			Assert.isTrue(principal.getId() == message.getReceiver().getId());
+		}
 
 		this.messageRepository.delete(message);
 	}
 
 	public void delete(final int messageId) {
-		final Message message = this.messageRepository.findOne(messageId);
+		Message message = this.messageRepository.findOne(messageId);
 
 		this.delete(message);
 	}
@@ -93,6 +122,20 @@ public class MessageService {
 		Collection<Message> result = null;
 
 		result = this.messageRepository.findAllReceivedByActor(principal.getId());
+
+		return result;
+	}
+
+	public Message cloneMessage(final Message message) {
+		Message result = new Message();
+
+		result.setTitle(message.getTitle());
+		result.setText(message.getText());
+		result.setAttachments(message.getAttachments());
+		result.setMoment(message.getMoment());
+		result.setOriginal(false);
+		result.setSender(message.getSender());
+		result.setReceiver(message.getReceiver());
 
 		return result;
 	}
@@ -185,6 +228,7 @@ public class MessageService {
 		Message result;
 		Actor principal;
 		String attachments;
+		Message parentMessage;
 
 		principal = this.actorService.findByPrincipal();
 		result = new Message();
@@ -202,19 +246,25 @@ public class MessageService {
 		result.setAttachments(attachments);
 		result.setId(0);
 		result.setVersion(0);
+		result.setOriginal(true);
+
+		if (messageForm.getParentMessageId() != null) {
+			parentMessage = this.findOne(messageForm.getParentMessageId());
+			result.setParentMessage(parentMessage);
+		}
 
 		return result;
 	}
 	private String compruebaEnlaces(final String attachments) {
 		String result;
-		final String delimiter = System.getProperty("line.separator");
-		final String[] aattachments = StringUtils.split(attachments, delimiter);
-		final String[] schemes = {
+		String delimiter = System.getProperty("line.separator");
+		String[] aattachments = StringUtils.split(attachments, delimiter);
+		String[] schemes = {
 			"http", "https"
 		};
-		final UrlValidator urlValidator = new UrlValidator(schemes);
+		UrlValidator urlValidator = new UrlValidator(schemes);
 
-		for (final String attachment : aattachments)
+		for (String attachment : aattachments)
 			if (!urlValidator.isValid(attachment))
 				throw new IllegalArgumentException();
 

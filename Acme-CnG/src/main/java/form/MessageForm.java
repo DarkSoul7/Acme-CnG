@@ -2,6 +2,7 @@
 package form;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -14,6 +15,8 @@ public class MessageForm {
 	private String	title;
 	private String	text;
 	private String	attachments;
+	private Actor	receiver;
+	private Integer	parentMessageId;
 
 
 	//Constructor
@@ -49,12 +52,6 @@ public class MessageForm {
 		this.attachments = attachments;
 	}
 
-
-	//RellationShips
-
-	private Actor	receiver;
-
-
 	@Valid
 	@NotNull
 	public Actor getReceiver() {
@@ -63,6 +60,15 @@ public class MessageForm {
 
 	public void setReceiver(final Actor receiver) {
 		this.receiver = receiver;
+	}
+
+	@Min(0)
+	public Integer getParentMessageId() {
+		return parentMessageId;
+	}
+
+	public void setParentMessageId(final Integer parentMessageId) {
+		this.parentMessageId = parentMessageId;
 	}
 
 }

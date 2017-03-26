@@ -47,10 +47,24 @@
 <textarea disabled="disabled" style="width:50vw; height:20vh; color:black; background-color:white;"><jstl:out value="${mes.text}"></jstl:out></textarea>
 <br/>
 
-<input type="button" name="message.replyButton"
-		value="<spring:message code="message.reply" />"
-		onclick="javascript: window.location.replace('message/reply.do?messageId=${mes.id}')" />
-
-<input type="button" name="message.forwardButton"
-		value="<spring:message code="message.forward" />"
-		onclick="javascript: window.location.replace('message/forward.do?messageId=${mes.id}')" />
+<jstl:if test="${mes != null}">
+	<input type="button" name="replyButton"
+			value="<spring:message code="message.reply" />"
+			onclick="javascript: window.location.replace('message/reply.do?messageId=${mes.id}')" />
+	
+	<input type="button" name="forwardButton"
+			value="<spring:message code="message.forward" />"
+			onclick="javascript: window.location.replace('message/forward.do?messageId=${mes.id}')" />
+	
+	<jstl:if test="${mes.parentMessage != null}">
+		<input type="button" name="parentMessageButton"
+				value="<spring:message code="message.parentMessage" />"
+				onclick="javascript: window.location.replace('message/showMessage.do?messageId=${mes.parentMessage.id}')" />
+	</jstl:if>
+	
+	<jstl:if test="${mes.childMessage != null}">
+		<input type="button" name="childMessageButton"
+				value="<spring:message code="message.childMessage" />"
+				onclick="javascript: window.location.replace('message/showMessage.do?messageId=${mes.childMessage.id}')" />
+	</jstl:if>
+</jstl:if>
