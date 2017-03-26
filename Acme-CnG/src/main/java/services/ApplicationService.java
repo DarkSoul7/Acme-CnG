@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import repositories.ApplicationRepository;
 import domain.Announcement;
 import domain.Application;
 import domain.Customer;
 import domain.Offer;
 import domain.Request;
 import domain.Status;
+import repositories.ApplicationRepository;
 
 @Service
 @Transactional
@@ -73,8 +74,8 @@ public class ApplicationService {
 		Offer offer = null;
 
 		//No se permite una aplicación de un customer a su propia oferta/petición 
-		if (application.getId() == 0)
-			if (application.getAnnouncementType().equals("Offer")) {
+		if (application.getId() == 0){
+			if ("OFFER".equals(application.getAnnouncementType().toUpperCase())) {
 				offer = this.offerService.findOne(application.getAnnouncementId());
 				Assert.isTrue(!offer.getCustomer().equals(customer));
 			} else {
@@ -82,6 +83,7 @@ public class ApplicationService {
 				Assert.notNull(request);
 				Assert.isTrue(!request.getCustomer().equals(customer));
 			}
+		}
 		Application result;
 		result = this.applicationRepository.save(application);
 		return result;
@@ -93,23 +95,10 @@ public class ApplicationService {
 
 	//Other business methods
 
-	public void pendingApplication(final Application application) {
-		Assert.notNull(application);
-		final Announcement announcement = this.announcementService.findOne(application.getAnnouncementId());
-		Assert.notNull(announcement);
-		final Customer customer = this.customerService.findByPrincipal();
-		Assert.isTrue(application.getCustomer().equals(customer));
-		application.setStatus(Status.PENDING);
-
-		this.save(application);
-	}
-	
 	public void acceptApplication(final Application application) {
 		Assert.notNull(application);
 		final Announcement announcement = this.announcementService.findOne(application.getAnnouncementId());
 		Assert.notNull(announcement);
-		final Customer customer = this.customerService.findByPrincipal();
-		Assert.isTrue(application.getCustomer().equals(customer));
 		application.setStatus(Status.ACCEPTED);
 
 		this.save(application);
@@ -119,10 +108,23 @@ public class ApplicationService {
 		Assert.notNull(application);
 		final Announcement announcement = this.announcementService.findOne(application.getAnnouncementId());
 		Assert.notNull(announcement);
-		final Customer customer = this.customerService.findByPrincipal();
-		Assert.isTrue(application.getCustomer().equals(customer));
 		application.setStatus(Status.DENIED);
 
 		this.save(application);
+	}
+	
+	public Collection<Application> findByAnnouncement(int idAnnouncement, String announcementType){
+		Collection<Application> result = new ArrayList<Application>();
+		
+		result = applicationRepository.findByAnnouncement(idAnnouncement, announcementType.toUpperCase());
+		
+		return result;
+	}
+
+	
+	//Dashboard
+
+	public double avgApplicationsPerAnnouncement() {
+		return this.applicationRepository.avgApplicationsPerAnnouncement();
 	}
 }

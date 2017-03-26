@@ -12,8 +12,6 @@ import org.springframework.util.Assert;
 
 import utilities.AbstractTest;
 import domain.Announcement;
-import domain.Offer;
-import domain.Request;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -54,17 +52,17 @@ public class AnnouncementServiceTest extends AbstractTest {
 		final Object testingData[][] = {
 			//Logged actor, announcement id, expected exception
 			{
-				"admin", 46, null
+				"admin", 51, null
 			}, {
-				"admin", 69, null
+				"admin", 74, null
 			}, {
-				"customer", 46, IllegalArgumentException.class
+				"customer", 51, IllegalArgumentException.class
 			}, {
-				null, 69, IllegalArgumentException.class
+				null, 74, IllegalArgumentException.class
 			}, {
-				"admin", 47, IllegalArgumentException.class
+				"admin", 52, IllegalArgumentException.class
 			}, {
-				"admin", 71, IllegalArgumentException.class
+				"admin", 76, IllegalArgumentException.class
 			}
 		};
 
@@ -90,58 +88,4 @@ public class AnnouncementServiceTest extends AbstractTest {
 		this.checkExceptions(expectedException, caught);
 	}
 
-	//Ban a request
-
-	@Test
-	public void banRequestPositiveTest() {
-		this.authenticate("admin");
-		final Request request = this.requestService.findOne(69);
-		this.announcementService.banAnnouncement(request);
-		Assert.isTrue(request.getBanned() == true);
-		this.unauthenticate();
-	}
-
-	//From superClass
-
-	@Test
-	public void banAnnouncementPositiveTest() {
-		this.authenticate("admin");
-		final Announcement announcement = this.announcementService.findOne(72);
-		this.announcementService.banAnnouncement(announcement);
-		Assert.isTrue(announcement.getBanned() == true);
-		this.unauthenticate();
-	}
-
-	// Check an unauthenticated actor cannot ban an announcement
-	@Test(expected = IllegalArgumentException.class)
-	public void banAnnouncementNegativeTest() {
-		this.unauthenticate();
-		final Announcement announcement = this.announcementService.findOne(72);
-		this.announcementService.banAnnouncement(announcement);
-	}
-
-	// Check an unauthenticated actor cannot ban a request
-	@Test(expected = IllegalArgumentException.class)
-	public void banRequestNegativeTest() {
-		this.unauthenticate();
-		final Request request = this.requestService.findOne(72);
-		this.announcementService.banAnnouncement(request);
-	}
-
-	// Check an unauthenticated actor cannot ban an offer
-	@Test(expected = IllegalArgumentException.class)
-	public void banOfferNegativeTest() {
-		this.unauthenticate();
-		final Offer offer = this.offerService.findOne(49);
-		this.announcementService.banAnnouncement(offer);
-	}
-
-	// A banned announcement cannot be re-banned
-	@Test(expected = IllegalArgumentException.class)
-	public void banAnnouncementNegativeTestB() {
-		this.authenticate("admin");
-		final Announcement announcement = this.announcementService.findOne(47);
-		this.announcementService.banAnnouncement(announcement);
-		this.unauthenticate();
-	}
 }

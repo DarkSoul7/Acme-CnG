@@ -127,7 +127,7 @@ public class MessageServiceTest extends AbstractTest {
 	@Test
 	public void deleteMessagePositiveTestA() {
 		this.authenticate("customer1");
-		this.messageService.delete(53);
+		this.messageService.delete(57);
 		final Message message = this.messageService.findOne(53);
 		Assert.isTrue(message == null);
 		this.unauthenticate();
@@ -137,8 +137,8 @@ public class MessageServiceTest extends AbstractTest {
 	@Test
 	public void deleteMessagePositiveTestB() {
 		this.authenticate("customer2");
-		this.messageService.delete(56);
-		final Message message = this.messageService.findOne(56);
+		this.messageService.delete(58);
+		final Message message = this.messageService.findOne(58);
 		Assert.isTrue(message == null);
 		this.unauthenticate();
 	}
@@ -157,7 +157,7 @@ public class MessageServiceTest extends AbstractTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void deleteMessageNegativeTestB() {
 		this.authenticate("customer3");
-		this.messageService.delete(52);
+		this.messageService.delete(57);
 		final Message message = this.messageService.findOne(52);
 		Assert.isTrue(message == null);
 

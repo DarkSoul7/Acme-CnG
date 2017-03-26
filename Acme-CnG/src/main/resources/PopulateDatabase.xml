@@ -554,7 +554,41 @@
 		<property name="announcementId" value="46" />
 		<property name="announcementType" value="Offer" />
 		<property name="customer" ref="customer2" />
-		
+	</bean>
+	
+	<bean id="application2" class="domain.Application">
+		<property name="status" value="ACCEPTED" />
+		<property name="announcementId" value="47" />
+		<property name="announcementType" value="Offer" />
+		<property name="customer" ref="customer2" />
+	</bean>
+	
+	<bean id="application3" class="domain.Application">
+		<property name="status" value="ACCEPTED" />
+		<property name="announcementId" value="49" />
+		<property name="announcementType" value="Offer" />
+		<property name="customer" ref="customer2" />
+	</bean>
+	
+	<bean id="application4" class="domain.Application">
+		<property name="status" value="ACCEPTED" />
+		<property name="announcementId" value="51" />
+		<property name="announcementType" value="Offer" />
+		<property name="customer" ref="customer2" />
+	</bean>
+	
+	<bean id="application5" class="domain.Application">
+		<property name="status" value="PENDING" />
+		<property name="announcementId" value="70" />
+		<property name="announcementType" value="Request" />
+		<property name="customer" ref="customer2" />
+	</bean>
+	
+	<bean id="application6" class="domain.Application">
+		<property name="status" value="PENDING" />
+		<property name="announcementId" value="71" />
+		<property name="announcementType" value="Request" />
+		<property name="customer" ref="customer2" />
 	</bean>
 	
 </beans>
