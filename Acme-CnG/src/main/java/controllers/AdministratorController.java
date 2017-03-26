@@ -48,18 +48,20 @@ public class AdministratorController extends AbstractController {
 
 	//Dashboard C
 
-	@RequestMapping(value="/dashboardC", method=RequestMethod.GET)
-	public ModelAndView dashboardC(){
+	@RequestMapping(value = "/dashboardC", method = RequestMethod.GET)
+	public ModelAndView dashboardC() {
 		final ModelAndView result;
-		
+
 		final double offerAvg = this.offerService.getOfferAvg();
 		final double requestAvg = this.requestService.requestAvg();
-		
+
 		final double offersAvgPerCustomer = this.offerService.avgOfferPerCustomer();
 		final double requestAvgPerCustomer = this.requestService.avgRequestPerCustomer();
-		
+
 		final double applicationAvg = this.applicationService.avgApplicationsPerAnnouncement();
-		
-		final double moreApplicationCustomer = this.customerService.
+
+		//		final double moreApplicationCustomer = this.customerService.
+
+		return null;
 	}
 }
