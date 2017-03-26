@@ -66,11 +66,13 @@
 		<security:intercept-url pattern="/offer/register.do" access="hasRole('CUSTOMER')" /> 
 		<security:intercept-url pattern="/offer/list.do" access="isAuthenticated()" />
 		<security:intercept-url pattern="/offer/ban.do" access="hasRole('ADMINISTRATOR')" />
+		<security:intercept-url pattern="/offer/searchWord.do" access="hasRole('CUSTOMER')" />
 		
 		<!-- REQUEST -->
 		<security:intercept-url pattern="/request/register.do" access="hasRole('CUSTOMER')" />
 		<security:intercept-url pattern="/request/list.do" access="isAuthenticated()" /> 
 		<security:intercept-url pattern="/request/ban.do" access="hasRole('ADMINISTRATOR')" /> 
+		<security:intercept-url pattern="/request/searchWord.do" access="hasRole('CUSTOMER')" /> 
 		
 		<!-- COMMENT -->
 		<security:intercept-url pattern="/comment/createCommentActor.do" access="isAuthenticated()" />
