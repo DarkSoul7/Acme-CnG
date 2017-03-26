@@ -18,7 +18,7 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
 
 	@Query("select m from Message m where m.receiver.id = ?1 and m.original = false")
 	public Collection<Message> findAllReceivedByActor(int actorId);
-
+ 
 	// Dashboard
 
 	/**

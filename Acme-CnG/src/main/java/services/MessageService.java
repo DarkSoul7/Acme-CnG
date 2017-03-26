@@ -40,7 +40,7 @@ public class MessageService {
 	public MessageForm create() {
 		this.actorService.findByPrincipal();
 		final MessageForm messageForm = new MessageForm();
-
+ 
 		return messageForm;
 	}
 

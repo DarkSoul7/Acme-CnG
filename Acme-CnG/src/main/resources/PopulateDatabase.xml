@@ -125,7 +125,7 @@
 			</list>
 		</property>
 	</bean>
-	
+	 
 	<bean id="customer2" class="domain.Customer">
 		<property name="fullName" value="Ismael Gata Dorado" />
 		<property name="phone" value="687153695" />
