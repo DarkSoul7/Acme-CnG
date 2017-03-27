@@ -66,9 +66,12 @@ public class CommentController extends AbstractController {
 	public ModelAndView createCommentActor(@RequestParam final int actorId) {
 		ModelAndView result;
 
-		final Actor actor = this.actorService.findByPrincipal();
-
-		final Comment comment = this.commentService.create(actorId, actor.getUserAccount().getAuthorities().iterator().next().getAuthority());
+		final Actor actor = this.actorService.findOne(actorId);
+		final Comment comment;
+		if (actor.getUserAccount().getAuthorities().iterator().next().getAuthority().equals("ADMINISTRATOR"))
+			comment = this.commentService.create(actorId, "Administrator");
+		else
+			comment = this.commentService.create(actorId, "Customer");
 
 		final CommentForm commentForm = new CommentForm();
 		commentForm.setCommentableId(comment.getCommentableId());
@@ -90,7 +93,8 @@ public class CommentController extends AbstractController {
 		else
 			try {
 				this.commentService.save(comment);
-				result = new ModelAndView("redirect:/welcome/index.do");
+				result = new ModelAndView("redirect:/comment/showComments.do?id=" + comment.getCommentableId());
+				;
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(commentForm, "comment.commit.error");
 			}
@@ -123,7 +127,7 @@ public class CommentController extends AbstractController {
 		else
 			try {
 				this.commentService.save(comment);
-				result = new ModelAndView("redirect:/welcome/index.do");
+				result = new ModelAndView("redirect:/comment/showComments.do?id=" + comment.getCommentableId());
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(commentForm, "comment.commit.error");
 			}
@@ -156,7 +160,7 @@ public class CommentController extends AbstractController {
 		else
 			try {
 				this.commentService.save(comment);
-				result = new ModelAndView("redirect:/welcome/index.do");
+				result = new ModelAndView("redirect:/comment/showComments.do?id=" + comment.getCommentableId());
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(commentForm, "comment.commit.error");
 			}
