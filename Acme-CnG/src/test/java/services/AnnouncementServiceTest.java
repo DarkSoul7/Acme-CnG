@@ -52,17 +52,17 @@ public class AnnouncementServiceTest extends AbstractTest {
 		final Object testingData[][] = {
 			//Logged actor, announcement id, expected exception
 			{
-				"admin", 51, null
+				"admin", 56, null
 			}, {
-				"admin", 74, null
+				"admin", 84, null
 			}, {
-				"customer", 51, IllegalArgumentException.class
+				"customer", 56, IllegalArgumentException.class
 			}, {
-				null, 74, IllegalArgumentException.class
+				null, 84, IllegalArgumentException.class
 			}, {
-				"admin", 52, IllegalArgumentException.class
+				"admin", 57, IllegalArgumentException.class
 			}, {
-				"admin", 76, IllegalArgumentException.class
+				"admin", 86, IllegalArgumentException.class
 			}
 		};
 

@@ -57,19 +57,19 @@ public class CommentServiceTest extends AbstractTest {
 			//Actor, commentable id, commentable type, expected exception
 			{
 				//Comment of customer
-				"customer1", 53, "Customer", null
+				"customer1", 58, "Customer", null
 			}, {
 				//Comment on customer
-				"admin", 53, "Customer", null
+				"admin", 55, "Customer", null
 			}, { //Comment on offer
-				"customer1", 51, "Offer", null
+				"customer1", 56, "Offer", null
 			}, {
 				//Comment on request
-				"customer2", 74, "Request", null
+				"customer2", 87, "Request", null
 			}, {
-				null, 50, "Customer", IllegalArgumentException.class
+				null, 58, "Customer", IllegalArgumentException.class
 			}, {
-				"customer1", 50, "Customer", IllegalArgumentException.class
+				"customer1", 55, "Customer", IllegalArgumentException.class
 			}
 		};
 
@@ -124,13 +124,13 @@ public class CommentServiceTest extends AbstractTest {
 		final Object testingData[][] = {
 			//Actor, comment id, expected exception
 			{
-				"admin", 62, null
+				"admin", 72, null
 			}, {
-				null, 62, IllegalArgumentException.class
+				null, 74, IllegalArgumentException.class
 			}, {
-				"customer1", 66, IllegalArgumentException.class
+				"customer1", 79, IllegalArgumentException.class
 			}, {
-				"admin", 63, IllegalArgumentException.class
+				"admin", 73, IllegalArgumentException.class
 			}
 		};
 

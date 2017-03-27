@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.util.Assert;
 
 import utilities.AbstractTest;
@@ -18,6 +19,7 @@ import domain.Banner;
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
+@TransactionConfiguration(defaultRollback = true)
 public class BannerServiceTest extends AbstractTest {
 
 	// System under test ------------------------------------------------------
@@ -88,13 +90,13 @@ public class BannerServiceTest extends AbstractTest {
 		final Object testingData[][] = {
 			//Actor, banner id, Expected exception
 			{
-				"admin", 79, null
+				"admin", 89, null
 			}, {
-				"customer", 79, IllegalArgumentException.class
+				"customer", 89, IllegalArgumentException.class
 			}, {
-				null, 79, IllegalArgumentException.class
+				null, 89, IllegalArgumentException.class
 			}, {
-				"admin", 78, IllegalArgumentException.class
+				"admin", 89, IllegalArgumentException.class
 			}
 		};
 

@@ -47,17 +47,17 @@ public class ApplicationServiceTest extends AbstractTest {
 		final Object testingData[][] = {
 			//customer, announcement id, announcement type, expected exception
 			{
-				"customer2", 51, "Offer", null
+				"customer2", 56, "Offer", null
 			}, {
-				"customer2", 74, "Request", null
+				"customer2", 84, "Request", null
 			}, {
-				"customer1", 51, "Offer", IllegalArgumentException.class
+				"customer1", 56, "Offer", IllegalArgumentException.class
 			}, {
-				"customer1", 74, "Request", IllegalArgumentException.class
+				"customer1", 84, "Request", IllegalArgumentException.class
 			}, {
-				null, 51, "Offer", IllegalArgumentException.class
+				null, 56, "Offer", IllegalArgumentException.class
 			}, {
-				null, 74, "Request", IllegalArgumentException.class
+				null, 84, "Request", IllegalArgumentException.class
 			}
 		};
 
