@@ -39,12 +39,12 @@ public class CommentForm {
 		return this.text;
 	}
 
-	@Min(0)
-	@Max(5)
 	public void setText(final String text) {
 		this.text = text;
 	}
 
+	@Min(0)
+	@Max(5)
 	public int getStars() {
 		return this.stars;
 	}

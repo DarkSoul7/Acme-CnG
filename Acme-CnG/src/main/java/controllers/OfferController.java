@@ -2,6 +2,7 @@
 package controllers;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.validation.Valid;
 
@@ -48,16 +49,15 @@ public class OfferController extends AbstractController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		ModelAndView result;
-		Collection<OfferForm> offersForms = offerService.findOfferWithApplication();
-		Actor actor = actorService.findByPrincipal();
+		final Collection<OfferForm> offersForms = this.offerService.findOfferWithApplication();
+		final Actor actor = this.actorService.findByPrincipal();
 		result = new ModelAndView("offer/list");
 
-		Authority customerAuthority = new Authority();
+		final Authority customerAuthority = new Authority();
 		customerAuthority.setAuthority(Authority.CUSTOMER);
 		int customerId = 0;
-		if (actor.getUserAccount().getAuthorities().contains(customerAuthority)) {
+		if (actor.getUserAccount().getAuthorities().contains(customerAuthority))
 			customerId = actor.getId();
-		}
 
 		result.addObject("customerId", customerId);
 		result.addObject("offersForms", offersForms);
@@ -69,8 +69,8 @@ public class OfferController extends AbstractController {
 	@RequestMapping(value = "/ban", method = RequestMethod.GET)
 	public ModelAndView ban(@Valid final int idOffer) {
 		ModelAndView result;
-		Announcement announcement = announcementService.findOne(idOffer);
-		announcementService.banAnnouncement(announcement);
+		final Announcement announcement = this.announcementService.findOne(idOffer);
+		this.announcementService.banAnnouncement(announcement);
 		result = new ModelAndView("redirect:/offer/list.do");
 
 		return result;
@@ -81,16 +81,15 @@ public class OfferController extends AbstractController {
 	public ModelAndView searchByKeyWord(@Valid final String word) {
 
 		ModelAndView result;
-		Collection<OfferForm> offersForms = offerService.findOfferKeyWord(word);
-		Actor actor = actorService.findByPrincipal();
+		final Collection<OfferForm> offersForms = this.offerService.findOfferKeyWord(word);
+		final Actor actor = this.actorService.findByPrincipal();
 		result = new ModelAndView("offer/list");
 
-		Authority customerAuthority = new Authority();
+		final Authority customerAuthority = new Authority();
 		customerAuthority.setAuthority(Authority.CUSTOMER);
 		int customerId = 0;
-		if (actor.getUserAccount().getAuthorities().contains(customerAuthority)) {
+		if (actor.getUserAccount().getAuthorities().contains(customerAuthority))
 			customerId = actor.getId();
-		}
 
 		result.addObject("customerId", customerId);
 		result.addObject("offersForms", offersForms);
@@ -102,7 +101,7 @@ public class OfferController extends AbstractController {
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public ModelAndView register() {
 		ModelAndView result;
-		OfferForm offerForm = offerService.create();
+		final OfferForm offerForm = this.offerService.create();
 		result = this.createEditModelAndView(offerForm);
 
 		return result;
@@ -113,25 +112,30 @@ public class OfferController extends AbstractController {
 		ModelAndView result = new ModelAndView();
 		Offer offer;
 
-		offer = offerService.reconstruct(offerForm, binding);
-		if (binding.hasErrors()) {
+		offer = this.offerService.reconstruct(offerForm, binding);
+		if (binding.hasErrors())
 			result = this.createEditModelAndView(offerForm);
-
-		} else {
+		else
 			try {
-				offerService.save(offer);
+				if (offer.getMoment().before(new Date())) {
+					offerForm.setMoment(null);
+					throw new IllegalArgumentException("wrong moment");
+				}
+				this.offerService.save(offer);
 				result = new ModelAndView("redirect:/welcome/index.do");
-			} catch (Throwable oops) {
-				result = this.createEditModelAndView(offerForm, "offer.commit.error");
+			} catch (final Throwable oops) {
+				if (offerForm.getMoment() == null)
+					result = this.createEditModelAndView(offerForm, "offer.commit.errorMoment");
+				else
+					result = this.createEditModelAndView(offerForm, "offer.commit.error");
 			}
-		}
 
 		return result;
 	}
 
 	// Ancillary methods
 	protected ModelAndView createEditModelAndView(final OfferForm offerForm) {
-		ModelAndView result = this.createEditModelAndView(offerForm, null);
+		final ModelAndView result = this.createEditModelAndView(offerForm, null);
 		return result;
 	}
 

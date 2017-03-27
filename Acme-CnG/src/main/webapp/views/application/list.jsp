@@ -27,10 +27,32 @@
 	<display:column property="customer.fullName" title="${customer}" />
 
 	<spring:message code="application.status" var="status" />
-	<display:column property="status" title="${status}" />
+	<display:column title="${status}">
+		<jstl:if test="${row.status == 'PENDING' }">
+			<spring:message code="application.status.pending" var="pending" />
+			<jstl:out value="${pending}"></jstl:out>
+		</jstl:if>
+		<jstl:if test="${row.status == 'ACCEPTED' }">
+			<spring:message code="application.status.accepted" var="accepted" />
+			<jstl:out value="${accepted}"></jstl:out>
+		</jstl:if>
+		<jstl:if test="${row.status == 'DENIED' }">
+			<spring:message code="application.status.denied" var="denied" />
+			<jstl:out value="${denied}"></jstl:out>
+		</jstl:if>
+	</display:column>
 
 	<spring:message code="application.announcementType" var="announcementType" />
-	<display:column property="announcementType" title="${announcementType}" />
+	<display:column title="${announcementType}">
+		<jstl:if test="${row.announcementType == 'OFFER' }">
+			<spring:message code="application.offer" var="offer" />
+			<jstl:out value="${offer}"></jstl:out>
+		</jstl:if>
+		<jstl:if test="${row.announcementType == 'REQUEST' }">
+			<spring:message code="application.request" var="request" />
+			<jstl:out value="${request}"></jstl:out>
+		</jstl:if>
+	</display:column>
 
 	<display:column>
 		<jstl:if test="${row.status == 'PENDING' || row.status == 'DENIED'}">

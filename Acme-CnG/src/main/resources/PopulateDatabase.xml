@@ -295,7 +295,7 @@
 		<property name="text" value="En primer lugar quiero reseñar..." />
 		<property name="moment" value="02/14/2017 14:00" />
 		<property name="stars" value="5" />
-		<property name="commentableId" value="45" />
+		<property name="commentableId" value="55" />
 		<property name="commentableType" value="Customer" />
 		<property name="banned" value="false" />
 		<property name="author" ref="customer3" />
@@ -306,7 +306,7 @@
 		<property name="text" value="Lo peor ha sido..." />
 		<property name="moment" value="01/01/2017 00:00" />
 		<property name="stars" value="1" />
-		<property name="commentableId" value="45" />
+		<property name="commentableId" value="55" />
 		<property name="commentableType" value="Customer" />
 		<property name="banned" value="true" />
 		<property name="author" ref="customer2" />
@@ -317,7 +317,7 @@
 		<property name="text" value="Realmente no ha estado mal porque..." />
 		<property name="moment" value="01/31/2017 00:00" />
 		<property name="stars" value="3" />
-		<property name="commentableId" value="48" />
+		<property name="commentableId" value="58" />
 		<property name="commentableType" value="Customer" />
 		<property name="banned" value="false" />
 		<property name="author" ref="customer1" />
@@ -328,7 +328,7 @@
 		<property name="text" value="No repetiría porque..." />
 		<property name="moment" value="03/13/2017 00:00" />
 		<property name="stars" value="0" />
-		<property name="commentableId" value="50" />
+		<property name="commentableId" value="54" />
 		<property name="commentableType" value="Customer" />
 		<property name="banned" value="true" />
 		<property name="author" ref="customer2" />
@@ -339,7 +339,7 @@
 		<property name="text" value="En primer lugar quiero reseñar..." />
 		<property name="moment" value="02/14/2017 14:00" />
 		<property name="stars" value="5" />
-		<property name="commentableId" value="46" />
+		<property name="commentableId" value="56" />
 		<property name="commentableType" value="Offer" />
 		<property name="banned" value="false" />
 		<property name="author" ref="administrator" />
@@ -350,7 +350,7 @@
 		<property name="text" value="Lo peor ha sido..." />
 		<property name="moment" value="01/01/2017 00:00" />
 		<property name="stars" value="1" />
-		<property name="commentableId" value="46" />
+		<property name="commentableId" value="56" />
 		<property name="commentableType" value="Offer" />
 		<property name="banned" value="false" />
 		<property name="author" ref="customer1" />
@@ -361,7 +361,7 @@
 		<property name="text" value="Realmente no ha estado mal porque..." />
 		<property name="moment" value="01/31/2017 00:00" />
 		<property name="stars" value="3" />
-		<property name="commentableId" value="47" />
+		<property name="commentableId" value="57" />
 		<property name="commentableType" value="Offer" />
 		<property name="banned" value="true" />
 		<property name="author" ref="customer2" />
@@ -372,7 +372,7 @@
 		<property name="text" value="No repetiría porque..." />
 		<property name="moment" value="03/13/2017 00:00" />
 		<property name="stars" value="0" />
-		<property name="commentableId" value="49" />
+		<property name="commentableId" value="59" />
 		<property name="commentableType" value="Offer" />
 		<property name="banned" value="false" />
 		<property name="author" ref="customer3" />
@@ -383,7 +383,7 @@
 		<property name="text" value="En primer lugar quiero reseñar..." />
 		<property name="moment" value="02/14/2017 14:00" />
 		<property name="stars" value="5" />
-		<property name="commentableId" value="69" />
+		<property name="commentableId" value="84" />
 		<property name="commentableType" value="Request" />
 		<property name="banned" value="false" />
 		<property name="author" ref="customer3" />
@@ -394,7 +394,7 @@
 		<property name="text" value="Lo peor ha sido..." />
 		<property name="moment" value="01/01/2017 00:00" />
 		<property name="stars" value="1" />
-		<property name="commentableId" value="69" />
+		<property name="commentableId" value="84" />
 		<property name="commentableType" value="Request" />
 		<property name="banned" value="false" />
 		<property name="author" ref="customer2" />
@@ -405,7 +405,7 @@
 		<property name="text" value="Realmente no ha estado mal porque..." />
 		<property name="moment" value="01/31/2017 00:00" />
 		<property name="stars" value="3" />
-		<property name="commentableId" value="70" />
+		<property name="commentableId" value="86" />
 		<property name="commentableType" value="Request" />
 		<property name="banned" value="false" />
 		<property name="author" ref="customer1" />
@@ -416,7 +416,7 @@
 		<property name="text" value="No repetiría porque..." />
 		<property name="moment" value="03/13/2017 00:00" />
 		<property name="stars" value="0" />
-		<property name="commentableId" value="71" />
+		<property name="commentableId" value="87" />
 		<property name="commentableType" value="Request" />
 		<property name="banned" value="false" />
 		<property name="author" ref="administrator" />
@@ -578,12 +578,12 @@
 	<!-- BANNERS -->
 	
 	<bean id="banner1" class="domain.Banner">
-		<property name="picture" value="http://www.acme.com/banners/banner1.jpg" />
+		<property name="picture" value="http://i68.tinypic.com/mlovo2.png" />
 		<property name="active" value="true" />
 	</bean>
 	
 	<bean id="banner2" class="domain.Banner">
-		<property name="picture" value="http://www.acme.com/banners/banner2.jpg" />
+		<property name="picture" value="http://i68.tinypic.com/npqkr8.png" />
 		<property name="active" value="false" />
 	</bean>
 	

@@ -76,47 +76,46 @@ public class OfferService {
 
 	public Collection<OfferForm> findOfferKeyWord(final String keyWord) {
 		Collection<OfferForm> result = new ArrayList<OfferForm>();
-		Actor actor = actorService.findByPrincipal();
-		Authority customerAuthority = new Authority();
+		final Actor actor = this.actorService.findByPrincipal();
+		final Authority customerAuthority = new Authority();
 
 		customerAuthority.setAuthority(Authority.CUSTOMER);
 
 		if (actor.getUserAccount().getAuthorities().contains(customerAuthority)) {
 			result = this.findOfferKeyWordWithoutApplications(keyWord);
 			result.addAll(this.findOfferKeyWordIAppliedOrMine(keyWord));
-		} else {
+		} else
 			throw new IllegalAccessError();
-		}
 
 		return result;
 	}
 
 	public Collection<OfferForm> findOfferKeyWordWithoutApplications(final String keyWord) {
-		Customer principal = customerService.findByPrincipal();
+		final Customer principal = this.customerService.findByPrincipal();
 
 		return this.offerRepository.findOfferKeyWordWithoutApplications(principal.getId(), keyWord);
 	}
 
 	public Collection<OfferForm> findOfferKeyWordIAppliedOrMine(final String keyWord) {
-		Customer principal = customerService.findByPrincipal();
+		final Customer principal = this.customerService.findByPrincipal();
 
 		return this.offerRepository.findOfferKeyWordIAppliedOrMine(principal.getId(), keyWord);
 	}
 
 	public Collection<OfferForm> getOffersWithoutApplications() {
-		Customer principal = customerService.findByPrincipal();
+		final Customer principal = this.customerService.findByPrincipal();
 
 		return this.offerRepository.getOffersWithoutApplications(principal.getId());
 	}
 
 	public Collection<OfferForm> getOffersIAppliedOrMine() {
-		Customer principal = customerService.findByPrincipal();
+		final Customer principal = this.customerService.findByPrincipal();
 
 		return this.offerRepository.getOffersIAppliedOrMine(principal.getId());
 	}
 
 	public Collection<OfferForm> findAllForms() {
-		administratorService.findByPrincipal();
+		this.administratorService.findByPrincipal();
 
 		return this.offerRepository.findAllForms();
 	}
@@ -168,23 +167,27 @@ public class OfferService {
 
 	public Collection<OfferForm> findOfferWithApplication() {
 		Collection<OfferForm> result = new ArrayList<OfferForm>();
-		Actor actor = actorService.findByPrincipal();
-		Authority adminAuthority = new Authority();
-		Authority customerAuthority = new Authority();
+		final Actor actor = this.actorService.findByPrincipal();
+		final Authority adminAuthority = new Authority();
+		final Authority customerAuthority = new Authority();
 
 		adminAuthority.setAuthority(Authority.ADMINISTRATOR);
 		customerAuthority.setAuthority(Authority.CUSTOMER);
 
-		if (actor.getUserAccount().getAuthorities().contains(adminAuthority)) {
+		if (actor.getUserAccount().getAuthorities().contains(adminAuthority))
 			result = this.findAllForms();
-		} else if (actor.getUserAccount().getAuthorities().contains(customerAuthority)) {
+		else if (actor.getUserAccount().getAuthorities().contains(customerAuthority)) {
 			result = this.getOffersWithoutApplications();
 			result.addAll(this.getOffersIAppliedOrMine());
-		} else {
+		} else
 			throw new IllegalAccessError();
-		}
 
 		return result;
+	}
+
+	public Collection<Offer> getOffersByCustomer(final Actor customer) {
+		Assert.notNull(customer);
+		return this.offerRepository.offersByCustomer(customer.getId());
 	}
 
 	// DASHBOARD
@@ -197,7 +200,7 @@ public class OfferService {
 	}
 
 	public OfferForm mapTo(final Offer offer) {
-		OfferForm result = new OfferForm();
+		final OfferForm result = new OfferForm();
 		result.setBanned(offer.getBanned());
 		result.setDescription(offer.getDescription());
 		result.setDestinationPlace(offer.getDestinationPlace());

@@ -29,6 +29,7 @@
 		<acme:textbox code="offer.description" path="description" />
 		<br />
 		<acme:textbox code="offer.moment" path="moment" />
+		<p><spring:message code="offer.formateDate"/><p/>
 		<br />
 		<fieldset>
 			<legend><spring:message code="offer.originPlace"/></legend>
