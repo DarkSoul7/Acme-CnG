@@ -80,44 +80,126 @@ public class MessageServiceTest extends AbstractTest {
 		this.checkExceptions(expectedException, caught);
 	}
 
-	//Erase his or her messages, which requires previous confirmation.
-	//The message owner try to delete his message
+	/***
+	 * Test cases:
+	 * 1º Good test: actor list his received message and reply to them -> expected: reply done
+	 * 2º Bad test: an unauthenticated actor cannot exchange messages -> expected: IllegalArgumentException
+	 */
 	@Test
-	public void deleteMessagePositiveTestA() {
-		this.authenticate("customer1");
-		this.messageService.delete(57);
-		final Message message = this.messageService.findOne(53);
-		Assert.isTrue(message == null);
-		this.unauthenticate();
+	public void listMessagesAndReplyDriver() {
+		final Object testingData[][] = {
+			//current actor(sender), receiver id, message to reply id, Expected exception
+			{
+				"customer1", 54, 63, null
+			}, {
+				null, 55, 62, IllegalArgumentException.class
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.listMessagesAndReplyTemplate((String) testingData[i][0], (int) testingData[i][1], (int) testingData[i][2], (Class<?>) testingData[i][3]);
 	}
 
-	//The message receiver try to delete his message
+	protected void listMessagesAndReplyTemplate(final String principal, final int receiverId, final int messageId, final Class<?> expectedException) {
+		Class<?> caught = null;
+
+		try {
+			this.authenticate(principal);
+			final MessageForm replyForm = this.messageService.create();
+			replyForm.setParentMessageId(messageId);
+			final Actor actor = this.actorService.findOne(receiverId);
+			replyForm.setReceiver(actor);
+			replyForm.setText("Testing");
+			replyForm.setTitle("Test");
+
+			final Message reply = this.messageService.reconstruct(replyForm);
+			this.messageService.save(reply);
+			this.unauthenticate();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expectedException, caught);
+	}
+
+	/***
+	 * Test cases:
+	 * 1º Good test: actor list his received message and reply to them -> expected: forward done
+	 * 2º Good test: actor list his received message and forward to himself -> expected: forward done
+	 * 3º Bad test: an unauthenticated actor cannot exchange messages -> expected: IllegalArgumentException
+	 */
 	@Test
-	public void deleteMessagePositiveTestB() {
-		this.authenticate("customer2");
-		this.messageService.delete(58);
-		final Message message = this.messageService.findOne(58);
-		Assert.isTrue(message == null);
-		this.unauthenticate();
+	public void listMessagesAndForwardDriver() {
+		final Object testingData[][] = {
+			//current actor(sender), receiver id, message to forward id, Expected exception
+			{
+				"customer1", 54, 63, null
+			}, {
+				"customer1", 55, 63, null
+			}, {
+				null, 55, 62, IllegalArgumentException.class
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.listMessagesAndForwardTemplate((String) testingData[i][0], (int) testingData[i][1], (int) testingData[i][2], (Class<?>) testingData[i][3]);
 	}
 
-	//An unauthenticated actor trying to remove a message
-	@Test(expected = IllegalArgumentException.class)
-	public void deleteMessageNegativeTestA() {
-		this.unauthenticate();
-		this.messageService.delete(53);
-		final Message message = this.messageService.findOne(53);
-		Assert.isTrue(message == null);
+	protected void listMessagesAndForwardTemplate(final String principal, final int receiverId, final int messageId, final Class<?> expectedException) {
+		Class<?> caught = null;
 
+		try {
+			this.authenticate(principal);
+			final Actor receiver = this.actorService.findOne(receiverId);
+			final Message message = this.messageService.findOne(messageId);
+			final Message forwardMessage = this.messageService.cloneMessage(message);
+			forwardMessage.setReceiver(receiver);
+			this.messageService.save(forwardMessage);
+			this.unauthenticate();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expectedException, caught);
 	}
 
-	//An authenticated actor trying to remove a message that is not yours (sender or receiver)
-	@Test(expected = IllegalArgumentException.class)
-	public void deleteMessageNegativeTestB() {
-		this.authenticate("customer3");
-		this.messageService.delete(57);
-		final Message message = this.messageService.findOne(52);
-		Assert.isTrue(message == null);
+	/***
+	 * Test cases:
+	 * 1º Good test -> expected: message deleted
+	 * 2º Bad test: an actor who is not the message owner cannot delete it -> expected: IllegalArgumentException
+	 * 3º Bad test: an unauthenticated actor cannot exchange messages -> expected: IllegalArgumentException
+	 */
+	@Test
+	public void eraseMessagesDriver() {
+		final Object testingData[][] = {
+			//current actor(sender),  message id, Expected exception
+			{
+				"customer1", 64, null
+			}, {
+				"customer1", 62, IllegalArgumentException.class
+			}, {
+				null, 64, IllegalArgumentException.class
+			}
+		};
 
+		for (int i = 0; i < testingData.length; i++)
+			this.eraseMessagesTemplate((String) testingData[i][0], (int) testingData[i][1], (Class<?>) testingData[i][2]);
 	}
+
+	protected void eraseMessagesTemplate(final String principal, final int messageId, final Class<?> expectedException) {
+		Class<?> caught = null;
+
+		try {
+
+			this.authenticate(principal);
+			this.messageService.delete(messageId);
+			this.unauthenticate();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expectedException, caught);
+	}
+
 }
