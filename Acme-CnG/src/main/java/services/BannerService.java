@@ -59,6 +59,7 @@ public class BannerService {
 	}
 
 	public void delete(final Banner banner) {
+		this.administratorService.findByPrincipal();
 		this.bannerRepository.delete(banner);
 	}
 

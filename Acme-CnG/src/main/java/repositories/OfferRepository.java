@@ -31,10 +31,6 @@ public interface OfferRepository extends JpaRepository<Offer, Integer> {
 	@Query("select new form.OfferForm(o,'false') from Offer o)")
 	public Collection<OfferForm> findAllForms();
 
-	//Find offers by customer
-	@Query("select o from Offer o where o.customer.id = 55")
-	public Collection<Offer> offersByCustomer(int customerId);
-
 	//DASHBOARD C1
 	@Query("select count(o)*1.0/(select count(a) from Announcement a) from Offer o")
 	public double offerAvg();

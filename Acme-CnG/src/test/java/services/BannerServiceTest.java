@@ -31,6 +31,14 @@ public class BannerServiceTest extends AbstractTest {
 	// Tests ------------------------------------------------------------------
 
 	/***
+	 * The manage of banner has been selected to pass the 10 use cases coverage test.
+	 * The coverage is around:
+	 * Create and save a banner: 3 use cases
+	 * Edit a banner: 3 use cases
+	 * Delete a banner: 4 use cases
+	 */
+
+	/***
 	 * Create a banner
 	 * Test cases:
 	 * 1º Good test -> expected: banner registered
@@ -78,12 +86,106 @@ public class BannerServiceTest extends AbstractTest {
 	}
 
 	/***
+	 * Edit a banner
+	 * Test cases:
+	 * 1º Good test -> expected: banner edited
+	 * 2º Bad test; A customer cannot edit a banner -> expected: IllegalArgumentException
+	 * 3º Bad test; An unauthenticated actor cannot edit a banner -> expected: IllegalArgumentException
+	 */
+
+	@Test
+	public void editBannerDriver() {
+		final Object testingData[][] = {
+			//Actor, Expected exception
+			{
+				"admin", null
+			}, {
+				"customer", IllegalArgumentException.class
+			}, {
+				null, IllegalArgumentException.class
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.editBannerTemplate((String) testingData[i][0], (Class<?>) testingData[i][1]);
+	}
+
+	protected void editBannerTemplate(final String principal, final Class<?> expectedException) {
+		Class<?> caught = null;
+
+		try {
+			this.authenticate(principal);
+			Banner banner = this.bannerService.findOne(90);
+
+			banner.setActive(false);
+			banner.setPicture("http://www.testing.es");
+
+			banner = this.bannerService.save(banner);
+
+			this.unauthenticate();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expectedException, caught);
+
+	}
+
+	/***
+	 * Edit a banner
+	 * Test cases:
+	 * 1º Good test: deleting an inactive banner -> expected: banner deleted
+	 * 2º Good test: deleting an active banner -> expected: banner deleted
+	 * 3º Bad test; A customer cannot delete a banner -> expected: IllegalArgumentException
+	 * 4º Bad test; An unauthenticated actor cannot delete a banner -> expected: IllegalArgumentException
+	 */
+
+	@Test
+	public void deleteBannerDriver() {
+		final Object testingData[][] = {
+			//Actor, banner id, Expected exception
+			{
+				"admin", 90, null
+			}, {
+				"admin", 88, null
+			}, {
+				"customer", 92, IllegalArgumentException.class
+			}, {
+				null, 91, IllegalArgumentException.class
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.deleteBannerTemplate((String) testingData[i][0], (int) testingData[i][1], (Class<?>) testingData[i][2]);
+	}
+
+	protected void deleteBannerTemplate(final String principal, final int bannerId, final Class<?> expectedException) {
+		Class<?> caught = null;
+
+		try {
+			this.authenticate(principal);
+			final Banner banner = this.bannerService.findOne(bannerId);
+
+			this.bannerService.delete(banner);
+
+			this.unauthenticate();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expectedException, caught);
+
+	}
+
+	/***
 	 * Active a banner
 	 * Test cases:
 	 * 1º Good test -> expected: banner activated
 	 * 2º Bad test; A customer cannot active a banner -> expected: IllegalArgumentException
 	 * 3º Bad test; An unauthenticated actor cannot active a banner -> expected: IllegalArgumentException
-	 * 3º Bad test; An active banner cannot be re-active again -> expected: IllegalArgumentException
+	 * 4º Bad test; An active banner cannot be re-active again -> expected: IllegalArgumentException
 	 */
 	@Test
 	public void activeBannerDriver() {

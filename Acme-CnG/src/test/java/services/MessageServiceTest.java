@@ -32,94 +32,52 @@ public class MessageServiceTest extends AbstractTest {
 	private ActorService	actorService;
 
 
-	/***
-	 * The 10 test cases requested will be under this test class (Message)
-	 */
-
 	// Tests ------------------------------------------------------------------
 
-	//Exchange messages with other actors.
+	/***
+	 * Test cases:
+	 * 1º Good test: actor sending a message to other actor -> expected: message exchanged
+	 * 2º Good test: actor sending a message to himself -> expected: message exchanged
+	 * 3º Bad test: an unauthenticated actor cannot exchange messages -> expected: IllegalArgumentException
+	 */
 	@Test
-	public void exchangeMessagesPositiveTestA() {
-		this.authenticate("customer1");
-		final Actor receiver = this.actorService.findOne(48);
-		final MessageForm messageForm = this.messageService.create();
-		messageForm.setReceiver(receiver);
-		messageForm.setAttachments("http://www.mega-full-1-link-ultraISO.es");
-		messageForm.setText("Test");
-		messageForm.setTitle("Testing");
+	public void exchangeMessagesDriver() {
+		final Object testingData[][] = {
+			//current actor, receiver id, Expected exception
+			{
+				"admin", 58, null
+			}, {
+				"customer1", 55, null
+			}, {
+				null, 58, IllegalArgumentException.class
+			}
+		};
 
-		Message message = this.messageService.reconstruct(messageForm);
-		message = this.messageService.save(message);
-		Assert.isTrue(message.getId() != 0);
-		this.unauthenticate();
+		for (int i = 0; i < testingData.length; i++)
+			this.exchangeMessagesTemplate((String) testingData[i][0], (int) testingData[i][1], (Class<?>) testingData[i][2]);
 	}
 
-	//Sending message to himself
-	@Test
-	public void exchangeMessagesPositiveTestB() {
-		this.authenticate("customer1");
-		final Actor receiver = this.actorService.findByPrincipal();
-		final MessageForm messageForm = this.messageService.create();
-		messageForm.setReceiver(receiver);
-		messageForm.setAttachments("http://www.mega-full-1-link-ultraISO.es");
-		messageForm.setText("Test");
-		messageForm.setTitle("Testing");
+	protected void exchangeMessagesTemplate(final String principal, final int receiverId, final Class<?> expectedException) {
 
-		Message message = this.messageService.reconstruct(messageForm);
-		message = this.messageService.save(message);
-		Assert.isTrue(message.getId() != 0);
-		this.unauthenticate();
-	}
+		Class<?> caught = null;
+		try {
+			this.authenticate(principal);
+			final Actor receiver = this.actorService.findOne(receiverId);
+			final MessageForm messageForm = this.messageService.create();
+			messageForm.setReceiver(receiver);
+			messageForm.setAttachments("http://www.mega-full-1-link-ultraISO.es");
+			messageForm.setText("Test");
+			messageForm.setTitle("Testing");
 
-	//Unauthenticated actor cannot send messages
-	@Test(expected = IllegalArgumentException.class)
-	public void exchangeMessagesNegativeTestA() {
-		this.unauthenticate();
-		final Actor receiver = this.actorService.findByPrincipal();
-		final MessageForm messageForm = this.messageService.create();
-		messageForm.setReceiver(receiver);
-		messageForm.setAttachments("http://www.mega-full-1-link-ultraISO.es");
-		messageForm.setText("Test");
-		messageForm.setTitle("Testing");
+			Message message = this.messageService.reconstruct(messageForm);
+			message = this.messageService.save(message);
+			Assert.isTrue(message.getId() != 0);
+			this.unauthenticate();
 
-		Message message = this.messageService.reconstruct(messageForm);
-		message = this.messageService.save(message);
-		Assert.isTrue(message.getId() != 0);
-	}
-
-	//A message cannot be null
-	@Test(expected = NullPointerException.class)
-	public void exchangeMessagesNegativeTestB() {
-		this.authenticate("admin");
-		final Actor receiver = this.actorService.findByPrincipal();
-		final MessageForm messageForm = this.messageService.create();
-		messageForm.setReceiver(receiver);
-		messageForm.setAttachments("http://www.mega-full-1-link-ultraISO.es");
-		messageForm.setText("Test");
-		messageForm.setTitle("Testing");
-
-		Message message = this.messageService.reconstruct(messageForm);
-		message = null;
-		message = this.messageService.save(message);
-		Assert.isTrue(message.getId() != 0);
-	}
-
-	//The sender must be authenticated during the sending message process
-	@Test(expected = IllegalArgumentException.class)
-	public void exchangeMessagesNegativeTestC() {
-		this.authenticate("admin");
-		final Actor receiver = this.actorService.findByPrincipal();
-		final MessageForm messageForm = this.messageService.create();
-		messageForm.setReceiver(receiver);
-		messageForm.setAttachments("http://www.mega-full-1-link-ultraISO.es");
-		messageForm.setText("Test");
-		messageForm.setTitle("Testing");
-
-		Message message = this.messageService.reconstruct(messageForm);
-		this.authenticate("customer2");
-		message = this.messageService.save(message);
-		Assert.isTrue(message.getId() != 0);
+		} catch (final Throwable e) {
+			caught = e.getClass();
+		}
+		this.checkExceptions(expectedException, caught);
 	}
 
 	//Erase his or her messages, which requires previous confirmation.

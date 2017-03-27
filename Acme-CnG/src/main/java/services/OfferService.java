@@ -185,11 +185,6 @@ public class OfferService {
 		return result;
 	}
 
-	public Collection<Offer> getOffersByCustomer(final Actor customer) {
-		Assert.notNull(customer);
-		return this.offerRepository.offersByCustomer(customer.getId());
-	}
-
 	// DASHBOARD
 	public double getOfferAvg() {
 		return this.offerRepository.offerAvg();
