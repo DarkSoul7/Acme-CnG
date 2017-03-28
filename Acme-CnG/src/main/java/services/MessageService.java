@@ -66,20 +66,25 @@ public class MessageService {
 
 	}
 
-	public Message save(final Message message) {
+	public Message save(final Message message) throws IllegalAccessException{
 		final Actor principal = this.actorService.findByPrincipal();
 		Assert.isTrue(principal.getId() == message.getSender().getId());
 		Assert.notNull(message);
 		Message result;
 		Message copiedMessage;
+		Message parent;
 
 		copiedMessage = this.cloneMessage(message);
 
 		if (message.getParentMessage() != null) {
-			if (message.getParentMessage().getOriginal()) {
-				Assert.isTrue(principal.getId() == message.getParentMessage().getSender().getId());
+			parent = this.findOne(message.getParentMessage().getId());
+			if(parent.getChildMessage() != null) {
+				throw new IllegalAccessException();
+			}
+			if (parent.getOriginal()) {
+				Assert.isTrue(principal.getId() == parent.getSender().getId());
 			} else {
-				Assert.isTrue(principal.getId() == message.getParentMessage().getReceiver().getId());
+				Assert.isTrue(principal.getId() == parent.getReceiver().getId());
 			}
 		}
 

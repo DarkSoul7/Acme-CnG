@@ -48,9 +48,11 @@
 <br/>
 
 <jstl:if test="${mes != null}">
-	<input type="button" name="replyButton"
-			value="<spring:message code="message.reply" />"
-			onclick="javascript: window.location.replace('message/reply.do?messageId=${mes.id}')" />
+	<jstl:if test="${mes.childMessage == null}">
+		<input type="button" name="replyButton"
+				value="<spring:message code="message.reply" />"
+				onclick="javascript: window.location.replace('message/reply.do?messageId=${mes.id}')" />
+	</jstl:if>
 	
 	<input type="button" name="forwardButton"
 			value="<spring:message code="message.forward" />"

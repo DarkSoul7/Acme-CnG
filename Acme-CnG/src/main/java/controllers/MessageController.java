@@ -147,7 +147,6 @@ public class MessageController extends AbstractController {
 		try {
 			message = this.messageService.findOne(messageId);
 			messageForm = this.messageService.toFormObject(message, false);
-			messageForm.setParentMessageId(message.getId());
 			errorMessage = null;
 			answerable = true;
 		} catch (Throwable oops) {
@@ -175,6 +174,8 @@ public class MessageController extends AbstractController {
 				message = messageService.reconstruct(messageForm);
 				messageService.save(message);
 				result = new ModelAndView("redirect:/message/sentMessages.do");
+			} catch(IllegalAccessException e) {
+				result = this.createEditModelAndView(messageForm, "message.multireply.error");
 			} catch (IllegalArgumentException e) {
 				result = this.createEditModelAndView(messageForm, "message.attachments.error");
 			} catch (Throwable oops) {
