@@ -151,9 +151,12 @@ public class MessageServiceTest extends AbstractTest {
 		try {
 			this.authenticate(principal);
 			final Actor receiver = this.actorService.findOne(receiverId);
+			final Actor sender = this.actorService.findByPrincipal();
 			final Message message = this.messageService.findOne(messageId);
 			final Message forwardMessage = this.messageService.cloneMessage(message);
 			forwardMessage.setReceiver(receiver);
+			forwardMessage.setSender(sender);
+			forwardMessage.setOriginal(true);
 			this.messageService.save(forwardMessage);
 			this.unauthenticate();
 		} catch (final Throwable oops) {

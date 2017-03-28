@@ -26,11 +26,11 @@ public class AnnouncementServiceTest extends AbstractTest {
 	@Autowired
 	private AnnouncementService	announcementService;
 
-	@Autowired
-	private OfferService		offerService;
-
-	@Autowired
-	private RequestService		requestService;
+//	@Autowired
+//	private OfferService		offerService;
+//
+//	@Autowired
+//	private RequestService		requestService;
 
 
 	// Tests ------------------------------------------------------------------
