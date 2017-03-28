@@ -1,4 +1,4 @@
-package services;
+package controller;
 
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -15,9 +15,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import utilities.AbstractTest;
 import controllers.MessageController;
 import domain.Message;
+import services.ActorService;
+import services.MessageService;
+import utilities.AbstractTest;
  
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
