@@ -46,6 +46,12 @@ public class MessageController extends AbstractController {
 	public MessageController() {
 		super();
 	}
+	
+	public MessageController(MessageService	messageService, ActorService actorService) {
+		super();
+		this.messageService = messageService;
+		this.actorService = actorService;
+	}
 
 	// ShowMessage
 	@RequestMapping(value = "/showMessage", method = RequestMethod.GET)
