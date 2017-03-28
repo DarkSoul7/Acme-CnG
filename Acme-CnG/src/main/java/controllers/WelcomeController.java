@@ -53,7 +53,8 @@ public class WelcomeController extends AbstractController {
 		result = new ModelAndView("welcome/index");
 		result.addObject("name", name);
 		result.addObject("moment", moment);
-		result.addObject("banner", banner.getPicture());
+		if (banner != null)
+			result.addObject("banner", banner.getPicture());
 
 		return result;
 	}

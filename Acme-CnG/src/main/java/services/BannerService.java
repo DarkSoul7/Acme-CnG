@@ -75,12 +75,14 @@ public class BannerService {
 		Assert.notNull(administrator);
 
 		final Banner active = this.getActiveBanner();
-		Assert.isTrue(!banner.equals(active));
+		if (active != null) {
+			Assert.isTrue(!banner.equals(active));
+			active.setActive(false);
+			this.save(active);
+		}
 
-		active.setActive(false);
 		banner.setActive(true);
 
-		this.save(active);
 		this.save(banner);
 	}
 }

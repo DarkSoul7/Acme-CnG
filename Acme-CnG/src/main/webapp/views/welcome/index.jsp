@@ -15,8 +15,11 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 
-	<img src="${banner}" style="width:250px; height:250px" alt="Banner" />
+	<jstl:if test="${ banner != null}">
+		<img src="${banner}" style="width:250px; height:250px" alt="Banner" />
+	</jstl:if>
 
 <p><spring:message code="welcome.greeting.current.time" /> ${moment}</p> 
